@@ -1,0 +1,57 @@
+
+      <div data-type="default" class="container" style="padding:30px;">
+        
+        <div data-type="default" class="row">
+          <mat-toolbar style=" background: rgb(131, 230, 255);
+          color: #fff;border-radius: 5px;white-space: normal;
+          font-weight: 600;">Driver Details <span class="example-spacer"></span><div class="ad" style="text-align: center;" ><a mat-raised-button (click)="openDialog()" style="color:rgb(6, 149, 206)">Add Driver</a></div></mat-toolbar>
+            <div data-type="default" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 py-3">
+       
+              <div class="example-header" fxLayout="row">
+                <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field>
+              </div>
+              <div class="example-container mat-elevation-z8">
+      
+                <mat-table [dataSource]="dataSource" matSort>
+              
+                  <!-- ID Column -->
+                  <ng-container matColumnDef="DriverName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Driver Name </mat-header-cell>
+                    <mat-cell data-label="DriverName" *matCellDef="let element">{{element.DriverName}}  </mat-cell>
+                  </ng-container>
+              
+                  <!-- Progress Column -->
+                  <ng-container matColumnDef="DOB">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Date Of Birth </mat-header-cell>
+                    <mat-cell data-label="DOB" *matCellDef="let element"> {{element.DOB}}  </mat-cell>
+                  </ng-container>
+              
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="LicenseIssueDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> License Issue Date </mat-header-cell>
+                    <mat-cell data-label="LicenseIssueDate" *matCellDef="let element">{{element.LicenseIssueDate}}</mat-cell>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="LicenseNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> License Number </mat-header-cell>
+                    <mat-cell data-label="LicenseNumber" *matCellDef="let element">{{element.LicenseNumber}}</mat-cell>
+                  </ng-container>
+                  
+                     
+                  <ng-container matColumnDef="Actions">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                    <mat-cell data-label="Actions" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;">
+                  </mat-row>
+                </mat-table>
+              
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+              </div>
+    
+            </div>
+            </div>
+            </div>

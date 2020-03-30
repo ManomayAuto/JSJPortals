@@ -1,0 +1,12 @@
+mat-card{
+    height: 200px;
+    width:200px;
+    padding: 30px;
+    color: #ffffff;
+    font-size: large;
+    font-weight: 600;
+    background: #83e6ff;
+}
+.clickable {
+    cursor: pointer;
+  }
