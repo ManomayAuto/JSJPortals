@@ -11,7 +11,9 @@ import { environment } from '../../environments/environment';
 import { RequestOptions } from '@angular/http';
 import { MatTabGroup } from '@angular/material/tabs';
 import {MatSnackBar} from '@angular/material';
+
 import { Quote } from '@angular/compiler';
+
 @Component({
   selector: 'app-quotepage',
   templateUrl: './quotepage.component.html',
@@ -192,6 +194,12 @@ matTabs = [1,2,3];
       }
   
   )
+  }
+  handleClick(event: Event) {
+    console.log("Click!" ,this.contactForm1.get('firstName').value);
+    console.log("Click!" ,this.contactForm1.get('lastName').value);
+    this.http.post(environment.URL + `/`,{fname:this.contactForm1.get('firstName').value,
+    lname:this.contactForm1.get('lastName').value,dob:this.contactForm1.get('dab').value,idtype:this.contactForm1.get('idType').value})
   }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -454,7 +462,7 @@ matTabs = [1,2,3];
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
      
-      return this.http.post<any>(environment.URL + 'calculation', {cc:cc,vehiclevalue:vehiclevalue,prod:edu,softd:softd,vehicletype:vehicletype,fleet:fleet,promotion:promotion,manloadp:manload,claimfre:claimfre,manualdisc:manualdis,ct:ct},httpOptions ).subscribe((res: any) => { // not callback
+      return this.http.post<any>(environment.URL + '/calculation', {cc:cc,vehiclevalue:vehiclevalue,prod:edu,softd:softd,vehicletype:vehicletype,fleet:fleet,promotion:promotion,manloadp:manload,claimfre:claimfre,manualdisc:manualdis,ct:ct},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
         let tax = this.contactForm3.get('tax').setValue(res.taxamt)
         let annualgp = this.contactForm3.get('annualgrosspremium').setValue(res.annualgpwpd)

@@ -21,13 +21,13 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./drivertable.component.css']
 })
 export class DrivertableComponent implements OnInit {
-
+  dataSource: MatTableDataSource<unknown>;
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
   }
   displayedColumns = ['DriverName', 'DOB', 'LicenseIssueDate', 'LicenseNumber', 'Actions'];
-  dataSource= ELEMENT_DATA;
+  //dataSource= ELEMENT_DATA;
   
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
@@ -36,5 +36,11 @@ export class DrivertableComponent implements OnInit {
       width: '1350px',
       height: '600px',
     });
-  }
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("test2",result);
+      this.driverdata.push(result);
+      this.dataSource = new MatTableDataSource(result);
+    })
+}
 }
