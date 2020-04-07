@@ -11,7 +11,9 @@ import { environment } from '../../environments/environment';
 import { RequestOptions } from '@angular/http';
 import { MatTabGroup } from '@angular/material/tabs';
 import {MatSnackBar} from '@angular/material';
+
 import { Quote } from '@angular/compiler';
+
 @Component({
   selector: 'app-quotepage',
   templateUrl: './quotepage.component.html',

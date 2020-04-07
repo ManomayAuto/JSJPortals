@@ -110,6 +110,6 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents:[DialogContentExampleComponent,DialogRedComponent,DialogCallComponent]
+  entryComponents:[DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent]
 })
 export class AppModule { }

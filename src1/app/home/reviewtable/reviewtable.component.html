@@ -1,0 +1,71 @@
+
+      <div data-type="default" class="container" style="padding:30px;">
+        
+        <div data-type="default" class="row">
+          <mat-toolbar style=" background: rgb(131, 230, 255);
+          color: #fff;border-radius: 5px;white-space: normal;
+    ">Quotes For Review</mat-toolbar>
+          <!-- / Quotes Status -->
+            <div data-type="default" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 py-3">
+       
+              <div class="example-header" fxLayout="row">
+                <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field>
+              </div>
+              <div class="example-container mat-elevation-z8">
+      
+                <mat-table [dataSource]="dataSource" matSort>
+              
+                  <!-- ID Column -->
+                  <ng-container matColumnDef="Sno">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> S.No </mat-header-cell>
+                    <mat-cell data-label="Sno" *matCellDef="let element">{{element.Sno}}  </mat-cell>
+                  </ng-container>
+              
+                  <!-- Progress Column -->
+                  <ng-container matColumnDef="QuoteID">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Quote ID </mat-header-cell>
+                    <mat-cell data-label="QuoteID" *matCellDef="let element"> {{element.QuoteID}}  </mat-cell>
+                  </ng-container>
+              
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="Status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Review Status </mat-header-cell>
+                    <mat-cell data-label="Status" *matCellDef="let element">{{element.Status}} </mat-cell>
+                  </ng-container>
+              
+                  <!-- Color Column -->
+                  <ng-container matColumnDef="TypeofAction">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Type of Action </mat-header-cell>
+                    <mat-cell data-label="TypeofAction" *matCellDef="let element"> {{element.TypeofAction}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Remarks">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Remarks </mat-header-cell>
+                    <mat-cell data-label="Remarks" *matCellDef="let element"> {{element.Remarks}}</mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="User">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Reviewer </mat-header-cell>
+                    <mat-cell data-label="User" *matCellDef="let element">{{element.User}} </mat-cell>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="LastUpdatedAt">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Last Updated At </mat-header-cell>
+                    <mat-cell data-label="LastUpdatedAt" *matCellDef="let element"> {{element.LastUpdatedAt}}  </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="Action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                    <mat-cell data-label="Action" *matCellDef="let element"> <button mat-button style="color:rgb(19, 152, 204)">{{element.Action}}</button></mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;">
+                  </mat-row>
+                </mat-table>
+              
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+              </div>
+    
+            </div>
+            </div>
+            </div>
