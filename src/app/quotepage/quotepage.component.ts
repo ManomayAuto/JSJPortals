@@ -177,12 +177,12 @@ matTabs = [1,2,3];
 
       (idType: string) => {
   
-          if (idType != 'Not Applicable') {
+          if (idType != 'NA') {
   
               this.contactForm1.get('idNumber').setValidators([Validators.required]);
               this.contactForm1.get('idNumber').updateValueAndValidity();
           } 
-          else if(idType == 'Not Applicable') {
+          else if(idType == 'NA') {
             this.contactForm1.get('idNumber').clearValidators();
             this.contactForm1.get('idNumber').updateValueAndValidity();
           }
@@ -218,19 +218,21 @@ matTabs = [1,2,3];
           this.contactForm2.get('losspay').updateValueAndValidity;
         }
         }
-        // onid(){
-        //   console.log("iddd")
-        //   if(this.contactForm1.get('idType').value != "Not Applicable"){
-        //     console.log("not apli")
-        //     this.contactForm1.get('idNumber').setValidators([Validators.required])
-        //   }
-        //   else {
-        //     this.contactForm1.get('idNumber').untouched
-        //   }
-        // }
-
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 3
+  }
+  existing(){
+    console.log("in existing")
+    let first = this.contactForm1.get('firstName').value;
+    let last = this.contactForm1.get('lastName').value;
+    let dob = this.contactForm1.get('dab').value;
+    let idtype = this.contactForm1.get('idType').value;
+    let idnumber = this.contactForm1.get('idNumber').value;
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+   
+    this.http.post<any>(environment.URL + '/searchclient', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber},httpOptions ).subscribe();
   }
   moveToSelectedTab(tabName: string) {
     if(this.contactForm1.valid){
@@ -432,14 +434,6 @@ matTabs = [1,2,3];
       {
         vehicletype = 'NoType'
       }
-      // if(manloadp == null)
-      // {
-      //   manloadp = 0
-      // }
-      // if(manualdisc == null)
-      // {
-      //   manualdisc = 0
-      // }
       console.log("CC"+ cc)
       console.log("vehiclevalue"+ vehiclevalue)
       console.log("covertype"+ prod)
@@ -454,7 +448,7 @@ matTabs = [1,2,3];
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
      
-      return this.http.post<any>(environment.URL + 'calculation', {cc:cc,vehiclevalue:vehiclevalue,prod:edu,softd:softd,vehicletype:vehicletype,fleet:fleet,promotion:promotion,manloadp:manload,claimfre:claimfre,manualdisc:manualdis,ct:ct},httpOptions ).subscribe((res: any) => { // not callback
+      return this.http.post<any>(environment.URL + '/calculation', {cc:cc,vehiclevalue:vehiclevalue,prod:edu,softd:softd,vehicletype:vehicletype,fleet:fleet,promotion:promotion,manloadp:manload,claimfre:claimfre,manualdisc:manualdis,ct:ct},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
         let tax = this.contactForm3.get('tax').setValue(res.taxamt)
         let annualgp = this.contactForm3.get('annualgrosspremium').setValue(res.annualgpwpd)
@@ -465,7 +459,6 @@ matTabs = [1,2,3];
     }, error => {
       console.error("Error", error);
     });
-   
   }
 }
 
