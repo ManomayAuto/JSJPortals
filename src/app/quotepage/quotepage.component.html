@@ -100,7 +100,7 @@
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside" style="height:50px">
-      <button mat-raised-button color="primary" (click)="existing()">Search For Existing Client</button>
+      <a mat-raised-button color="primary" style="color:white" (click)="existing()">Search For Existing Client</a>
      Existing client? <mat-checkbox class="example-margin" formControlName="clienttype" [checked]="false"></mat-checkbox>
       <!-- <button mat-stroked-button style="margin-top:-40px"></button> -->
     </div>
@@ -258,7 +258,7 @@
         <mat-grid-list style="margin-top:-60px" cols="3" [cols]="breakpoint" rowHeight="125px" (window:resize)="onResize($event)">
    
           <mat-grid-tile style="right: unset !important;margin-top: 50px;margin-left:15px;">
-            <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: red;font-size: 11px;">Please select Type of cover:</label> 
+            <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: red;">*Type of cover:</label> 
   
             <label id="example-radio-group-label" *ngIf="!contactForm2.get('options1').hasError('required')">*Type of Cover:</label>
            <mat-radio-button class="example-radio-button" name="COMP" value="COMP" (click)="toggle1()" style="margin-left: 20px;">
@@ -389,19 +389,19 @@
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
  
-  <button mat-raised-button color="primary" style="margin-left:5px">Print</button>
+  <!-- <button mat-raised-button color="primary" style="margin-left:5px">Print</button>
  
  
     <button mat-raised-button color="primary" style="margin-left:5px">Approve</button>
    
    
       <button mat-raised-button color="primary" style="margin-left:5px">Decline</button>
+      -->
      
-     
-        <button mat-raised-button color="primary" style="margin-left:5px">Save</button>
+        <button mat-raised-button color="primary" style="margin-left:5px">Save & Submit</button>
      
    
-        <button mat-raised-button color="primary" style="margin-left:5px" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
+        <!-- <button mat-raised-button color="primary" style="margin-left:5px" (click)='moveToSelectedTab2("Additional Details")' >Next</button> -->
         </div>
 </form>
 </mat-tab>

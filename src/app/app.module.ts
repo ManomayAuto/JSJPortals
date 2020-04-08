@@ -39,6 +39,7 @@ import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {InMemDataService} from './in-memory-data.service';
 import { MaterialModule} from './Material/material.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
+import { SearchclientdialogComponent } from './quotepage/searchclientdialog/searchclientdialog.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     ApprovedtableComponent,
     InbrokerquotetableComponent,
     DrivertableComponent,
+    SearchclientdialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -110,6 +112,6 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents:[DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent]
+  entryComponents:[DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent]
 })
 export class AppModule { }

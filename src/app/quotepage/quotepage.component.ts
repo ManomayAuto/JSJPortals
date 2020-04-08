@@ -11,13 +11,15 @@ import { environment } from '../../environments/environment';
 import { RequestOptions } from '@angular/http';
 import { MatTabGroup } from '@angular/material/tabs';
 import {MatSnackBar} from '@angular/material';
-
+import { DatePipe } from "@angular/common";
 import { Quote } from '@angular/compiler';
-
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {SearchclientdialogComponent} from './searchclientdialog/searchclientdialog.component';
 @Component({
   selector: 'app-quotepage',
   templateUrl: './quotepage.component.html',
-  styleUrls: ['./quotepage.component.css']
+  styleUrls: ['./quotepage.component.css'],
+  providers: [DatePipe]
 })
 export class QuotepageComponent implements OnInit {
   education_level;
@@ -85,7 +87,7 @@ matTabs = [1,2,3];
       console.log('Tab2 is not selected!')
     }
   }
-  constructor(private http: HttpClient, private appService: AppService, private f1 : FormBuilder, private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,public snackBar: MatSnackBar){
+  constructor(public dialog: MatDialog,private dp: DatePipe,private http: HttpClient, private appService: AppService, private f1 : FormBuilder, private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,public snackBar: MatSnackBar){
    
 
    
@@ -225,16 +227,47 @@ matTabs = [1,2,3];
   }
   existing(){
     console.log("in existing")
+    const dialogRef = this.dialog.open(SearchclientdialogComponent, {
+
+      width: '1350px',
+
+      height: '800px',
+
+    });
     let first = this.contactForm1.get('firstName').value;
+    if(!first){
+      first = null
+    }
     let last = this.contactForm1.get('lastName').value;
+    if(!last){
+      last = null
+    }
     let dob = this.contactForm1.get('dab').value;
+    let dob1= this.dp.transform(dob, 'yyyy-MM-dd','es-ES');
+    if(!dob1){
+      dob1 = null
+    }
     let idtype = this.contactForm1.get('idType').value;
+    if(!idtype){
+      idtype = null
+    }
     let idnumber = this.contactForm1.get('idNumber').value;
+    if(!idnumber){
+      idnumber = null
+    }
+    let mob = this.contactForm1.get('dob').value;
+    if(!mob){
+      mob = null
+    }
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
    
-    this.http.post<any>(environment.URL + '/searchclient', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber},httpOptions ).subscribe();
+    return this.http.post<any>(environment.URL + '/searchclient', {first:first,last:last,dob:dob1,idtype:idtype,idnumber:idnumber, mob:mob},httpOptions ).subscribe((res: any) => { // not callback
+      console.log(res)
+  }, error => {
+    console.error("Error", error);
+  });
   }
   moveToSelectedTab(tabName: string) {
     if(this.contactForm1.valid){
