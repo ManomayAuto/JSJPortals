@@ -13,6 +13,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import {MatSnackBar} from '@angular/material';
 
 import { Quote } from '@angular/compiler';
+import { DrivertableComponent } from './drivertable/drivertable.component';
 
 @Component({
   selector: 'app-quotepage',
@@ -29,6 +30,7 @@ export class QuotepageComponent implements OnInit {
 filteredOptions: Observable<string[]>;
 matTabs = [1,2,3];
 @ViewChild('tabGroup',{static:false}) tabGroup: MatTabGroup;
+@ViewChild(DrivertableComponent,{static:false}) child : DrivertableComponent ;
   educationList: any = [
     {
       'educationLevelName': 'Private Vehicle - ICB',
@@ -50,6 +52,7 @@ matTabs = [1,2,3];
     }
   ];
   resultList: unknown[];
+  driverdata: any;
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -195,12 +198,7 @@ matTabs = [1,2,3];
   
   )
   }
-  handleClick(event: Event) {
-    console.log("Click!" ,this.contactForm1.get('firstName').value);
-    console.log("Click!" ,this.contactForm1.get('lastName').value);
-    this.http.post(environment.URL + `/`,{fname:this.contactForm1.get('firstName').value,
-    lname:this.contactForm1.get('lastName').value,dob:this.contactForm1.get('dab').value,idtype:this.contactForm1.get('idType').value})
-  }
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -236,7 +234,7 @@ matTabs = [1,2,3];
         //     this.contactForm1.get('idNumber').untouched
         //   }
         // }
-
+        
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 3
   }
@@ -311,6 +309,9 @@ matTabs = [1,2,3];
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
     }
   }
+  // driverdata(arg0: string, driverdata: any) {
+  //   throw new Error("Method not implemented.");
+  // }
   // onTabChange(event) {
   //   console.log(event.index);
   //   if
@@ -351,7 +352,6 @@ matTabs = [1,2,3];
  
 
   onSubmit() {
-    console.log("innn")
       let first = this.contactForm1.get('firstName').value;
       let last = this.contactForm1.get('lastName').value;
       let dob = this.contactForm1.get('dab').value;
@@ -474,6 +474,10 @@ matTabs = [1,2,3];
       console.error("Error", error);
     });
    
+  }
+  onSave(){
+    console.log("drivertable values",this.child.driverdata);
+
   }
 }
 
