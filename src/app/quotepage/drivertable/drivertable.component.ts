@@ -1,8 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { SimpleNotificationsComponent } from 'angular2-notifications';
-
-import { NotificationsService } from 'angular2-notifications';
+import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 
@@ -10,7 +7,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { DriverdialogComponent } from '../driverdialog/driverdialog.component';
 
-export interface PeriodicElement {
+export interface driverdata {
 
   DriverName: string,
 
@@ -24,14 +21,6 @@ export interface PeriodicElement {
 
 }
 
-// const result: PeriodicElement[] = [
-
-//   {DriverName: 'Joey Felin', DOB: '02/12/1996', LicenseIssueDate: '02/15/2019', LicenseNumber: 865478822333, Actions: 'Edit'},
-
-//   {DriverName: 'Van Helsing', DOB: '01/25/1965', LicenseIssueDate: '02/11/2017', LicenseNumber: 465471825243, Actions: 'Edit' },
-
-// ];
-
 @Component({
 
   selector: 'app-drivertable',
@@ -44,9 +33,12 @@ export interface PeriodicElement {
 
 export class DrivertableComponent implements OnInit {
 
-  dataSource: MatTableDataSource<unknown>;
+  dataSource: MatTableDataSource<any>;
+  driverdata: driverdata[] = [
+    {DriverName: 'Joey Felin', DOB: '02/12/1996', LicenseIssueDate: '02/15/2019', LicenseNumber: 865478822333, Actions: 'Edit'},
+    {DriverName: 'Van Helsing', DOB: '01/25/1965', LicenseIssueDate: '02/11/2017', LicenseNumber: 465471825243, Actions: 'Edit' },
+  ];
 
-  driverdata: Array<String> = [];
 
   constructor(public dialog: MatDialog) { }
 
@@ -54,13 +46,14 @@ export class DrivertableComponent implements OnInit {
 
   ngOnInit() {
 
+    this.dataSource = new MatTableDataSource(this.driverdata); 
+    // console.log("test3",driverdata  );
+
   }
 
   displayedColumns = ['DriverName', 'DOB', 'LicenseIssueDate', 'LicenseNumber', 'Actions'];
 
-  // dataSource= result;
-
-  
+  @Output() data = new EventEmitter<any>();
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
@@ -83,13 +76,14 @@ export class DrivertableComponent implements OnInit {
       console.log("test2",result);
 
       this.driverdata.push(result);
-
-      this.dataSource = new MatTableDataSource(this.driverdata);
-
-      console.log("test2",this.driverdata);
-
+      this.dataSource = new MatTableDataSource(this.driverdata); 
+      console.log("test3",this.driverdata);
     })
-
+   
+    // this.data.emit(this.driverdata);
+    console.log("test4",this.driverdata);
+    
+    
 }
 
 }

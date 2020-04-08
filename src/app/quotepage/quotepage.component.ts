@@ -13,8 +13,12 @@ import { MatTabGroup } from '@angular/material/tabs';
 import {MatSnackBar} from '@angular/material';
 import { DatePipe } from "@angular/common";
 import { Quote } from '@angular/compiler';
+
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {SearchclientdialogComponent} from './searchclientdialog/searchclientdialog.component';
+
+import { DrivertableComponent } from './drivertable/drivertable.component';
+
 @Component({
   selector: 'app-quotepage',
   templateUrl: './quotepage.component.html',
@@ -31,6 +35,7 @@ export class QuotepageComponent implements OnInit {
 filteredOptions: Observable<string[]>;
 matTabs = [1,2,3];
 @ViewChild('tabGroup',{static:false}) tabGroup: MatTabGroup;
+@ViewChild(DrivertableComponent,{static:false}) child : DrivertableComponent ;
   educationList: any = [
     {
       'educationLevelName': 'Private Vehicle - ICB',
@@ -52,6 +57,7 @@ matTabs = [1,2,3];
     }
   ];
   resultList: unknown[];
+  driverdata: any;
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -340,6 +346,9 @@ matTabs = [1,2,3];
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
     }
   }
+  // driverdata(arg0: string, driverdata: any) {
+  //   throw new Error("Method not implemented.");
+  // }
   // onTabChange(event) {
   //   console.log(event.index);
   //   if
@@ -380,7 +389,6 @@ matTabs = [1,2,3];
  
 
   onSubmit() {
-    console.log("innn")
       let first = this.contactForm1.get('firstName').value;
       let last = this.contactForm1.get('lastName').value;
       let dob = this.contactForm1.get('dab').value;
@@ -494,6 +502,10 @@ matTabs = [1,2,3];
     }, error => {
       console.error("Error", error);
     });
+  }
+  onSave(){
+    console.log("drivertable values",this.child.driverdata);
+
   }
 }
 
