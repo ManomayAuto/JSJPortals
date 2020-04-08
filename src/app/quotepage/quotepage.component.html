@@ -36,14 +36,14 @@
     <div class="text-inside">
       <mat-form-field>
         <mat-select placeholder="ID Type" formControlName="idType" required>
-          <mat-option value="ABER00r">ABER00r</mat-option>
-          <mat-option value="AS/400 Record Id">AS/400 Record Id</mat-option>
-          <mat-option value="Business License Number">Business License Number</mat-option>
-          <mat-option value="Drivers License">Drivers License</mat-option>
-          <mat-option value="Loan Number">Loan Number</mat-option>
-          <mat-option value="National Insurance Number">National Insurance Number</mat-option>
-          <mat-option value="Not Applicable">Not Applicable</mat-option>
-            <mat-option value="Passport">Passport </mat-option>
+          <mat-option value="AB">ABER00r</mat-option>
+          <mat-option value="ID">AS/400 Record Id</mat-option>
+          <mat-option value="BL">Business License Number</mat-option>
+          <mat-option value="DL">Drivers License</mat-option>
+          <mat-option value="LN">Loan Number</mat-option>
+          <mat-option value="NI">National Insurance Number</mat-option>
+          <mat-option value="NA">Not Applicable</mat-option>
+            <mat-option value="PA">Passport </mat-option>
 
         </mat-select>
       </mat-form-field>
@@ -100,7 +100,7 @@
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside" style="height:50px">
-      <button mat-raised-button color="primary" (click)="handleClick($event)">Search For Existing Client</button>
+      <button mat-raised-button color="primary" (click)="existing()">Search For Existing Client</button>
      Existing client? <mat-checkbox class="example-margin" formControlName="clienttype" [checked]="false"></mat-checkbox>
       <!-- <button mat-stroked-button style="margin-top:-40px"></button> -->
     </div>
