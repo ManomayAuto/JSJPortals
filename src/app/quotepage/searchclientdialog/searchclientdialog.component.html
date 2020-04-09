@@ -8,56 +8,56 @@
     <mat-table [dataSource]="dataSource" matSort>
   
       <!-- ID Column -->
-      <ng-container matColumnDef="fname">
+      <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-        <mat-cell data-label="fname" *matCellDef="let element">  </mat-cell>
+        <mat-cell data-label="name" *matCellDef="let element"> {{element.name}} </mat-cell>
       </ng-container>
   
       <!-- Progress Column -->
       <ng-container matColumnDef="lname">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-        <mat-cell data-label="lname" *matCellDef="let element">   </mat-cell>
+        <mat-cell data-label="lname" *matCellDef="let element">  {{element.lname}} </mat-cell>
       </ng-container>
   
       <!-- Name Column -->
       <ng-container matColumnDef="dob">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Date Of Birth </mat-header-cell>
-        <mat-cell data-label="dob" *matCellDef="let element"></mat-cell>
+        <mat-cell data-label="dob" *matCellDef="let element">{{element.dob}}</mat-cell>
       </ng-container>
       
       <ng-container matColumnDef="idtype">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Id Type </mat-header-cell>
-        <mat-cell data-label="idtype" *matCellDef="let element"></mat-cell>
+        <mat-cell data-label="idtype" *matCellDef="let element">{{element.idtype}}</mat-cell>
       </ng-container>
       
          
       <ng-container matColumnDef="idno">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Id Number </mat-header-cell>
-        <mat-cell data-label="idno" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+        <mat-cell data-label="idno" *matCellDef="let element">{{element.idno}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="mno">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile Number </mat-header-cell>
-        <mat-cell data-label="mno" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+        <mat-cell data-label="mno" *matCellDef="let element">{{element.mno}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="address">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Address Type </mat-header-cell>
-        <mat-cell data-label="address" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+        <mat-cell data-label="address" *matCellDef="let element">{{element.address}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="street">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Street</mat-header-cell>
-        <mat-cell data-label="street" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+        <mat-cell data-label="street" *matCellDef="let element">{{element.street}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="country">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Country</mat-header-cell>
-        <mat-cell data-label="country" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+        <mat-cell data-label="country" *matCellDef="let element">{{element.country}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="zipcode">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Zipcode</mat-header-cell>
-        <mat-cell data-label="zipcode" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+        <mat-cell data-label="zipcode" *matCellDef="let element">{{element.zipcode}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="town">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Town</mat-header-cell>
-        <mat-cell data-label="town" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Actions}}</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+        <mat-cell data-label="town" *matCellDef="let element">{{element.town}}</mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;">

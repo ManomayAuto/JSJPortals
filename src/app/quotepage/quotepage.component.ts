@@ -58,6 +58,7 @@ matTabs = [1,2,3];
   ];
   resultList: unknown[];
   driverdata: any;
+  abcd : any = [];
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -85,7 +86,7 @@ matTabs = [1,2,3];
   contactForm2 : FormGroup;
   contactForm3 : FormGroup;
   contactForm4 : FormGroup;
-
+  searchdata : any;
   test(a) {
     if(a.index == 2){
       this.onSubmit();
@@ -233,13 +234,6 @@ matTabs = [1,2,3];
   }
   existing(){
     console.log("in existing")
-    const dialogRef = this.dialog.open(SearchclientdialogComponent, {
-
-      width: '1350px',
-
-      height: '800px',
-
-    });
     let first = this.contactForm1.get('firstName').value;
     if(!first){
       first = null
@@ -269,12 +263,29 @@ matTabs = [1,2,3];
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
    
-    return this.http.post<any>(environment.URL + '/searchclient', {first:first,last:last,dob:dob1,idtype:idtype,idnumber:idnumber, mob:mob},httpOptions ).subscribe((res: any) => { // not callback
-      console.log(res)
+    return this.http.post<any>(environment.URL + '/searchclient', {first:first,last:last,dob:dob1,idtype:idtype,idnumber:idnumber, mob:mob},httpOptions ).subscribe((searchdata) => { // not callback
+      // console.log(searchdata)
+      if(searchdata){
+        this.abcd = searchdata;
+      }
+      
+      console.log(this.abcd)
+   this.sd(this.abcd)
   }, error => {
     console.error("Error", error);
   });
   }
+sd(abcd):void{
+  const dialogRef = this.dialog.open(SearchclientdialogComponent, {
+
+    width: '1350px',
+
+    height: '800px',
+    
+    data:{abcd:this.abcd}
+  });
+  console.log("sa",this.abcd);
+}
   moveToSelectedTab(tabName: string) {
     if(this.contactForm1.valid){
       console.log("innn")
