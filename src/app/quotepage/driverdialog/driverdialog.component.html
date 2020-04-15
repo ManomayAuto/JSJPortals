@@ -7,7 +7,7 @@
   <mat-grid-tile>
     <div class="text-inside">
         
-      *Is the driver same as the client?<mat-checkbox class="example-margin" required> </mat-checkbox>
+      *Is the driver same as the client?<mat-checkbox class="example-margin" formControlName="Driverclient" [checked]="false" required> </mat-checkbox>
    
     </div>
   </mat-grid-tile>
@@ -57,36 +57,42 @@
   </mat-grid-tile>
     <mat-grid-tile>
       <div class="text-inside">
-        Do you suffer from any physical/mental disabilities or infirmities? <mat-checkbox class="example-margin" required> </mat-checkbox>
+        Do you suffer from any physical/mental disabilities or infirmities? <mat-checkbox class="example-margin" [checked]="false" formControlName="physical" required> </mat-checkbox>
       </div> 
     </mat-grid-tile>
     <mat-grid-tile>
       <div class="text-inside">
-        Do you have any previous convictions related to Drunk & Drive or Dangerous Driving?  <mat-checkbox class="example-margin" required> </mat-checkbox>
+        Do you have any previous convictions related to Drunk & Drive or Dangerous Driving?  <mat-checkbox class="example-margin" [checked]="false" formControlName="drunk" required> </mat-checkbox>
       </div>
     </mat-grid-tile>
    
     <mat-grid-tile>
       <div class="text-inside">
-          Do you have any previous Insurance?  <mat-checkbox class="example-margin" required> </mat-checkbox>
+          Do you have any previous Insurance?  <mat-checkbox class="example-margin" [checked]="false" formControlName="previous" required> </mat-checkbox>
       </div>
     </mat-grid-tile>
       
       <mat-grid-tile>
         <div class="text-inside">
-            Do you have any previous claim history?<mat-checkbox class="example-margin" required> </mat-checkbox>
+            Do you have any previous claim history?<mat-checkbox class="example-margin" [checked]="false" formControlName="claimhistory" required> </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile>
         <div class="text-inside">
-            Do you have any previous total loss claim? <mat-checkbox class="example-margin" required> </mat-checkbox>
+            Do you have any previous total loss claim? <mat-checkbox class="example-margin" [checked]="false" formControlName="lossclaim" required> </mat-checkbox>
         </div>
       </mat-grid-tile>
       <mat-grid-tile>
         <div class="text-inside">
           <mat-form-field>
             <mat-select placeholder="Driver Warranty" formControlName="Driverwar" required>
-              <mat-option value="0"></mat-option>
+              <mat-option value="A">Any Driver</mat-option>
+              <mat-option value="B">Insured Only</mat-option>
+              <mat-option value="C">Insured + One Named Driver</mat-option>
+              <mat-option value="D">Insured + Two Or More Named Drivers</mat-option>
+              <mat-option value="E">Named driver(s) excluding the Insured</mat-option>
+              <mat-option value="F">Anyone 21 yrs. & older with a licence for 2 yrs. or more</mat-option>
+              <mat-option value="G">Anyone 25 yrs. & older with a licence for 2 yrs. or more</mat-option>
               
             </mat-select>
           </mat-form-field>

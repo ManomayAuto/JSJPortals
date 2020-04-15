@@ -12,6 +12,7 @@ export class DriverdialogComponent implements OnInit {
   public breakpoint: number;
   datePipe = new DatePipe('en-US'); 
   wasFormChanged = false;
+  Driverclient: boolean;
   constructor(private formBuilder: FormBuilder,public dialogRef :MatDialogRef<DriverdialogComponent>,) {
 
     this.driverForm = new FormGroup({
@@ -20,6 +21,12 @@ export class DriverdialogComponent implements OnInit {
       DOB: new FormControl(),
       LicenseIssueDate: new FormControl(),
       LicenseNumber: new FormControl(),
+      Driverclient: new FormControl(false),
+      physical: new FormControl(false),
+      drunk: new FormControl(false),
+      previous: new FormControl(false),
+      claimhistory: new FormControl(false),
+      lossclaim: new FormControl(false),
     });
    }
 
@@ -41,7 +48,13 @@ export class DriverdialogComponent implements OnInit {
       LicenseIssueDate :this.datePipe.transform(this.driverform.LicenseIssueDate.value,  'yyyy-MM-dd'),
       DOB : this.datePipe.transform(this.driverform.DOB.value,  'yyyy-MM-dd'),
       LicenseNumber :this.driverform.LicenseNumber.value,
-      // Driverwar : this.datePipe.transform(this.driverform.Driverwar.value,  'yyyy-MM-dd')
+      Driverwar : this.driverform.Driverwar.value,
+      Driverclient : this.driverform.Driverclient.value,
+      physical: this.driverform.physical.value,
+      drunk: this.driverform.drunk.value,
+      previous: this.driverform.previous.value,
+      claimhistory: this.driverform.claimhistory.value,
+      lossclaim: this.driverform.lossclaim.value,
     }
     this.dialogRef.close(driverdata);
   }

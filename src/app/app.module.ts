@@ -40,6 +40,7 @@ import {InMemDataService} from './in-memory-data.service';
 import { MaterialModule} from './Material/material.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import { SearchclientdialogComponent } from './quotepage/searchclientdialog/searchclientdialog.component';
+import { DuplicatedialogComponent } from './quotepage/duplicatedialog/duplicatedialog.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { SearchclientdialogComponent } from './quotepage/searchclientdialog/sear
     InbrokerquotetableComponent,
     DrivertableComponent,
     SearchclientdialogComponent,
+    DuplicatedialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,6 +114,6 @@ import { SearchclientdialogComponent } from './quotepage/searchclientdialog/sear
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents:[DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent]
+  entryComponents:[DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent]
 })
 export class AppModule { }

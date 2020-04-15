@@ -16,7 +16,7 @@ import { Quote } from '@angular/compiler';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {SearchclientdialogComponent} from './searchclientdialog/searchclientdialog.component';
-
+import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
 import { DrivertableComponent } from './drivertable/drivertable.component';
 
 @Component({
@@ -291,7 +291,7 @@ sd(abcd):void{
       console.log("innn")
       let first = this.contactForm1.get('firstName').value;
       let last = this.contactForm1.get('lastName').value;
-      let dob = this.contactForm1.get('dab').value;
+      let dob = this.dp.transform(this.contactForm1.get('dab').value, 'yyyy-MM-dd','es-ES');
       let idtype = this.contactForm1.get('idType').value;
       let idnumber = this.contactForm1.get('idNumber').value;
       let mob = this.contactForm1.get('dob').value;
@@ -315,47 +315,43 @@ sd(abcd):void{
       let soft = this.contactForm1.get('softtop').value;
       console.log(soft)
       let ct = this.contactForm1.get('clienttype').value;
-
-      if(prod == 'Private Vehicle - ICB')
-      {
-       var edu = 'Private'
-       console.log("in private")
-      //  this.db.list('/Private_Quotes').push({EngineCC:cc,vehicleValue:vehiclevalue,product:edu,coverType:softu,vehicleType:vehicletype,fleet:fleet,promotion:promotion,manual_load:manloadp,claim_free_years:claimfre,manual_disc:manualdisc,clienttype:ct,firstname: first, lastname: last,client_dob: dob,idtype: idtype,idnumber: idnumber,mobile_no:mob,email_id:email,occupation:occp,employment:emp,pointofsale:sale,makemodelcc:make,manufacturer_year: yr,use:use,softop_convertible:soft,vehicle_financed:finance, losspayee: losspayee, losslocation: losslocation,alarm: alam,manload_reason:manloadr,manualdisc_reason: manualdiscr,quoteid});
-  // this.db.list('/Private_Quotes',ref => ref.orderByChild('clienttype').equalTo(ct)).valueChanges().subscribe(data=>{
-  //   this.resultList = data;
-  //   console.log(data)
-  //   console.log(yr)
-  //   this.resultList.filter(a => a.firstname == yr);
-  //   console.log(this.resultList);
-  // })
-  
-  }
-      else if (prod == 'Motor Goods Carrying - ICB'){
-      var edu = 'Motor'
-      // this.db.list('/Motor_Quotes').push({EngineCC:cc,vehicleValue:vehiclevalue,product:edu,coverType:softu,vehicleType:vehicletype,fleet:fleet,promotion:promotion,manual_load:manloadp,claim_free_years:claimfre,manual_disc:manualdisc,clienttype:ct,firstname: first, lastname: last,client_dob: dob,idtype: idtype,idnumber: idnumber,mobile_no:mob,email_id:email,occupation:occp,employment:emp,pointofsale:sale,makemodelcc:make,manufacturer_year: yr,use:use,softop_convertible:soft,vehicle_financed:finance, losspayee: losspayee, losslocation: losslocation,alarm: alam,manload_reason:manloadr,manualdisc_reason: manualdiscr,});
- 
-      }
-      else if (prod == 'Private Vehicle Golf Carts - ICB'){
-        var edu = 'Private'
-        // this.db.list('/Privategolf_Quotes').push({EngineCC:cc,vehicleValue:vehiclevalue,product:edu,coverType:softu,vehicleType:vehicletype,fleet:fleet,promotion:promotion,manual_load:manloadp,claim_free_years:claimfre,manual_disc:manualdisc,clienttype:ct,firstname: first, lastname: last,client_dob: dob,idtype: idtype,idnumber: idnumber,mobile_no:mob,email_id:email,occupation:occp,employment:emp,pointofsale:sale,makemodelcc:make,manufacturer_year: yr,use:use,softop_convertible:soft,vehicle_financed:finance, losspayee: losspayee, losslocation: losslocation,alarm: alam,manload_reason:manloadr,manualdisc_reason: manualdiscr,});
-         
-      }
-      if(vehicletype == 'Standard')
-      {
-        vehicletype = 'NoType'
-      }
-
-      this.tabGroup._tabs['_results'][1].disabled = false;
+      const httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      };
+     
+      return this.http.post<any>(environment.URL + '/duplicate', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,emp:emp,sale:sale,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,prod:prod},httpOptions ).subscribe((res: any) => { // not callback
+        console.log(res)
+        if(res.result == "NoQuote")
+        {
+ this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
         }
       }
+        }
+        else{
+          this.openduplicateDialog(res.result);
+        }
+    }, error => {
+      console.error("Error", error);
+    });
+     
 
     }
     else{
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
     }
+
+  }
+  openduplicateDialog(quotedata) {
+    const dialogRef = this.dialog.open(DuplicatedialogComponent,{
+      width: '450px',
+      height: '420px',
+      data:{
+        quotedata: quotedata,
+      },
+    });
   }
   // driverdata(arg0: string, driverdata: any) {
   //   throw new Error("Method not implemented.");
@@ -402,7 +398,7 @@ sd(abcd):void{
   onSubmit() {
       let first = this.contactForm1.get('firstName').value;
       let last = this.contactForm1.get('lastName').value;
-      let dob = this.contactForm1.get('dab').value;
+      let dob = this.dp.transform(this.contactForm1.get('dab').value, 'yyyy-MM-dd','es-ES');
       let idtype = this.contactForm1.get('idType').value;
       let idnumber = this.contactForm1.get('idNumber').value;
       let mob = this.contactForm1.get('dob').value;
@@ -504,10 +500,10 @@ sd(abcd):void{
      
       return this.http.post<any>(environment.URL + '/calculation', {cc:cc,vehiclevalue:vehiclevalue,prod:edu,softd:softd,vehicletype:vehicletype,fleet:fleet,promotion:promotion,manloadp:manload,claimfre:claimfre,manualdisc:manualdis,ct:ct},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
-        let tax = this.contactForm3.get('tax').setValue(res.taxamt)
-        let annualgp = this.contactForm3.get('annualgrosspremium').setValue(res.annualgpwpd)
-        let netpre = this.contactForm3.get('netprem').setValue(res.annualnet)
-        let coverinfo = this.contactForm3.get('coverageinfo').setValue(softu)
+        var tax = this.contactForm3.get('tax').setValue(res.taxamt)
+        var annualgp = this.contactForm3.get('annualgrosspremium').setValue(res.annualgpwpd)
+        var netpre = this.contactForm3.get('netprem').setValue(res.annualnet)
+        var coverinfo = this.contactForm3.get('coverageinfo').setValue(softu)
         this.ncdvalue = res.nc
  
     }, error => {
@@ -515,8 +511,54 @@ sd(abcd):void{
     });
   }
   onSave(){
+    this.onSubmit();
     console.log("drivertable values",this.child.driverdata);
-
+      let first = this.contactForm1.get('firstName').value;
+      let last = this.contactForm1.get('lastName').value;
+      let dob = this.dp.transform(this.contactForm1.get('dab').value, 'yyyy-MM-dd','es-ES');
+      let idtype = this.contactForm1.get('idType').value;
+      let idnumber = this.contactForm1.get('idNumber').value;
+      let mob = this.contactForm1.get('dob').value;
+      let email = this.contactForm1.get('dob1').value;
+      let occp = this.contactForm1.get('occupation').value;
+      let emp = this.contactForm1.get('employement').value;
+      let sale = this.contactForm1.get('pointofsale').value;
+      let prod = this.contactForm1.get('Product').value;
+      let make = this.contactForm1.get('userInput').value;
+      let yr = this.contactForm1.get('Year').value;
+      let cc = this.contactForm1.get('EngineCC').value;
+      let use = this.contactForm1.get('Use').value;
+      let vehicletype = this.contactForm1.get('vehicleType').value;
+      let soft = this.contactForm1.get('softtop').value;
+      let ct = this.contactForm1.get('clienttype').value;
+      let finance = this.contactForm2.get('financed').value;
+      let claimfre = this.contactForm2.get('claimfree').value;
+      let losspayee = this.contactForm2.get('losspay').value;
+      let losslocation = this.contactForm2.get('lossloc').value;
+      let vehiclevalue = this.contactForm2.get('vehicleValue').value;
+      let alam = this.contactForm3.get('alarm');
+      let coverinfo = this.contactForm3.get('coverageinfo').value;
+      let manload = +this.contactForm3.get('manualloadp').value;
+      let manloadr = this.contactForm3.get('manualloadr').value;
+      let manualdis = +this.contactForm3.get('manualdisc').value;
+      let manualdiscr = this.contactForm3.get('manualdiscr').value;
+      let fleet = this.contactForm3.get('fleet').value;
+      let promotion = this.contactForm3.get('promotion').value;
+      let tax = this.contactForm3.get('tax').value;
+      var annualgp = this.contactForm3.get('annualgrosspremium').value;
+      var netpre = this.contactForm3.get('netprem').value;
+      const httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      };
+      return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
+        emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+        losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
+        manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
+        driverd: this.child.driverdata},httpOptions ).subscribe((res: any) => { // not callback
+        console.log(res)
+    }, error => {
+      console.error("Error", error);
+    });
   }
 }
 
