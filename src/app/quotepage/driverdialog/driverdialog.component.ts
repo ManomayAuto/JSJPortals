@@ -12,7 +12,9 @@ export class DriverdialogComponent implements OnInit {
   public breakpoint: number;
   datePipe = new DatePipe('en-US'); 
   wasFormChanged = false;
+  Driverclient: boolean;
   constructor(private formBuilder: FormBuilder,public dialogRef :MatDialogRef<DriverdialogComponent>,) {
+
 
     this.driverForm = this.formBuilder.group({
       DriverName:  ['', Validators.required],
@@ -20,6 +22,7 @@ export class DriverdialogComponent implements OnInit {
       DOB: ['', Validators.required],
       LicenseIssueDate: ['', Validators.required],
       LicenseNumber: ['',Validators.required]
+
     });
    }
 
@@ -36,6 +39,7 @@ export class DriverdialogComponent implements OnInit {
   //   console.log("driver",this.driverform.DriverName.value);
   // }
   dig(){
+
       let driverdata = {
         DriverName :this.driverform.DriverName.value,
         LicenseIssueDate :this.datePipe.transform(this.driverform.LicenseIssueDate.value,  'yyyy-MM-dd'),
@@ -45,5 +49,6 @@ export class DriverdialogComponent implements OnInit {
       }
       console.log("drivSer",driverdata);
       this.dialogRef.close(driverdata);   
+
   }
 }

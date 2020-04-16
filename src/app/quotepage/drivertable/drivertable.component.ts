@@ -34,10 +34,7 @@ export interface driverdata {
 export class DrivertableComponent implements OnInit {
 
   dataSource: MatTableDataSource<any>;
-  driverdata: driverdata[] = [
-    {DriverName: 'Joey Felin', DOB: '02/12/1996', LicenseIssueDate: '02/15/2019', LicenseNumber: 865478822333, Actions: 'Edit'},
-    {DriverName: 'Van Helsing', DOB: '01/25/1965', LicenseIssueDate: '02/11/2017', LicenseNumber: 465471825243, Actions: 'Edit' },
-  ];
+  driverdata: driverdata[] = [];
 
   message: string = 'Snack Bar opened.';
   action :string='close';
