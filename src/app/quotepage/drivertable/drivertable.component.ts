@@ -1,7 +1,7 @@
 
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, MatSnackBar} from '@angular/material';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -39,8 +39,9 @@ export class DrivertableComponent implements OnInit {
     {DriverName: 'Van Helsing', DOB: '01/25/1965', LicenseIssueDate: '02/11/2017', LicenseNumber: 465471825243, Actions: 'Edit' },
   ];
 
-
-  constructor(public dialog: MatDialog) { }
+  message: string = 'Snack Bar opened.';
+  action :string='close';
+  constructor(public dialog: MatDialog,public snackBar: MatSnackBar) { }
 
  
 
@@ -55,7 +56,7 @@ export class DrivertableComponent implements OnInit {
 
   @Output() data = new EventEmitter<any>();
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+ // @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
@@ -74,10 +75,18 @@ export class DrivertableComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
 
       console.log("test2",result);
-
+      if(result){
       this.driverdata.push(result);
+      if(this.driverdata.length<=5){
       this.dataSource = new MatTableDataSource(this.driverdata); 
-      console.log("test3",this.driverdata);
+      console.log("test3l",this.driverdata.length );
+      console.log("test3",this.driverdata );
+      }
+    else{
+      this.snackBar.open(this.message,this.action, {
+        duration: 1000,
+      });
+    }}
     })
    
     // this.data.emit(this.driverdata);

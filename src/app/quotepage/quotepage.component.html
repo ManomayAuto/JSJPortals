@@ -59,14 +59,14 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input matInput type="text" placeholder="Mobile Number" formControlName="dob" required>
+        <input matInput type="text" placeholder="Mobile Number" formControlName="dob" >
       </mat-form-field>
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input matInput type="text" placeholder="Email Id" formControlName="dob1" required>
+        <input matInput type="text" placeholder="Email Id" formControlName="dob1" >
       </mat-form-field>
     </div>
   </mat-grid-tile>
@@ -143,7 +143,7 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <mat-select placeholder="Vehicle Type" name="exam_title" [(ngModel)]="exam_title" formControlName="vehicleType" required>
+        <mat-select placeholder="Vehicle Type" name="exam_title" formControlName="vehicleType" required>
           <mat-option *ngFor="let degreeTitle of degreeTitleList" [value]="degreeTitle">{{ degreeTitle }}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -403,7 +403,7 @@
 
      
    
-        <!-- <button mat-raised-button color="primary" style="margin-left:5px" (click)='moveToSelectedTab2("Additional Details")' >Next</button> -->
+        <button mat-raised-button color="primary" style="margin-left:5px" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
         </div>
 </form>
 </mat-tab>

@@ -59,6 +59,12 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>Town</mat-header-cell>
         <mat-cell data-label="town" *matCellDef="let element">{{element.town}}</mat-cell>
       </ng-container>
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+        <mat-cell data-label="Actions" *matCellDef="let element">
+          <button mat-button  (click)="onSelect(element)" style="color:rgb(19, 152, 204)">Select</button>
+        </mat-cell>
+      </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;">
       </mat-row>

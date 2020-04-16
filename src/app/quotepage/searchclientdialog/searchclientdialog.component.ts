@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
+import { MatTableDataSource, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-searchclientdialog',
@@ -8,11 +8,13 @@ import { MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class SearchclientdialogComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['name','lname','dob','idtype','idno','mno','address','street','country','zipcode','town'];
+  displayedColumns: string[] = ['name','lname','dob','idtype','idno','mno','address','street','country','zipcode','town','action'];
   elements: any;
+  // dialogRef: any;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data,
+    public dialogRef :MatDialogRef<SearchclientdialogComponent>,
   ) { }
 
   ngOnInit() {
@@ -24,4 +26,8 @@ export class SearchclientdialogComponent implements OnInit {
     console.log("try",this.dataSource);
   }
 
+  onSelect(selectedelement: any) {
+    console.log("Selected item Id: ", selectedelement); // You get the Id of the selected item here
+    this.dialogRef.close(selectedelement);
+}
 }

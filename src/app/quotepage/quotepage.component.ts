@@ -18,6 +18,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {SearchclientdialogComponent} from './searchclientdialog/searchclientdialog.component';
 
 import { DrivertableComponent } from './drivertable/drivertable.component';
+// import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-quotepage',
@@ -59,6 +60,8 @@ matTabs = [1,2,3];
   resultList: unknown[];
   driverdata: any;
   abcd : any = [];
+  // search: any;
+  search: any = [];
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -94,7 +97,10 @@ matTabs = [1,2,3];
       console.log('Tab2 is not selected!')
     }
   }
-  constructor(public dialog: MatDialog,private dp: DatePipe,private http: HttpClient, private appService: AppService, private f1 : FormBuilder, private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,public snackBar: MatSnackBar){
+  constructor(public dialog: MatDialog,private dp: DatePipe,
+    
+    private http: HttpClient, private appService: AppService, private f1 : FormBuilder, 
+    private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
    
 
    
@@ -285,6 +291,31 @@ sd(abcd):void{
     data:{abcd:this.abcd}
   });
   console.log("sa",this.abcd);
+
+  dialogRef.afterClosed().subscribe(result => {
+
+    console.log("tbest",result);
+     this.contactForm1.get('firstName').setValue(result['name']);
+     this.contactForm1.get('lastName').setValue(result['lname']);
+     this.contactForm1.get('dab').setValue(result['dob']);
+     this.contactForm1.get('idType').setValue(result['idtype']);
+     this.contactForm1.get('idNumber').setValue(result['idno']);
+     this.contactForm1.get('dob').setValue(result['phn']);
+     this.contactForm1.get('dob1').setValue(result['email']);
+
+    // this.contactForm1 = this.f4.group({
+    //   firstName: [result['name']],
+    //   lastName:[result['lname']],
+    //   dab:[result['dob']],
+    //   idType:[result['idtype']],
+    //   idNumber:[result['idno']],
+    //   dob:[result['phn']],
+    //   dob1:[result['email']],
+
+    // })
+ 
+  })
+
 }
   moveToSelectedTab(tabName: string) {
     if(this.contactForm1.valid){

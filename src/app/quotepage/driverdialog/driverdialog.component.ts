@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { DatePipe } from '@angular/common';
 @Component({
@@ -14,12 +14,12 @@ export class DriverdialogComponent implements OnInit {
   wasFormChanged = false;
   constructor(private formBuilder: FormBuilder,public dialogRef :MatDialogRef<DriverdialogComponent>,) {
 
-    this.driverForm = new FormGroup({
-      DriverName:  new FormControl(),
-      Driverwar: new FormControl(),
-      DOB: new FormControl(),
-      LicenseIssueDate: new FormControl(),
-      LicenseNumber: new FormControl(),
+    this.driverForm = this.formBuilder.group({
+      DriverName:  ['', Validators.required],
+      Driverwar: ['', Validators.required],
+      DOB: ['', Validators.required],
+      LicenseIssueDate: ['', Validators.required],
+      LicenseNumber: ['',Validators.required]
     });
    }
 
@@ -36,13 +36,14 @@ export class DriverdialogComponent implements OnInit {
   //   console.log("driver",this.driverform.DriverName.value);
   // }
   dig(){
-    let driverdata = {
-      DriverName :this.driverform.DriverName.value,
-      LicenseIssueDate :this.datePipe.transform(this.driverform.LicenseIssueDate.value,  'yyyy-MM-dd'),
-      DOB : this.datePipe.transform(this.driverform.DOB.value,  'yyyy-MM-dd'),
-      LicenseNumber :this.driverform.LicenseNumber.value,
-      // Driverwar : this.datePipe.transform(this.driverform.Driverwar.value,  'yyyy-MM-dd')
-    }
-    this.dialogRef.close(driverdata);
+      let driverdata = {
+        DriverName :this.driverform.DriverName.value,
+        LicenseIssueDate :this.datePipe.transform(this.driverform.LicenseIssueDate.value,  'yyyy-MM-dd'),
+        DOB : this.datePipe.transform(this.driverform.DOB.value,  'yyyy-MM-dd'),
+        LicenseNumber :this.driverform.LicenseNumber.value,
+        // Driverwar : this.datePipe.transform(this.driverform.Driverwar.value,  'yyyy-MM-dd')
+      }
+      console.log("drivSer",driverdata);
+      this.dialogRef.close(driverdata);   
   }
 }
