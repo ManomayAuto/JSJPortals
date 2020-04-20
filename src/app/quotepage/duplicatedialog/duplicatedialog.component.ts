@@ -6,14 +6,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./duplicatedialog.component.css']
 })
 export class DuplicatedialogComponent implements OnInit {
-  quotedata: string = ""
+  qd: string = ""
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,public dialogRef :MatDialogRef<DuplicatedialogComponent>) { 
-    if (data) {
-      this.quotedata = data.quotedata || this.quotedata;
+if (data) {
+    this.qd = data['quotedata']['result'] || this.qd;
     }
+    console.log(data['quotedata']['result'])
+
   }
 
   ngOnInit() {
   }
-
+  dupquotedata(){
+    this.dialogRef.close(this.data);
+}
 }

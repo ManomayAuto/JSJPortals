@@ -18,6 +18,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {SearchclientdialogComponent} from './searchclientdialog/searchclientdialog.component';
 import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
 import { DrivertableComponent } from './drivertable/drivertable.component';
+import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component';
 // import { runInThisContext } from 'vm';
 
 @Component({
@@ -362,7 +363,7 @@ sd(abcd):void{
       }
         }
         else{
-          this.openduplicateDialog(res.result);
+          this.openduplicateDialog(res);
         }
     }, error => {
       console.error("Error", error);
@@ -378,11 +379,15 @@ sd(abcd):void{
   openduplicateDialog(quotedata) {
     const dialogRef = this.dialog.open(DuplicatedialogComponent,{
       width: '450px',
-      height: '420px',
+      height: '200px',
       data:{
         quotedata: quotedata,
       },
     });
+    dialogRef.afterClosed().subscribe(result => {
+
+   console.log("after closed ", result)
+    })
   }
   // driverdata(arg0: string, driverdata: any) {
   //   throw new Error("Method not implemented.");
@@ -459,7 +464,7 @@ sd(abcd):void{
       if(!vehiclevalue){
         vehiclevalue = 0
       }
-      let alam = this.contactForm3.get('alarm');
+      let alam = this.contactForm2.get('alarm').value;
       let coverinfo = this.contactForm3.get('coverageinfo').value;
       let manload = +this.contactForm3.get('manualloadp').value;
       if(manload == null || manload == undefined){
@@ -567,7 +572,7 @@ sd(abcd):void{
       let losspayee = this.contactForm2.get('losspay').value;
       let losslocation = this.contactForm2.get('lossloc').value;
       let vehiclevalue = this.contactForm2.get('vehicleValue').value;
-      let alam = this.contactForm3.get('alarm');
+      let alam = this.contactForm2.get('alarm').value;
       let coverinfo = this.contactForm3.get('coverageinfo').value;
       let manload = +this.contactForm3.get('manualloadp').value;
       let manloadr = this.contactForm3.get('manualloadr').value;
@@ -585,11 +590,27 @@ sd(abcd):void{
         emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
         losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
         manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-        driverd: this.child.driverdata},httpOptions ).subscribe((res: any) => { // not callback
-        console.log(res)
+        driverd: this.child.driverdata,autod: this.ncdvalue},httpOptions ).subscribe((res: any) => { // not callback
+        console.log(res.result);
+        let qd = res.result;
+        console.log("in on save");
+        this.openquoteDialog(qd);
     }, error => {
       console.error("Error", error);
     });
+  }
+  openquoteDialog(quoteid) {
+    const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
+      width: '450px',
+      height: '250px',
+      data:{
+        quoteid: quoteid,
+      },
+    });
+    dialogRef1.afterClosed().subscribe(() => {
+
+      window.location.reload();
+       })
   }
 }
 

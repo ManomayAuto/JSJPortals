@@ -302,7 +302,7 @@
     </mat-grid-tile>
     <mat-grid-tile style="right: unset !important" *ngIf="(hide)">
       <div class="text-inside"  *ngIf="(hide)">
-        Does Your vehicle have immobilizer alarm/club installed?   <mat-checkbox class="example-margin" formControlName="alarm"></mat-checkbox>
+        Does Your vehicle have immobilizer alarm/club installed?   <mat-checkbox class="example-margin" [checked]="false" formControlName="alarm"></mat-checkbox>
       </div>
     </mat-grid-tile>
    

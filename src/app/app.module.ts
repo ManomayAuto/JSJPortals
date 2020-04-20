@@ -41,6 +41,7 @@ import { MaterialModule} from './Material/material.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import { SearchclientdialogComponent } from './quotepage/searchclientdialog/searchclientdialog.component';
 import { DuplicatedialogComponent } from './quotepage/duplicatedialog/duplicatedialog.component';
+import { NewquotedialogComponent } from './quotepage/newquotedialog/newquotedialog.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { DuplicatedialogComponent } from './quotepage/duplicatedialog/duplicated
     DrivertableComponent,
     SearchclientdialogComponent,
     DuplicatedialogComponent,
+    NewquotedialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,6 +116,6 @@ import { DuplicatedialogComponent } from './quotepage/duplicatedialog/duplicated
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents:[DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent]
+  entryComponents:[NewquotedialogComponent,DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent]
 })
 export class AppModule { }

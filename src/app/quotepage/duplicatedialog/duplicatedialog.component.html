@@ -1,3 +1,7 @@
-<mat-dialog-content>
-    {{quotedata}}
-</mat-dialog-content>
+<h1 mat-dialog-title>Duplicate Quote found</h1>
+<div mat-dialog-content>
+    Quote for the same risk already exists with reference <a (click)="dupquotedata()" style="color:rgb(19, 152, 204);cursor: pointer;">{{qd}}</a>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>
