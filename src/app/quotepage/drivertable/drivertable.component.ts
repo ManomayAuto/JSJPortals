@@ -1,12 +1,12 @@
 
-import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output, Input } from '@angular/core';
 
 import {MatPaginator, MatSort, MatTableDataSource, MatSnackBar} from '@angular/material';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { DriverdialogComponent } from '../driverdialog/driverdialog.component';
-
+import {driverservice} from '../quotepage.component';
 export interface driverdata {
 
   DriverName: string,
@@ -32,23 +32,30 @@ export interface driverdata {
 })
 
 export class DrivertableComponent implements OnInit {
-
+  @Input() childMessage:any;
   dataSource: MatTableDataSource<any>;
   driverdata: driverdata[] = [];
 
   message: string = 'Snack Bar opened.';
   action :string='close';
-  constructor(public dialog: MatDialog,public snackBar: MatSnackBar) { }
+  constructor(private driverservice: driverservice,public dialog: MatDialog,public snackBar: MatSnackBar) { }
 
  
 
   ngOnInit() {
-
     this.dataSource = new MatTableDataSource(this.driverdata); 
-    // console.log("test3",driverdata  );
-
+    console.log(this.dataSource);
   }
+  ngAfterViewInit() {
+    this.driverservice.$data.subscribe((data)=>{
+      this.driverdata = data
+      console.log("in driver table now ng after view");
+      console.log(this.driverdata);
 
+      this.dataSource = new MatTableDataSource(this.driverdata.filter(value => Object.keys(value).length !== 0));
+          });
+          
+  }
   displayedColumns = ['DriverName', 'DOB', 'LicenseIssueDate', 'LicenseNumber', 'Actions'];
 
   @Output() data = new EventEmitter<any>();

@@ -101,7 +101,7 @@
   <mat-grid-tile>
     <div class="text-inside" style="height:50px">
       <a mat-raised-button color="primary" style="color:white" (click)="existing()">Search For Existing Client</a>
-     Existing client? <mat-checkbox class="example-margin" formControlName="clienttype" [checked]="false"></mat-checkbox>
+     Existing client? <mat-checkbox class="example-margin" formControlName="clienttype" [(ngModel)] = "disabled" [checked]="false"></mat-checkbox>
       <!-- <button mat-stroked-button style="margin-top:-40px"></button> -->
     </div>
   </mat-grid-tile>
@@ -125,19 +125,27 @@
 
   <mat-grid-tile style="right: unset !important">
     <div class="text-inside">
-      <mat-form-field class="example-full-width">
+      <!-- <mat-form-field class="example-full-width">
         <input matInput  placeholder="Make-Model-CC" [matAutocomplete]="auto" formControlName="userInput" required>
       </mat-form-field>
 
    
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
         <ng-container *ngIf="!isLoading">
-          <mat-option *ngFor="let user of filteredUsers" [value]="user">
-            <span>{{ user.name }}</span>
+          <mat-option *ngFor="let option of filteredOption | async" [value]="option">
+            <span>{{ option.MakeModelCC }}</span>
           </mat-option>
         </ng-container>
-      </mat-autocomplete>
+      </mat-autocomplete> -->
+      <mat-form-field class="example-full-width">
+        <input type="text" matInput placeholder="Make-Model-CC" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOption | async" [value]="option" style="line-height:normal;white-space: normal;">
+            {{option.MakeModelCC}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
@@ -307,7 +315,7 @@
     </mat-grid-tile>
    
   </mat-grid-list>
- 
+  
 <app-drivertable></app-drivertable>
   <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
     <button mat-raised-button color="primary" style="margin-left:50px" type="submit">Next</button>

@@ -1,12 +1,9 @@
-import { Component, OnInit,AfterViewInit, ViewChild, ViewChildren, QueryList} from '@angular/core';
+import { Component, Injectable,OnInit,AfterViewInit, ViewChild, ViewChildren, EventEmitter ,QueryList} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 
-import {User, IUserResponse} from '../user.class';
 import {switchMap, debounceTime, tap, finalize, isEmpty} from 'rxjs/operators';
-import {Observable} from 'rxjs'
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, startWith} from 'rxjs/operators';
-import {AppService} from '../app.service';
 import { environment } from '../../environments/environment';
 import { RequestOptions } from '@angular/http';
 import { MatTabGroup } from '@angular/material/tabs';
@@ -19,8 +16,38 @@ import {SearchclientdialogComponent} from './searchclientdialog/searchclientdial
 import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
 import { DrivertableComponent } from './drivertable/drivertable.component';
 import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component';
-// import { runInThisContext } from 'vm';
+import { Observable, of, Subscription } from 'rxjs';
 
+// import { runInThisContext } from 'vm';
+@Injectable({
+  providedIn: 'root'
+})
+export class Service {
+  constructor(private http: HttpClient) { }
+
+  opts = [];
+
+  getData() {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.opts.length ?
+      of(this.opts) :
+      this.http.get<any>('http://192.168.2.147:5001/vehicle',httpOptions).pipe(tap(data => this.opts = data))
+  }
+}
+export class driverservice {
+  $data = new EventEmitter();
+  driverdata: any;
+  constructor() { }
+
+  driver(driverdata) {
+    console.log("in driver service");
+    console.log(driverdata);
+    console.log(typeof(driverdata));
+    this.$data.emit(driverdata);
+  }
+}
 @Component({
   selector: 'app-quotepage',
   templateUrl: './quotepage.component.html',
@@ -28,27 +55,30 @@ import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component
   providers: [DatePipe]
 })
 export class QuotepageComponent implements OnInit {
-  education_level;
-  exam_title;
-  degreeTitleList = [];
   ncdvalue = '';
   selectDisabled = false;
+  isReadonly = true;
+  option = [];
   options: string[] = ["2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
+filteredOption: Observable<any[]>;
 matTabs = [1,2,3];
 @ViewChild('tabGroup',{static:false}) tabGroup: MatTabGroup;
 @ViewChild(DrivertableComponent,{static:false}) child : DrivertableComponent ;
+education_level;
+exam_title;
+degreeTitleList = [];
   educationList: any = [
     {
       'educationLevelName': 'Private Vehicle - ICB',
       degreeTitleList: [
-        'Standard', 'Electric',
+        'Standard', 'Electric'
       ]
     },
     {
       'educationLevelName': 'Private Vehicle Golf Carts - ICB',
       degreeTitleList: [
-        'Golf',
+        'Golf'
       ]
     },
     {
@@ -58,7 +88,6 @@ matTabs = [1,2,3];
       ]
     }
   ];
-  resultList: unknown[];
   driverdata: any;
   abcd : any = [];
   // search: any;
@@ -77,7 +106,6 @@ matTabs = [1,2,3];
     }
 
   }
-  filteredUsers: User[] = [];
   isLoading = false;
   public breakpoint: number;
   wasFormChanged = false;
@@ -98,9 +126,9 @@ matTabs = [1,2,3];
       console.log('Tab2 is not selected!')
     }
   }
-  constructor(public dialog: MatDialog,private dp: DatePipe,
+  constructor(private driverservice: driverservice,private service: Service,public dialog: MatDialog,private dp: DatePipe,
     
-    private http: HttpClient, private appService: AppService, private f1 : FormBuilder, 
+    private http: HttpClient, private f1 : FormBuilder, 
     private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
    
 
@@ -128,7 +156,7 @@ matTabs = [1,2,3];
       occupation: [''],
       employement:[''],
       Product: ['',Validators.required],
-      userInput: [null,Validators.required],
+      userInput: ['',Validators.required],
     });
       this.contactForm2 = this.f2.group({
        
@@ -169,20 +197,11 @@ matTabs = [1,2,3];
       deductibles:  [''],
       EngineNumber:  ['',Validators.required],
     });
-     this.contactForm1
-     .get('userInput')
-     .valueChanges
-     .pipe(
-       debounceTime(300),
-       tap(() => this.isLoading = true),
-       switchMap(value => this.appService.search({name: value}, 1)
-       .pipe(
-         finalize(() => this.isLoading = false),
-         )
-       )
-     )
-     .subscribe(users => this.filteredUsers = users.results);
-
+    this.filteredOption = this.contactForm1
+.get('userInput').valueChanges.pipe(
+      startWith(''),
+      switchMap(value => this.doFilter(value))
+    );
      this.filteredOptions = this.contactForm1
      .get('Year').valueChanges
      .pipe(
@@ -211,13 +230,22 @@ matTabs = [1,2,3];
   
   )
   }
+  doFilter(value) {
+    return this.service.getData()
+      .pipe(
+        map(response => response.filter(option => {
+          return option.MakeModelCC.toLowerCase().indexOf(value.toLowerCase()) === 0
+        }))
+      )
+  }
+  
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
-  displayFn(user: User) {
-    if (user) { return user.name; }
+  displayFn(value) {
+    if (value) { return value.MakeModelCC; }
   }
   toggle() {
     this.hide = this.show
@@ -303,7 +331,9 @@ sd(abcd):void{
      this.contactForm1.get('idNumber').setValue(result['idno']);
      this.contactForm1.get('dob').setValue(result['phn']);
      this.contactForm1.get('dob1').setValue(result['email']);
-
+     this.contactForm1.get('clienttype').setValue(true);
+     this.contactForm1.get('clienttype').disable();
+     
     // this.contactForm1 = this.f4.group({
     //   firstName: [result['name']],
     //   lastName:[result['lname']],
@@ -386,9 +416,77 @@ sd(abcd):void{
     });
     dialogRef.afterClosed().subscribe(result => {
 
-   console.log("after closed ", result)
+   console.log("after closed ", result);
+
+   this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
+  //  this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
+  //  this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
+  //  this.contactForm1.get('dab').setValue(result['quotedata']['dob']);
+   this.contactForm1.get('idType').setValue(result['quotedata']['idtype']);
+   this.contactForm1.get('idNumber').setValue(result['quotedata']['idno']);
+   this.contactForm1.get('dob').setValue(result['quotedata']['mob']);
+   this.contactForm1.get('occupation').setValue(result['quotedata']['ocp']);
+   this.contactForm1.get('employement').setValue(result['quotedata']['emplace']);
+   this.contactForm1.get('pointofsale').setValue(result['quotedata']['sale']);
+  //  this.contactForm1.get('Product').setValue(result['quotedata']['prod']);
+   this.contactForm1.get('Year').setValue(result['quotedata']['yr']);
+   this.contactForm1.get('EngineCC').setValue(result['quotedata']['cc']);
+   this.contactForm1.get('Use').setValue(result['quotedata']['use']);
+  //  this.contactForm1.get('vehicleType').setValue(result['quotedata']['vehtype']);
+   this.contactForm1.get('softtop').setValue(result['quotedata']['softop']);
+   this.contactForm1.get('clienttype').setValue(result['quotedata']['ct']);
+   this.contactForm2.get('financed').setValue(result['quotedata']['financed']);
+   this.contactForm2.get('claimfree').setValue(result['quotedata']['claimfre']);
+   let typeofcover = result['quotedata']['covertype'];
+   if(typeofcover == "Third Party"){
+    typeofcover = "TP"
+   }
+   else if(typeofcover == "Comprehensive")
+   {
+    typeofcover = "COMP"
+    this.toggle1();
+   }
+   else if(typeofcover == "Third Party Fire and Theft")
+   {
+     typeofcover = "TPFT"
+     this.toggle1();
+   }
+   this.contactForm2.get('options1').setValue(typeofcover);
+   this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+   this.contactForm2.get('lossloc').setValue(result['quotedata']['lploc']);
+   this.contactForm2.get('vehicleValue').setValue(result['quotedata']['vehvalue']);
+   this.contactForm2.get('alarm').setValue(result['quotedata']['alam']);
+   this.contactForm3.get('coverageinfo').setValue(result['quotedata']['covertype']);
+   +this.contactForm3.get('manualloadp').setValue(result['quotedata']['manloadp']);
+   this.contactForm3.get('manualloadr').setValue(result['quotedata']['manloadr']);
+   +this.contactForm3.get('manualdisc').setValue(result['quotedata']['mandisp']);
+   this.contactForm3.get('manualdiscr').setValue(result['quotedata']['mandisr']);
+   this.contactForm3.get('fleet').setValue(result['quotedata']['flet']);
+   this.contactForm3.get('promotion').setValue(result['quotedata']['prom']);
+   this.contactForm3.get('tax').setValue(result['quotedata']['tax']);
+   this.contactForm3.get('annualgrosspremium').setValue(result['quotedata']['agp']);
+   this.contactForm3.get('netprem').setValue(result['quotedata']['anp']);
+   this.ncdvalue = result['quotedata']['autod'];
+   this.driverdata = result['quotedata']['driverdata'];
+   this.driverservice.driver(this.driverdata);
+   console.log(this.driverdata);
+   this.contactForm1.disable();
+   this.contactForm2.disable();
+   this.contactForm3.disable();
+   this.contactForm1.markAllAsTouched;
+   this.contactForm2.markAllAsTouched;
+   this.contactForm3.markAllAsTouched;
+   let tabName = "Premium Summary"
+   this.tabGroup._tabs['_results'][1].disabled = false;
+   this.tabGroup._tabs['_results'][2].disabled = false;
+      for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
+          (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
+        }
+      }
     })
   }
+ 
   // driverdata(arg0: string, driverdata: any) {
   //   throw new Error("Method not implemented.");
   // }
