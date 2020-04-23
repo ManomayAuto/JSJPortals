@@ -36,13 +36,14 @@ import { ApprovedtableComponent } from './home/approvedtable/approvedtable.compo
 import { InbrokerquotetableComponent } from './home/inbrokerquotetable/inbrokerquotetable.component';
 import { DrivertableComponent, DialogOverviewExampleDialog } from './quotepage/drivertable/drivertable.component';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
-import {InMemDataService} from './in-memory-data.service';
+// import {InMemDataService} from './in-memory-data.service';
 import { MaterialModule} from './Material/material.module';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import { SearchclientdialogComponent } from './quotepage/searchclientdialog/searchclientdialog.component';
 import { DuplicatedialogComponent } from './quotepage/duplicatedialog/duplicatedialog.component';
 import { NewquotedialogComponent } from './quotepage/newquotedialog/newquotedialog.component';
-
+import {driverservice} from './quotepage/quotepage.component';
+import { from } from 'rxjs';
 @NgModule({
   declarations: [
     AppComponent,
@@ -108,11 +109,12 @@ import { NewquotedialogComponent } from './quotepage/newquotedialog/newquotedial
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemDataService, { dataEncapsulation: false, passThruUnknownUrl: true,delay: 1000 }),
+    // HttpClientInMemoryWebApiModule.forRoot(
+    //   InMemDataService, { dataEncapsulation: false, passThruUnknownUrl: true,delay: 1000 }
+    //   ),
   ],
   providers: [UserService,RedService, NonService,DatePipe, AuthenticationService,
-    SecureLocalStorageService,
+    SecureLocalStorageService,driverservice,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

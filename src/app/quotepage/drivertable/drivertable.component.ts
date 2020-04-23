@@ -1,5 +1,6 @@
 
-import { Component, OnInit, ViewChild, EventEmitter, Output, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output, Inject, Input } from '@angular/core';
+
 
 import {MatPaginator, MatSort, MatTableDataSource, MatSnackBar} from '@angular/material';
 
@@ -7,6 +8,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { DriverdialogComponent } from '../driverdialog/driverdialog.component';
 import { anl } from 'src/app/models/user.model';
+import {driverservice} from '../quotepage.component';
 
 export interface driverdata {
 
@@ -33,24 +35,31 @@ export interface driverdata {
 })
 
 export class DrivertableComponent implements OnInit {
-
+  @Input() childMessage:any;
   dataSource: MatTableDataSource<any>;
   driverdata: driverdata[] = [];
 
   message: string = 'More than 5 drivers cant be added';
   action :string='close';
   user: any;
-  constructor(public dialog: MatDialog,public snackBar: MatSnackBar) { }
+  constructor(private driverservice: driverservice,public dialog: MatDialog,public snackBar: MatSnackBar) { }
 
  
 
   ngOnInit() {
-
     this.dataSource = new MatTableDataSource(this.driverdata); 
-    // console.log("test3",driverdata  );
-
+    console.log(this.dataSource);
   }
+  ngAfterViewInit() {
+    this.driverservice.$data.subscribe((data)=>{
+      this.driverdata = data
+      console.log("in driver table now ng after view");
+      console.log(this.driverdata);
 
+      this.dataSource = new MatTableDataSource(this.driverdata.filter(value => Object.keys(value).length !== 0));
+          });
+          
+  }
   displayedColumns = ['DriverName', 'DOB', 'LicenseIssueDate', 'LicenseNumber', 'Actions'];
 
   @Output() data = new EventEmitter<any>();
@@ -101,21 +110,7 @@ export class DrivertableComponent implements OnInit {
   }
 }
 
-// openDialogs(DriverName,DOB,LicenseIssueDate,LicenseNumber,Driverclient,Driverwar,physical,drunk,previous,claimhistory,lossclaim):void {
-//   const DialogRef = this.dialog.open(DriverdialogComponent,{
-//     width: '75%',
-//     height:'590px',
 
-//     data:{DriverName:DriverName,DOB:DOB,LicenseIssueDate:LicenseIssueDate,LicenseNumber:LicenseNumber,Driverclient:Driverclient,
-//       Driverwar:Driverwar,physical:physical,drunk:drunk,previous:previous,claimhistory:claimhistory,lossclaim:lossclaim}
-//   //  data:{ClientName:ClientName,policy:PolicyNum,comment:correspondence,Followups:Followups,PhnNum:PhnNum,EmailId:EmailId}
-
-//   });
-//   DialogRef.afterClosed().subscribe(result => {
-//     console.log('The dialog was closed');
-//     this.ngOnInit();
-//   });
-// }
 removeAt(index: number) {
   const data = this.dataSource.data;
   data.splice( index, 1);
@@ -125,8 +120,8 @@ removeAt(index: number) {
 }
 editUser(user) {
   const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-    width: '475px',
-    height: '500px',
+    width: '1350px',
+    height: '600px',
     data: user
   });
 
@@ -143,7 +138,7 @@ editUser(user) {
   templateUrl: 'dialog.html',
 })
 export class DialogOverviewExampleDialog {
-
+  public breakpoint: number;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: anl) {}
@@ -151,5 +146,10 @@ export class DialogOverviewExampleDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
+  ngOnInit() {
+    this.breakpoint = window.innerWidth <= 790 ? 1 : 2; //
+  }
+  public onResize(event: any): void {
+    this.breakpoint = event.target.innerWidth <= 590 ? 1 : 2
+  }
 }
