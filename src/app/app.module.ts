@@ -34,7 +34,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { DriverdialogComponent } from './quotepage/driverdialog/driverdialog.component';
 import { ApprovedtableComponent } from './home/approvedtable/approvedtable.component';
 import { InbrokerquotetableComponent } from './home/inbrokerquotetable/inbrokerquotetable.component';
-import { DrivertableComponent } from './quotepage/drivertable/drivertable.component';
+import { DrivertableComponent, DialogOverviewExampleDialog } from './quotepage/drivertable/drivertable.component';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {InMemDataService} from './in-memory-data.service';
 import { MaterialModule} from './Material/material.module';
@@ -67,6 +67,7 @@ import { NewquotedialogComponent } from './quotepage/newquotedialog/newquotedial
     SearchclientdialogComponent,
     DuplicatedialogComponent,
     NewquotedialogComponent,
+    DialogOverviewExampleDialog
   ],
   imports: [
     BrowserModule,
@@ -116,6 +117,6 @@ import { NewquotedialogComponent } from './quotepage/newquotedialog/newquotedial
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents:[NewquotedialogComponent,DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent]
+  entryComponents:[NewquotedialogComponent,DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent,DialogOverviewExampleDialog]
 })
 export class AppModule { }

@@ -33,6 +33,8 @@ export class QuotepageComponent implements OnInit {
   degreeTitleList = [];
   ncdvalue = '';
   selectDisabled = false;
+ // exissting = false;
+ 
   options: string[] = ["2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 matTabs = [1,2,3];
@@ -303,7 +305,8 @@ sd(abcd):void{
      this.contactForm1.get('idNumber').setValue(result['idno']);
      this.contactForm1.get('dob').setValue(result['phn']);
      this.contactForm1.get('dob1').setValue(result['email']);
-
+     const childmessage = false;
+     this.contactForm1.get('clienttype').setValue(true);
     // this.contactForm1 = this.f4.group({
     //   firstName: [result['name']],
     //   lastName:[result['lname']],
@@ -371,9 +374,9 @@ sd(abcd):void{
      
 
     }
-    else{
-      this.openSnackBar("Please fill the mandatory fields", "Dismiss")
-    }
+    // else{
+    //   this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+    // }
 
   }
   openduplicateDialog(quotedata) {

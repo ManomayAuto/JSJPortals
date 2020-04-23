@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../environments/environment';
+
 
 @Component({
   selector: 'app-dialog-content-example',
@@ -18,7 +19,7 @@ export class DialogContentExampleComponent implements OnInit {
   ClientForm : FormGroup;
   ReductionForm = new FormGroup({
   Check:new FormControl(),
-  Transitionid: new FormControl(),
+  Transitionid: new FormControl()
  })
 
   FormService: any;                               
@@ -29,7 +30,7 @@ export class DialogContentExampleComponent implements OnInit {
   Uname: string;
   Unames: string;
   
-  
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -45,8 +46,9 @@ export class DialogContentExampleComponent implements OnInit {
       PhnNum: new FormControl(this.data.PhnNum),
       comment: new FormControl(this.data.comment),
       mode: new FormControl(),
-      note: new FormControl(), 
+      note: new FormControl('',Validators.pattern(".*\\S.*[a-zA-z0-9 ]")), 
       picker: new FormControl(),
+     
    });
 
   }
@@ -56,7 +58,8 @@ export class DialogContentExampleComponent implements OnInit {
   ngOnInit() {
     this.ReductionForm = this.formBuilder.group({
       Transitionid: ['', [Validators.required]],
-      Check:['', [Validators.required]]
+      Check:['', [Validators.required]],
+      // note:['', [Validators.required,Validators.startswith(" ")]]
     });
   
   }

@@ -3,6 +3,7 @@ import {  FormBuilder, FormGroup, Validators, FormControl  } from '@angular/form
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,7 @@ export class LoginComponent implements OnInit {
 
   public onSubmit() {
   this.as.login(this.l.email.value, this.l.password.value);
-  
+   //this.loginForm.reset({email: '', password: ''}),delay(1000000);
     }
 
     // get getName(){

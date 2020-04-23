@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-driverdialog',
@@ -13,7 +13,10 @@ export class DriverdialogComponent implements OnInit {
   datePipe = new DatePipe('en-US'); 
   wasFormChanged = false;
   Driverclient: boolean;
-  constructor(private formBuilder: FormBuilder,public dialogRef :MatDialogRef<DriverdialogComponent>,) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data,
+    private formBuilder: FormBuilder,
+    public dialogRef :MatDialogRef<DriverdialogComponent>,) {
 
     this.driverForm = new FormGroup({
       DriverName:  new FormControl(),
@@ -32,6 +35,7 @@ export class DriverdialogComponent implements OnInit {
 
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 2; //
+    console.log("popup ",this.data.DriverName);
   }
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 2

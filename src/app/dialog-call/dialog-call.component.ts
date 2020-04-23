@@ -51,7 +51,8 @@ export class DialogCallComponent implements OnInit {
   ngOnInit() {
     this.ReductionForm = this.formBuilder.group({
       Transitionid: ['', [Validators.required]],
-      Check:['', [Validators.required]]
+      Check:['', [Validators.required]],
+      note:['',[Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9_-]")]]
     });
   }
 

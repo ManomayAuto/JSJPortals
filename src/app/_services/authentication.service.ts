@@ -5,6 +5,8 @@ import { Observable, BehaviorSubject } from "rxjs";
 import { Router } from '@angular/router';
 import { SecureLocalStorageService } from './secure-local-storage.service';
 import { environment } from '../../environments/environment';
+import { DialogContentExampleComponent } from '../dialog-content-example/dialog-content-example.component';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class AuthenticationService{
@@ -12,8 +14,11 @@ export class AuthenticationService{
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
   localStorage: any;
-    
-  constructor(private http:HttpClient, private router : Router,private securestore: SecureLocalStorageService,) { 
+  Naame: any;
+  action :string='close';  
+  constructor(private http:HttpClient, private router : Router,private securestore: SecureLocalStorageService,
+    private modal: MatDialog,
+    private snackBar: MatSnackBar) { 
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(this.securestore.getitem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -24,25 +29,37 @@ export class AuthenticationService{
      {"email":email,"password":password}) 
    .subscribe(
       (data:any) => {
-        console.log("direct en",data); 
-        console.log("data",data); 
-        this.Name = data.Name;
        
-        // console.log("cccc",data.permissions.includes('DR') && data.permissions.includes('DF'))// console.log("cDR",data.permissions.includes('DR')) // console.log("ccDF",data.permissions.includes('DF'))
+        console.log("asd",data); 
+        console.log("data",data); 
+        this.Naame=data
+        this.Name = data.Name;
+        console.log("datas",this.Naame); 
+        
         if (data.permissions.includes('DR') || data.permissions.includes('DF') ||
          data.permissions.includes('ARRP')) { 
           console.log("DRDF"+ this.Name);
           this.router.navigate(['/menu']);
         }
-        
+
         
         
         // console.log(JSON.parse(this.securestore.getitem('currentUser');
         this.securestore.setitem('currentUser',JSON.stringify(data.Token));
         localStorage.setItem("name", data.Name);
         localStorage.setItem("permission", data.permissions);
-      }, error =>{
+      
+      // if(data.status != 200){
+      //   console.log("diret en",data); 
+      // }
+      }, 
+      error =>{
+        
         console.log("Back",error);
+        this.snackBar.open(error,this.action,{
+          duration: 1000,
+        });
+        
       }
       
     );
@@ -62,7 +79,9 @@ export class AuthenticationService{
     localStorage.removeItem('NonAEcall');
     localStorage.removeItem('NonAEred');
     localStorage.removeItem('AE');
+    localStorage.removeItem('name');
     this.router.navigate(['login']);
+    
 }
   public get getCurrentUser(){
       return this.Name;

@@ -42,14 +42,19 @@
                      
                   <ng-container matColumnDef="Actions">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
-                    <mat-cell data-label="Actions" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">edit</button><button mat-button style="color:rgb(19, 152, 204)">Delete</button></mat-cell>
+                    <mat-cell data-label="Actions" *matCellDef="let element">
+                      <button mat-button (click)="editUser(element)" style="color:rgb(19, 152, 204)">edit</button>
+                      <button mat-button (click)="removeAt(i)" style="color:rgb(19, 152, 204)">Delete</button>
+                    </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns;">
                   </mat-row>
                 </mat-table>
               
-               
+                <!-- "openDialog(element.DriverName,element.DOB,element.LicenseIssueDate,element.LicenseNumber,
+                element.Driverclient,element.Driverwar,element.physical,element.drunk,element.previous,element.claimhistory,
+                element.lossclaim)"  -->
               </div>
     
             </div>
