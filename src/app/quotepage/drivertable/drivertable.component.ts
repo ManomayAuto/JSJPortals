@@ -69,8 +69,7 @@ export class DrivertableComponent implements OnInit {
       width: '1350px',
 
       height: '600px',
-    data:{DriverName:DriverName,DOB:DOB,LicenseIssueDate:LicenseIssueDate,LicenseNumber:LicenseNumber,Driverclient:Driverclient,
-      Driverwar:Driverwar,physical:physical,drunk:drunk,previous:previous,claimhistory:claimhistory,lossclaim:lossclaim}
+    //data:{}
     });
 
   
