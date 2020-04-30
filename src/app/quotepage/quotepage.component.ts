@@ -17,7 +17,8 @@ import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.compon
 import { DrivertableComponent } from './drivertable/drivertable.component';
 import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component';
 import { Observable, of, Subscription } from 'rxjs';
-
+import {Router} from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
 // import { runInThisContext } from 'vm';
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class Service {
     };
     return this.opts.length ?
       of(this.opts) :
-      this.http.get<any>('http://192.168.2.147:5001/vehicle',httpOptions).pipe(tap(data => this.opts = data))
+      this.http.get<any>(environment.URL + '/vehicle',httpOptions).pipe(tap(data => this.opts = data))
   }
 }
 export class driverservice {
@@ -59,8 +60,9 @@ export class QuotepageComponent implements OnInit {
   selectDisabled = false;
   isReadonly = true;
   option = [];
-
-  options: string[] = ["2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
+  username: string;
+  userrole: string;  
+  options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 filteredOption: Observable<any[]>;
 matTabs = [1,2,3];
@@ -127,7 +129,7 @@ degreeTitleList = [];
       console.log('Tab2 is not selected!')
     }
   }
-  constructor(private driverservice: driverservice,private service: Service,public dialog: MatDialog,private dp: DatePipe,
+  constructor(private  authenticationService : AuthenticationService,private driverservice: driverservice,private service: Service,private router: Router,public dialog: MatDialog,private dp: DatePipe,
     
     private http: HttpClient, private f1 : FormBuilder, 
     private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
@@ -159,6 +161,7 @@ degreeTitleList = [];
       Product: ['',Validators.required],
       userInput: ['',Validators.required],
     });
+    this.contactForm1.get('clienttype').disable();
       this.contactForm2 = this.f2.group({
        
     vehicleValue : [''],
@@ -181,6 +184,8 @@ degreeTitleList = [];
     promotion: [false],
     tax: [''],
     netprem: [''],
+    netpremusd: [''],
+    remarks: [''],
      });
 
      this.contactForm4 = this.f4.group({
@@ -333,7 +338,7 @@ sd(abcd):void{
      this.contactForm1.get('dob').setValue(result['phn']);
      this.contactForm1.get('dob1').setValue(result['email']);
      this.contactForm1.get('clienttype').setValue(true);
-     this.contactForm1.get('clienttype').disable();
+     
 
     // this.contactForm1 = this.f4.group({
     //   firstName: [result['name']],
@@ -619,7 +624,11 @@ sd(abcd):void{
       {
         vehicletype = 'NoType'
       }
+      if(ct == null || ct == undefined){
+        ct = false
+      }
       console.log("CC"+ cc)
+      console.log("client type"+ ct)
       console.log("vehiclevalue"+ vehiclevalue)
       console.log("covertype"+ prod)
       console.log("Cover" + softd)
@@ -639,6 +648,7 @@ sd(abcd):void{
         var annualgp = this.contactForm3.get('annualgrosspremium').setValue(res.annualgpwpd)
         var netpre = this.contactForm3.get('netprem').setValue(res.annualnet)
         var coverinfo = this.contactForm3.get('coverageinfo').setValue(softu)
+        this.contactForm3.get('netpremusd').setValue(res.annualnet)
         this.ncdvalue = res.nc
  
     }, error => {
@@ -666,6 +676,10 @@ sd(abcd):void{
       let vehicletype = this.contactForm1.get('vehicleType').value;
       let soft = this.contactForm1.get('softtop').value;
       let ct = this.contactForm1.get('clienttype').value;
+      if(ct == null || ct == undefined){
+        ct = false
+      }
+      console.log("client type in onsave"+ ct);
       let finance = this.contactForm2.get('financed').value;
       let claimfre = this.contactForm2.get('claimfree').value;
       let losspayee = this.contactForm2.get('losspay').value;
@@ -679,9 +693,15 @@ sd(abcd):void{
       let manualdiscr = this.contactForm3.get('manualdiscr').value;
       let fleet = this.contactForm3.get('fleet').value;
       let promotion = this.contactForm3.get('promotion').value;
+      var remarks= this.contactForm3.get('remarks').value;
       let tax = this.contactForm3.get('tax').value;
       var annualgp = this.contactForm3.get('annualgrosspremium').value;
       var netpre = this.contactForm3.get('netprem').value;
+      var username = this.authenticationService.localStorage.getItem('name');
+      var userrole = this.authenticationService.localStorage.getItem('Role');
+      if(userrole == "cs"){
+        var status = "Review"
+      }
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
@@ -689,7 +709,7 @@ sd(abcd):void{
         emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
         losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
         manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-        driverd: this.child.driverdata,autod: this.ncdvalue},httpOptions ).subscribe((res: any) => { // not callback
+        driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,username:username,userrole:userrole,status:status},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res.result);
         let qd = res.result;
         console.log("in on save");
@@ -707,8 +727,8 @@ sd(abcd):void{
       },
     });
     dialogRef1.afterClosed().subscribe(() => {
-
-      window.location.reload();
+      this.router.navigateByUrl('/home');
+      // window.location.reload();
        })
   }
 }
