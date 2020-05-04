@@ -421,7 +421,8 @@
         </div>
 </form>
 </mat-tab>
-<mat-tab label="Additional Details" [disabled]="true">
+<!-- <mat-tab label="Additional Details" [disabled]="true"> -->
+<mat-tab label="Additional Details">
   <form fxLayout="column" [formGroup]="contactForm4">
   <mat-card>Personal Details</mat-card> <mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
 
@@ -451,25 +452,38 @@
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside">
-      <mat-form-field>
-        <mat-select placeholder="Country" formControlName="country" required>
-        </mat-select>
+      <mat-form-field class="example-full-width">
+        <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
+        <mat-autocomplete #countryauto="matAutocomplete" [displayWith]="displayFncountry">
+          <mat-option (click)="OncountrySelected(Selectedcountry)" *ngFor="let countryoption of countryfilteredOption | async" [value]="countryoption" style="line-height:normal;white-space: normal;">
+            {{countryoption.Country}}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="text-inside">
+      <mat-form-field>
+        <mat-select [(ngModel)]="Selectedzip" placeholder="Zip Code" formControlName="zipCode" required>
+          <mat-option (click)="OnzipSelected(Selectedzip)" *ngFor="let data of summaries" [value]="data">
+            {{data.Zipcode}}
+        </mat-option>
+        </mat-select>
    
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="text-inside">
-      <mat-form-field>
-        <mat-select placeholder="Zip Code" formControlName="zipCode" required>
-        </mat-select>
       </mat-form-field>
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside">
+
       <mat-form-field>
-        <input matInput type="text" placeholder="Town" formControlName="cityTown" required>
+        <mat-select placeholder="Town" formControlName="cityTown" required>
+          <mat-option *ngFor="let data of towns" [value]="data.Town">
+            {{data.Town}}
+        </mat-option>
+        </mat-select>
+   
       </mat-form-field>
     </div>
   </mat-grid-tile>

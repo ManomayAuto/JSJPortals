@@ -38,7 +38,8 @@ export class AuthenticationService{
         console.log("datas",this.Naame); 
         
         if (data.permissions.includes('DR') || data.permissions.includes('DF') ||
-         data.permissions.includes('ARRP')||data.permissions.includes('QRU')||data.permissions.includes('QI') ) { 
+         data.permissions.includes('ARRP')||data.permissions.includes('QRU')||data.permissions.includes('QI')
+         ||data.permissions.includes('QRM')||data.permissions.includes('QRP')) { 
           console.log("DRDF"+ this.Name);
           this.router.navigate(['/menu']);
         }

@@ -16,7 +16,7 @@ import {SearchclientdialogComponent} from './searchclientdialog/searchclientdial
 import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
 import { DrivertableComponent } from './drivertable/drivertable.component';
 import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subscription, zip } from 'rxjs';
 import {Router} from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 // import { runInThisContext } from 'vm';
@@ -27,7 +27,7 @@ export class Service {
   constructor(private http: HttpClient) { }
 
   opts = [];
-
+  copts = [];
   getData() {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -35,6 +35,14 @@ export class Service {
     return this.opts.length ?
       of(this.opts) :
       this.http.get<any>(environment.URL + '/vehicle',httpOptions).pipe(tap(data => this.opts = data))
+  }
+  countryData() {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.copts.length ?
+      of(this.copts) :
+      this.http.get<any>(environment.URL + '/country',httpOptions).pipe(tap(data => this.copts = data))
   }
 }
 export class driverservice {
@@ -60,11 +68,15 @@ export class QuotepageComponent implements OnInit {
   selectDisabled = false;
   isReadonly = true;
   option = [];
+  countryoption = [];
   username: string;
   userrole: string;  
+  public summaries: any[];
+  public towns: any[];
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 filteredOption: Observable<any[]>;
+countryfilteredOption: Observable<any[]>;
 matTabs = [1,2,3];
 @ViewChild('tabGroup',{static:false}) tabGroup: MatTabGroup;
 @ViewChild(DrivertableComponent,{static:false}) child : DrivertableComponent ;
@@ -126,7 +138,7 @@ degreeTitleList = [];
     if(a.index == 2){
       this.onSubmit();
     }else{
-      console.log('Tab2 is not selected!')
+      console.log('Tab2 is not selected!');
     }
   }
   constructor(private  authenticationService : AuthenticationService,private driverservice: driverservice,private service: Service,private router: Router,public dialog: MatDialog,private dp: DatePipe,
@@ -140,7 +152,7 @@ degreeTitleList = [];
 
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
-
+   
     this.contactForm1 = this.f1.group({
       EngineCC: ['',Validators.required],
       vehicleType: ['',Validators.required],
@@ -208,6 +220,11 @@ degreeTitleList = [];
       startWith(''),
       switchMap(value => this.doFilter(value))
     );
+    this.countryfilteredOption = this.contactForm4
+.get('country').valueChanges.pipe(
+      startWith(''),
+      switchMap(value => this.docountryFilter(value))
+    );
      this.filteredOptions = this.contactForm1
      .get('Year').valueChanges
      .pipe(
@@ -244,7 +261,14 @@ degreeTitleList = [];
         }))
       )
   }
-  
+  docountryFilter(value){
+    return this.service.countryData()
+      .pipe(
+        map(response => response.filter(countryoption => {
+          return countryoption.Country.toLowerCase().indexOf(value.toLowerCase()) === 0
+        }))
+      )
+  }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -252,6 +276,9 @@ degreeTitleList = [];
   }
   displayFn(value) {
     if (value) { return value.MakeModelCC; }
+  }
+  displayFncountry(value) {
+    if (value) { return value.Country; }
   }
   toggle() {
     this.hide = this.show
@@ -697,8 +724,8 @@ sd(abcd):void{
       let tax = this.contactForm3.get('tax').value;
       var annualgp = this.contactForm3.get('annualgrosspremium').value;
       var netpre = this.contactForm3.get('netprem').value;
-      var username = this.authenticationService.localStorage.getItem('name');
-      var userrole = this.authenticationService.localStorage.getItem('Role');
+      var username = localStorage.getItem('name');
+      var userrole = localStorage.getItem('Role');
       if(userrole == "cs"){
         var status = "Review"
       }
@@ -730,6 +757,44 @@ sd(abcd):void{
       this.router.navigateByUrl('/home');
       // window.location.reload();
        })
+  }
+  OncountrySelected(Selectedcountry) {
+    
+    console.log('### Trigger');
+    var country = Selectedcountry['Country'];
+    console.log(Selectedcountry);
+    console.log(country);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.http.post<any>(environment.URL + '/zipcode', {Country:country},httpOptions).subscribe(result => {
+      console.log("-----------------------------------------");
+      this.summaries = result;
+      console.log(typeof(result));
+      console.log(result);
+    }, error => console.error(error));
+      
+      
+    
+  }
+  OnzipSelected(Selectedzip) {
+    
+    console.log('### Trigger');
+    
+    var zip = Selectedzip['Zipcode'];
+console.log(Selectedzip);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.http.post<any>(environment.URL + '/town', {Zipcode:zip},httpOptions).subscribe(result => {
+      console.log("-----------------------------------------");
+      this.towns = result;
+      console.log(typeof(result));
+      console.log(result);
+    }, error => console.error(error));
+      
+      
+    
   }
 }
 
