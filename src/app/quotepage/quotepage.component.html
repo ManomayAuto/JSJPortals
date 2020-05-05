@@ -229,10 +229,13 @@
       </mat-grid-tile>
         <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
         <div class="text-inside" *ngIf="(sho)">
-          <mat-form-field>
-            <mat-select placeholder="Loss Payee Name" formControlName="losspay">
-              <mat-option value="option">LP</mat-option>
-            </mat-select>
+          <mat-form-field class="example-full-width">
+            <input type="text" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
+            <mat-autocomplete #lossauto="matAutocomplete" [displayWith]="displayFnloss">
+              <mat-option *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
+                {{lossoption.Description}}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
         </div>
       </mat-grid-tile>

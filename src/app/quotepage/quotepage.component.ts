@@ -28,6 +28,7 @@ export class Service {
 
   opts = [];
   copts = [];
+  lopts = [];
   getData() {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -44,6 +45,16 @@ export class Service {
       of(this.copts) :
       this.http.get<any>(environment.URL + '/country',httpOptions).pipe(tap(data => this.copts = data))
   }
+  lossData() {
+    console.log("lossspayeeeeeeeeeeeeeeeeee");
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.lopts.length ?
+      of(this.lopts) :
+      this.http.get<any>(environment.URL + '/losspayee',httpOptions).pipe(tap(data => this.lopts = data))
+  }
+
 }
 export class driverservice {
   $data = new EventEmitter();
@@ -76,6 +87,7 @@ export class QuotepageComponent implements OnInit {
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 filteredOption: Observable<any[]>;
+filteredOptionloss: Observable<any[]>;
 countryfilteredOption: Observable<any[]>;
 matTabs = [1,2,3];
 @ViewChild('tabGroup',{static:false}) tabGroup: MatTabGroup;
@@ -225,6 +237,11 @@ degreeTitleList = [];
       startWith(''),
       switchMap(value => this.docountryFilter(value))
     );
+    this.filteredOptionloss= this.contactForm2
+    .get('losspay').valueChanges.pipe(
+          startWith(''),
+          switchMap(value => this.dolossFilter(value))
+        );
      this.filteredOptions = this.contactForm1
      .get('Year').valueChanges
      .pipe(
@@ -269,6 +286,14 @@ degreeTitleList = [];
         }))
       )
   }
+  dolossFilter(value){
+    return this.service.lossData()
+      .pipe(
+        map(response => response.filter(lossoption => {
+          return lossoption.Description.toLowerCase().indexOf(value.toLowerCase()) === 0
+        }))
+      )
+  }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -279,6 +304,9 @@ degreeTitleList = [];
   }
   displayFncountry(value) {
     if (value) { return value.Country; }
+  }
+  displayFnloss(value){
+    if (value) { return value.Description; }
   }
   toggle() {
     this.hide = this.show
