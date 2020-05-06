@@ -9,7 +9,13 @@ mat-form-field {
     margin-left: 15px;
     
   }
-  
+  @media (max-width: 590px) {
+    mat-form-field {
+
+        margin-left: 0px !important;
+        
+      }
+}
   ::ng-deep.mat-form-field-disabled .mat-form-field-underline {
     background-image: linear-gradient(
     to right,
@@ -113,10 +119,7 @@ li {
 }
 
 
-.col-form-label {
-font-size:smaller;
 
-}
 ::ng-deep .mat-form-field .mat-input-element {
     color: rgb(59, 56, 56);
 }

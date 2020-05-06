@@ -18,7 +18,7 @@ import { DrivertableComponent } from './drivertable/drivertable.component';
 import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component';
 import { Observable, of, Subscription, zip } from 'rxjs';
 import {Router} from '@angular/router';
-import { AuthenticationService } from '../_services/authentication.service';
+
 // import { runInThisContext } from 'vm';
 @Injectable({
   providedIn: 'root'
@@ -84,6 +84,7 @@ export class QuotepageComponent implements OnInit {
   userrole: string;  
   public summaries: any[];
   public towns: any[];
+  public isduplicate: boolean = false;
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 filteredOption: Observable<any[]>;
@@ -153,7 +154,7 @@ degreeTitleList = [];
       console.log('Tab2 is not selected!');
     }
   }
-  constructor(private  authenticationService : AuthenticationService,private driverservice: driverservice,private service: Service,private router: Router,public dialog: MatDialog,private dp: DatePipe,
+  constructor(private driverservice: driverservice,private service: Service,private router: Router,public dialog: MatDialog,private dp: DatePipe,
     
     private http: HttpClient, private f1 : FormBuilder, 
     private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
@@ -210,6 +211,7 @@ degreeTitleList = [];
     netprem: [''],
     netpremusd: [''],
     remarks: [''],
+    quoted: [''],
      });
 
      this.contactForm4 = this.f4.group({
@@ -455,6 +457,7 @@ sd(abcd):void{
         }
         else{
           this.openduplicateDialog(res);
+          this.isduplicate = !this.isduplicate;
         }
     }, error => {
       console.error("Error", error);
@@ -467,6 +470,26 @@ sd(abcd):void{
     // }
 
   }
+  onrequote(){
+    let quoteid = this.contactForm3.get('quoted').value;
+    console.log(quoteid);
+    var username = localStorage.getItem('name');
+      var userrole = localStorage.getItem('Role');
+      console.log(userrole);
+      console.log(username)
+      if(userrole == "cs"){
+        var status = "Review"
+      }
+      const httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      };
+      return this.http.post<any>(environment.URL + '/requote', {quoteid:quoteid,username:username,userrole:userrole,reviewstatus:status,quotestatus:status},httpOptions ).subscribe((res: any) => { // not callback
+    console.log(res);
+        this.openSnackBar("Requote of quote is successfully submitted", "Dismiss")
+    }, error => {
+      console.error("Error", error);
+    });
+  }
   openduplicateDialog(quotedata) {
     const dialogRef = this.dialog.open(DuplicatedialogComponent,{
       width: '450px',
@@ -476,9 +499,8 @@ sd(abcd):void{
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-
    console.log("after closed ", result);
-
+   
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
   //  this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
   //  this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
@@ -496,9 +518,12 @@ sd(abcd):void{
   //  this.contactForm1.get('vehicleType').setValue(result['quotedata']['vehtype']);
    this.contactForm1.get('softtop').setValue(result['quotedata']['softop']);
    this.contactForm1.get('clienttype').setValue(result['quotedata']['ct']);
+   
    this.contactForm2.get('financed').setValue(result['quotedata']['financed']);
+   this.contactForm2.get('financed').disable();
    this.contactForm2.get('claimfree').setValue(result['quotedata']['claimfre']);
    let typeofcover = result['quotedata']['covertype'];
+
    if(typeofcover == "Third Party"){
     typeofcover = "TP"
    }
@@ -528,6 +553,7 @@ sd(abcd):void{
    this.contactForm3.get('annualgrosspremium').setValue(result['quotedata']['agp']);
    this.contactForm3.get('netprem').setValue(result['quotedata']['anp']);
    this.ncdvalue = result['quotedata']['autod'];
+   this.contactForm3.get('quoted').setValue(result['quotedata']['result']);
    this.driverdata = result['quotedata']['driverdata'];
    this.driverservice.driver(this.driverdata);
    console.log(this.driverdata);
@@ -613,6 +639,10 @@ sd(abcd):void{
       console.log(soft)
       let ct = this.contactForm1.get('clienttype').value;
       let finance = this.contactForm2.get('financed').value;
+      if(finance == null || finance == undefined){
+        finance = false
+      }
+      console.log(finance)
       let claimfre = this.contactForm2.get('claimfree').value;
       if(!claimfre){
         claimfre = 0
@@ -731,11 +761,16 @@ sd(abcd):void{
       let vehicletype = this.contactForm1.get('vehicleType').value;
       let soft = this.contactForm1.get('softtop').value;
       let ct = this.contactForm1.get('clienttype').value;
+      
       if(ct == null || ct == undefined){
         ct = false
       }
       console.log("client type in onsave"+ ct);
       let finance = this.contactForm2.get('financed').value;
+      if(finance == null || finance == undefined){
+        finance = false
+      }
+      console.log(finance);
       let claimfre = this.contactForm2.get('claimfree').value;
       let losspayee = this.contactForm2.get('losspay').value;
       let losslocation = this.contactForm2.get('lossloc').value;
@@ -754,6 +789,7 @@ sd(abcd):void{
       var netpre = this.contactForm3.get('netprem').value;
       var username = localStorage.getItem('name');
       var userrole = localStorage.getItem('Role');
+      console.log(userrole);
       if(userrole == "cs"){
         var status = "Review"
       }
@@ -764,7 +800,7 @@ sd(abcd):void{
         emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
         losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
         manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-        driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,username:username,userrole:userrole,status:status},httpOptions ).subscribe((res: any) => { // not callback
+        driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,username:username,userrole:userrole,reviewstatus:status,quotestatus:status},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res.result);
         let qd = res.result;
         console.log("in on save");
