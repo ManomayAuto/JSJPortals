@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserService } from './user.service';
+import { QtableService } from './qtable.service';
 
-describe('UserService', () => {
+describe('QtableService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: UserService = TestBed.get(UserService);
+    const service: QtableService = TestBed.get(QtableService);
     expect(service).toBeTruthy();
   });
 });

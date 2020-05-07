@@ -1,7 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { SimpleNotificationsComponent } from 'angular2-notifications';
 import { NotificationsService } from 'angular2-notifications';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import { QtableService } from 'src/app/_services/qtable.service';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { DOCUMENT } from '@angular/common';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
+import { Router } from '@angular/router';
 
 export interface PeriodicElement {
   Sno: number,
@@ -13,43 +20,48 @@ export interface PeriodicElement {
   LastUpdatedAt:string,
   Action: string,
 }
-const ELEMENT_DATA: PeriodicElement[] = [
-  {Sno: 1, QuoteID: 'QPV1001', Status: 'To be reviewed', TypeofAction: 'Requote request', Remarks:'', User:'UW Managers', LastUpdatedAt:'', Action: 'Pickup for Review' },
-  {Sno: 2, QuoteID: 'QPV1002', Status: 'In Progress', TypeofAction: 'Referral review', Remarks:'Info Requested', User:'RBrown', LastUpdatedAt:'03/03/2020 19:30', Action: 'Pickup for Review' },
-];
+
 @Component({
   selector: 'app-reviewtable',
   templateUrl: './reviewtable.component.html',
   styleUrls: ['./reviewtable.component.css']
 })
 export class ReviewtableComponent implements OnInit {
-  name = 'Angular 5';
- 
-    constructor() {
+  //name = 'Angular 5';
+  displayedColumns = [ 'quoteid', 'reviewstatus', 'typeofaction', 'remarks', 'lastupdatedat', 'Action'];
+  dataSource;
 
+  
+  @ViewChild(MatPaginator, {static:true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-
-}
-
-
+  constructor( private userService : QtableService,
+    @Inject(DOCUMENT) private _document: Document,
+    private http:HttpClient, private router : Router
+    ) { }
 
 ngOnInit(){
-
+  this.userService.getUser().subscribe(results => {
+    console.log("Qtable",results);
+    this.dataSource = new MatTableDataSource(results);
+    this.dataSource.paginator = this.paginator;
+  }, error =>{
+      console.log(error);
+  })
 }
 
-displayedColumns = ['Sno', 'QuoteID', 'Status', 'TypeofAction', 'Remarks', 'User', 'LastUpdatedAt', 'Action'];
-dataSource= ELEMENT_DATA;
 
-@ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-@ViewChild(MatSort, {static: false}) sort: MatSort;
+getRecord(quoteid){
+  console.log("rev quoteid",quoteid);
 
-addbut(){
- window.alert("addbutton");
+  //  Set as(any)
+  //   {
+  //     this.dataService.SharedData = result;
+  //   }
+    this.router.navigate(['/quotepage',{title:quoteid}]);
+
+
 }
-editbut(){
- window.alert("editbutton");
-}
-
 
 }
 

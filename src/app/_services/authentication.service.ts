@@ -16,6 +16,7 @@ export class AuthenticationService{
   localStorage: any;
   Naame: any;
   action :string='close';  
+ 
   constructor(private http:HttpClient, private router : Router,private securestore: SecureLocalStorageService,
     private modal: MatDialog,
     private snackBar: MatSnackBar) { 
@@ -28,8 +29,8 @@ export class AuthenticationService{
     this.http.post(environment.URL + `/login`,
      {"email":email,"password":password}) 
    .subscribe(
-      (data:any) => {
-       
+      (data:any) => { 
+          
         console.log("asd",data); 
         console.log("data",data); 
         this.Naame=data
@@ -37,7 +38,7 @@ export class AuthenticationService{
         console.log("datas",this.Naame); 
         
         if (data.permissions.includes('DR') || data.permissions.includes('DF') ||
-         data.permissions.includes('ARRP')) { 
+         data.permissions.includes('ARRP')||data.permissions.includes('QRU')||data.permissions.includes('QI') ) { 
           console.log("DRDF"+ this.Name);
           this.router.navigate(['/menu']);
         }
@@ -48,10 +49,27 @@ export class AuthenticationService{
         this.securestore.setitem('currentUser',JSON.stringify(data.Token));
         localStorage.setItem("name", data.Name);
         localStorage.setItem("permission", data.permissions);
-      
-      // if(data.status != 200){
-      //   console.log("diret en",data); 
-      // }
+        let Message = "uw Manager";
+        
+      if(data.permissions.includes('QI,QRU,QRM,QRP,DF,DR,ARRP')){
+        console.log("try per"); 
+        localStorage.setItem("Role",Message);
+      }
+      let Message1 = "uw Manager";
+      if(data.permissions.includes('QI,QRU,QRP')){
+        console.log("try sdad"); 
+        localStorage.setItem("Role",Message1);
+      }
+      let Message2 = "uw";
+      if(data.permissions.includes('QI,QRU')){
+        console.log("try sdad"); 
+        localStorage.setItem("Role",Message2);
+      }
+      let Message3 = "cs";
+      if(data.permissions.includes('QI')){
+        console.log("cs"); 
+        localStorage.setItem("Role",Message3);
+      }
       }, 
       error =>{
         
@@ -80,6 +98,7 @@ export class AuthenticationService{
     localStorage.removeItem('NonAEred');
     localStorage.removeItem('AE');
     localStorage.removeItem('name');
+    localStorage.removeItem('Role');
     this.router.navigate(['login']);
     
 }

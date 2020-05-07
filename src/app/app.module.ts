@@ -44,6 +44,8 @@ import { DuplicatedialogComponent } from './quotepage/duplicatedialog/duplicated
 import { NewquotedialogComponent } from './quotepage/newquotedialog/newquotedialog.component';
 import {driverservice} from './quotepage/quotepage.component';
 import { from } from 'rxjs';
+import { QtableService } from './_services/qtable.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -113,7 +115,7 @@ import { from } from 'rxjs';
     //   InMemDataService, { dataEncapsulation: false, passThruUnknownUrl: true,delay: 1000 }
     //   ),
   ],
-  providers: [UserService,RedService, NonService,DatePipe, AuthenticationService,
+  providers: [UserService,RedService, NonService,DatePipe, AuthenticationService,QtableService,
     SecureLocalStorageService,driverservice,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

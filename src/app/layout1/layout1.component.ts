@@ -22,7 +22,7 @@ export class Layout1Component implements OnInit {
 
   private _mobileQueryListener: () => void;
   name: string;
-  
+  role: string;  
 
   
 
@@ -42,6 +42,7 @@ open(r){
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router, 
      private  authenticationService : AuthenticationService,private route:ActivatedRoute) {
       this.name=localStorage.getItem('name');
+      this.role=localStorage.getItem('Role');
       console.log("ass",this.name);
     this.mobileQuery = media.matchMedia('(max-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();

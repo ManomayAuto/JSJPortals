@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 
 
 export interface PeriodicElement {
@@ -35,9 +37,11 @@ export class SearchtableComponent implements OnInit {
   quoteidFilter = new FormControl();
   filteredValues = { name:'', dob:'',product:'',
   quoteid:'', edit:''};
-ngOnInit() {
 
-    this.nameFilter.valueChanges.subscribe((nameFilterValue)        => {
+  constructor(private http:HttpClient) { }
+ngOnInit() {
+ 
+  this.nameFilter.valueChanges.subscribe((nameFilterValue)        => {
     this.filteredValues['name'] = nameFilterValue;
     this.dataSource.filter = JSON.stringify(this.filteredValues);
     });
@@ -79,11 +83,23 @@ ngOnInit() {
   // }
 
   customFilterPredicate() {
-    const myFilterPredicate = function(data:PeriodicElement,        filter:string) :boolean {
+    const myFilterPredicate = function(data:PeriodicElement,filter:string) :boolean {
       let searchString = JSON.parse(filter);
       return data.quoteid.toString().trim().indexOf      (searchString.quoteid) !== -1 && 
     data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1;
     }
     return myFilterPredicate;
+  }
+ 
+
+  onSe1arch(){
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    console.log("searchdone");
+    this.http.post<any>(environment.URL + `/searchquote`, {quote:'PVICBPC-00018',DOB:'1984-02-03' },httpOptions).subscribe((result) => { 
+      console.log("searchdone!!!!",result)
+    });  
+    console.log("searchdone!!!!");
   }
 }
