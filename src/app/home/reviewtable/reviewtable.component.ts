@@ -34,6 +34,7 @@ export class ReviewtableComponent implements OnInit {
   
   @ViewChild(MatPaginator, {static:true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
+  role: string;
 
   constructor( private userService : QtableService,
     @Inject(DOCUMENT) private _document: Document,
@@ -41,6 +42,8 @@ export class ReviewtableComponent implements OnInit {
     ) { }
 
 ngOnInit(){
+  this.role=localStorage.getItem('Role');
+  console.log("role",this.role != 'cs');
   this.userService.getUser().subscribe(results => {
     console.log("Qtable",results);
     this.dataSource = new MatTableDataSource(results);

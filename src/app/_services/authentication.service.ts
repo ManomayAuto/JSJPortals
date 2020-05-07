@@ -52,22 +52,22 @@ export class AuthenticationService{
         localStorage.setItem("permission", data.permissions);
         let Message = "uw Manager";
         
-      if(data.permissions.includes('QI,QRU,QRM,QRP,DF,DR,ARRP')){
+      if(data.permissions=='QI,QRU,QRM,QRP,DF,DR,ARRP'){
         console.log("try per"); 
         localStorage.setItem("Role",Message);
       }
       let Message1 = "uw Manager";
-      if(data.permissions.includes('QI,QRU,QRP')){
+      if(data.permissions=='QI,QRU,QRP'){
         console.log("try sdad"); 
         localStorage.setItem("Role",Message1);
       }
       let Message2 = "uw";
-      if(data.permissions.includes('QI,QRU')){
-        console.log("try sdad"); 
+      if(data.permissions=='QI,QRU'){
+        console.log("try sdsadad"); 
         localStorage.setItem("Role",Message2);
       }
       let Message3 = "cs";
-      if(data.permissions.includes('QI')){
+      if(data.permissions=='QI'){
         console.log("cs"); 
         localStorage.setItem("Role",Message3);
       }
