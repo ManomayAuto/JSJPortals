@@ -154,6 +154,7 @@ degreeTitleList = [];
   contactForm3 : FormGroup;
   contactForm4 : FormGroup;
   searchdata : any;
+  selectedvehtype :any;
   test(a) {
     if(a.index == 2){
       this.onSubmit();
@@ -297,7 +298,7 @@ degreeTitleList = [];
     };
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
-      
+      console.log(result);
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
     this.contactForm1.get('lastName').setValue(result['last']);
@@ -305,15 +306,20 @@ degreeTitleList = [];
     this.contactForm1.get('idType').setValue(result['idtype']);
     this.contactForm1.get('idNumber').setValue(result['idno']);
     this.contactForm1.get('dob').setValue(result['mob']);
+    var makey = result['make'];
+    // console.log(result['make']);
+    this.displayFn(makey);
+    this.contactForm1.get('userInput').setValue(makey);
     this.contactForm1.get('occupation').setValue(result['ocp']);
     this.contactForm1.get('employement').setValue(result['emplace']);
     this.contactForm1.get('pointofsale').setValue(result['sale']);
     this.contactForm1.get('Product').setValue(result['prod']);
-    this.contactForm1.get('Year').setValue(result['yr']);
-    this.contactForm1.get('userInput').setValue(result['make']);    
+    console.log(result['prod']);
+    this.contactForm1.get('Year').setValue(result['yr']); 
     this.contactForm1.get('EngineCC').setValue(result['cc']);
     this.contactForm1.get('Use').setValue(result['use']);
-    this.contactForm1.get('vehicleType').setValue(result['vehtype']);
+    this.contactForm1.controls.vehicleType.setValue(result['vehtype']);
+    this.educationLevelChangeAction(result['prod']);
     this.contactForm1.get('softtop').setValue(result['softop']);
     this.contactForm1.get('clienttype').setValue(result['ct']);
     this.contactForm2.get('financed').setValue(result['financed']);
@@ -350,9 +356,9 @@ degreeTitleList = [];
     this.ncdvalue = result['autod'];
     this.driverdata = result['driverdata'];
     this.driverservice.driver(this.driverdata);
-    this.contactForm1.markAllAsTouched;
-    this.contactForm2.markAllAsTouched;
-    this.contactForm3.markAllAsTouched;
+    // this.contactForm1.markAllAsTouched;
+    // this.contactForm2.markAllAsTouched;
+    // this.contactForm3.markAllAsTouched;
     });  
   }
   doFilter(value) {
@@ -385,7 +391,15 @@ degreeTitleList = [];
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
   displayFn(value) {
-    if (value) { return value.MakeModelCC; }
+
+    if (value.MakeModelC) { 
+    
+      return value.MakeModelCC; }
+    else if(value){
+      console.log(value);
+      console.log(typeof(value));
+return value;
+    }
   }
   displayFncountry(value) {
     if (value) { return value.Country; }
@@ -511,10 +525,12 @@ sd(abcd):void{
       console.log(prod)
       console.log(typeof(prod))
       let make = this.contactForm1.get('userInput').value;
+      console.log("indupiccccc"+ make);
       let yr = this.contactForm1.get('Year').value;
       let cc = this.contactForm1.get('EngineCC').value;
       let use = this.contactForm1.get('Use').value;
       let vehicletype = this.contactForm1.get('vehicleType').value;
+      console.log(vehicletype);
       if(vehicletype == 'Steam'){
         console.log("in steam")
         this.selectDisabled = true
@@ -585,20 +601,23 @@ sd(abcd):void{
    console.log("after closed ", result);
    
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
-  //  this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
-  //  this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
-  //  this.contactForm1.get('dab').setValue(result['quotedata']['dob']);
+   this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
+   this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
+   this.contactForm1.get('dab').setValue(result['quotedata']['dob']);
    this.contactForm1.get('idType').setValue(result['quotedata']['idtype']);
    this.contactForm1.get('idNumber').setValue(result['quotedata']['idno']);
    this.contactForm1.get('dob').setValue(result['quotedata']['mob']);
    this.contactForm1.get('occupation').setValue(result['quotedata']['ocp']);
    this.contactForm1.get('employement').setValue(result['quotedata']['emplace']);
    this.contactForm1.get('pointofsale').setValue(result['quotedata']['sale']);
-  //  this.contactForm1.get('Product').setValue(result['quotedata']['prod']);
+   this.contactForm1.get('Product').setValue(result['quotedata']['prod']);
    this.contactForm1.get('Year').setValue(result['quotedata']['yr']);
    this.contactForm1.get('EngineCC').setValue(result['quotedata']['cc']);
    this.contactForm1.get('Use').setValue(result['quotedata']['use']);
-  //  this.contactForm1.get('vehicleType').setValue(result['quotedata']['vehtype']);
+   this.contactForm1.get('vehicleType').setValue(result['quotedata']['vehtype']);
+   var makey = result['quotedata']['make'];
+   this.displayFn(makey);
+   console.log(result['quotedata']['make']);
    this.contactForm1.get('softtop').setValue(result['quotedata']['softop']);
    this.contactForm1.get('clienttype').setValue(result['quotedata']['ct']);
    
