@@ -229,10 +229,13 @@
       </mat-grid-tile>
         <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
         <div class="text-inside" *ngIf="(sho)">
-          <mat-form-field>
-            <mat-select placeholder="Loss Payee Name" formControlName="losspay">
-              <mat-option value="option">LP</mat-option>
-            </mat-select>
+          <mat-form-field class="example-full-width">
+            <input type="text" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
+            <mat-autocomplete #lossauto="matAutocomplete" [displayWith]="displayFnloss">
+              <mat-option *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
+                {{lossoption.Description}}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -326,7 +329,102 @@
   
   <!-- <form fxLayout="column" (ngSubmit)='moveToSelectedTab2("Additional Details")' [formGroup]="contactForm3"> -->
     <form fxLayout="column" [formGroup]="contactForm3">
-    <div class="form-group row"><label for="inputEmail3" class="col-sm-2 col-form-label" style="margin-top: 13px;">Coverage Information</label>
+      <div class="container" style="width:1000px">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="i6h9k">Coverage Information</label></div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" placeholder="" formControlName="coverageinfo" class="form-control" readonly /></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="imdk1">Automatic Discount</label></div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3">
+              <div class="basic-container">
+                <mat-accordion style="height:38px !important">
+                <mat-expansion-panel hideToggle="true" #xyz>
+                  <mat-expansion-panel-header>
+                    {{ncdvalue}} <span class="example-spacer"></span><div class="ad" style="text-align: center;" ><mat-icon *ngIf="!xyz.expanded" style="text-align: right;">info</mat-icon>
+                      <mat-icon *ngIf="xyz.expanded" style="text-align: right;">arrow_drop_down</mat-icon></div>
+                     
+               
+                  </mat-expansion-panel-header>
+                  NCD {{ncdvalue}}
+                </mat-expansion-panel>
+             
+              </mat-accordion>
+              </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="iwqt">Manual Load</label></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><input type="number" placeholder="" onKeyPress="if(this.value.length==3) return false;" min="0" max="100" formControlName="manualloadp" class="form-control"/></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><textarea rows="1" placeholder="Reason for Load" formControlName="manualloadr" class="form-control"></textarea></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ivm9j">Manual Discount</label></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><input type="number" placeholder="" onKeyPress="if(this.value.length==3) return false;" min="0" max="100" formControlName="manualdisc" class="form-control"/></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><textarea rows="1" placeholder="Reason for discount" formControlName="manualdiscr" class="form-control"></textarea></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="i62nh">Additional Discounts</label></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3">
+              <div class="row">
+                <legend class="col-form-label col-sm-12 pt-0">Fleet Discount% <mat-checkbox class="example-margin" formControlName="fleet"></mat-checkbox></legend>
+                <!-- <div class="col-sm-10">   </div> -->
+            </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3">
+              <div class="row">
+                <legend class="col-form-label col-sm-12 pt-0">12 for 11 Promotion Discount%<mat-checkbox class="example-margin" formControlName="promotion"></mat-checkbox></legend>
+                <!-- <div class="col-sm-10">   </div> -->
+            </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="iv4t2">Annual Gross Premium (in $)</label></div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="annualgrosspremium" class="form-control" readonly/></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ix943">Taxes (in $)</label></div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="tax" class="form-control" /></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="iefu3">Annual Net Premium (in $)</label></div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="netprem" class="form-control" readonly/></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ixf87">Annual Net Premium (in $USD)</label></div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="netpremusd" class="form-control" readonly/></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ii72f">Remarks</label></div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><textarea rows="2" formControlName="remarks" class="form-control"></textarea></div>
+        </div>
+        <div *ngIf="isduplicate" class="row">
+            <div *ngIf="isduplicate" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote ID</label></div>
+            <div *ngIf="isduplicate" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="quoted" class="form-control" /></div>
+        </div>
+        <button mat-raised-button color="primary" (click)="onSubmit()" style="float: right;margin-bottom: 20px;">Generate Premium</button>
+
+<div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
+ 
+  <!-- <button mat-raised-button color="primary" style="margin-left:5px">Print</button>
+ 
+ 
+    <button mat-raised-button color="primary" style="margin-left:5px">Approve</button>
+   
+   
+      <button mat-raised-button color="primary" style="margin-left:5px">Decline</button>
+      -->
+     
+     
+        <button mat-raised-button color="primary" (click)="onSave()" style="margin-left:5px">Save</button>
+        <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
+     
+   
+        <button mat-raised-button color="primary" style="margin-left:5px" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
+        </div>
+    </div>
+
+    <!-- <div class="form-group row"><label for="inputEmail3" class="col-sm-2 col-form-label" style="margin-top: 13px;">Coverage Information</label>
         <div class="col-sm-10"><input type="text" placeholder="" formControlName="coverageinfo" class="form-control" style="margin-top: 13px;" readonly /></div>
     </div>
     <div class="form-group row" style="height: 55px;">
@@ -368,13 +466,13 @@
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3">   <fieldset class="form-group">
                 <div class="row">
                     <legend class="col-form-label col-sm-12 pt-0">Fleet Discount% <mat-checkbox class="example-margin" formControlName="fleet"></mat-checkbox></legend>
-                    <!-- <div class="col-sm-10">   </div> -->
+                   
                 </div>
             </fieldset></div>
               <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><fieldset class="form-group">
                 <div class="row">
                     <legend class="col-form-label col-sm-12 pt-0">12 for 11 Promotion Discount%<mat-checkbox class="example-margin" formControlName="promotion"></mat-checkbox></legend>
-                    <!-- <div class="col-sm-10">   </div> -->
+                    
                 </div>
             </fieldset></div>
           </div>
@@ -389,39 +487,23 @@
     <div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Taxes (in $)</label>
       <div class="col-sm-10"><input type="text"  formControlName="tax" placeholder="" class="form-control" readonly/></div>
   </div>
-  <div class="form-group row" style="height: 80px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Annual Net Premium (in $)</label>
+  <div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Annual Net Premium (in $)</label>
     <div class="col-sm-10"><input type="text" placeholder="" formControlName="netprem" class="form-control" readonly/></div>
 </div>
-<div class="form-group row" style="height: 80px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Annual Net Premium (in $USD)</label>
+<div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Annual Net Premium (in $USD)</label>
   <div class="col-sm-10"><input type="text" placeholder="" formControlName="netpremusd" class="form-control" readonly/></div>
 </div>
-<div class="form-group row" style="height: 80px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Remarks</label>
+<div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Remarks</label>
   <div class="col-sm-10"><input type="text" placeholder="" formControlName="remarks" class="form-control"></div>
 </div>
+<div *ngIf="isduplicate" class="form-group row" style="height: 55px;display:none"><label for="inputEmail3" class="col-sm-2 col-form-label">QuoteID</label>
+  <div class="col-sm-10" *ngIf="isduplicate"><input *ngIf="isduplicate" type="text" placeholder="" formControlName="quoted" class="form-control"></div>
+</div> -->
 
-<button mat-raised-button color="primary" (click)="onSubmit()" style="float: right;margin-bottom: 20px;">Generate Premium</button>
-
-<div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
- 
-  <!-- <button mat-raised-button color="primary" style="margin-left:5px">Print</button>
- 
- 
-    <button mat-raised-button color="primary" style="margin-left:5px">Approve</button>
-   
-   
-      <button mat-raised-button color="primary" style="margin-left:5px">Decline</button>
-      -->
-     
-     
-        <button mat-raised-button color="primary" (click)="onSave()" style="margin-left:5px">Save</button>
-
-     
-   
-        <button mat-raised-button color="primary" style="margin-left:5px" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
-        </div>
 </form>
 </mat-tab>
-<mat-tab label="Additional Details" [disabled]="true">
+<!-- <mat-tab label="Additional Details" [disabled]="true"> -->
+<mat-tab label="Additional Details">
   <form fxLayout="column" [formGroup]="contactForm4">
   <mat-card>Personal Details</mat-card> <mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
 
@@ -451,25 +533,38 @@
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside">
-      <mat-form-field>
-        <mat-select placeholder="Country" formControlName="country" required>
-        </mat-select>
+      <mat-form-field class="example-full-width">
+        <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
+        <mat-autocomplete #countryauto="matAutocomplete" [displayWith]="displayFncountry">
+          <mat-option (click)="OncountrySelected(Selectedcountry)" *ngFor="let countryoption of countryfilteredOption | async" [value]="countryoption" style="line-height:normal;white-space: normal;">
+            {{countryoption.Country}}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="text-inside">
+      <mat-form-field>
+        <mat-select [(ngModel)]="Selectedzip" placeholder="Zip Code" formControlName="zipCode" required>
+          <mat-option (click)="OnzipSelected(Selectedzip)" *ngFor="let data of summaries" [value]="data">
+            {{data.Zipcode}}
+        </mat-option>
+        </mat-select>
    
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <div class="text-inside">
-      <mat-form-field>
-        <mat-select placeholder="Zip Code" formControlName="zipCode" required>
-        </mat-select>
       </mat-form-field>
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside">
+
       <mat-form-field>
-        <input matInput type="text" placeholder="Town" formControlName="cityTown" required>
+        <mat-select placeholder="Town" formControlName="cityTown" required>
+          <mat-option *ngFor="let data of towns" [value]="data.Town">
+            {{data.Town}}
+        </mat-option>
+        </mat-select>
+   
       </mat-form-field>
     </div>
   </mat-grid-tile>
@@ -514,7 +609,9 @@
   <mat-grid-tile style="right: unset !important">
     <div class="text-inside">
       <mat-form-field>
-        <input matInput type="text" placeholder="Currency" formControlName="currency" required>
+        <mat-select placeholder="Currency" formControlName="currency" required>
+          <mat-option value="BahamianDollars">Bahamian Dollars</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
   </mat-grid-tile>

@@ -11,7 +11,8 @@ export class DuplicatedialogComponent implements OnInit {
 if (data) {
     this.qd = data['quotedata']['result'] || this.qd;
     }
-    console.log(data['quotedata']['result'])
+    console.log(data['quotedata']['result']);
+    console.log(data['quotedata']);
 
   }
 

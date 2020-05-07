@@ -16,9 +16,11 @@ import {SearchclientdialogComponent} from './searchclientdialog/searchclientdial
 import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
 import { DrivertableComponent } from './drivertable/drivertable.component';
 import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component';
-import { Observable, of, Subscription } from 'rxjs';
+
+import { Observable, of, Subscription,zip } from 'rxjs';
 import {Router, ActivatedRoute} from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
+
 
 // import { runInThisContext } from 'vm';
 @Injectable({
@@ -28,7 +30,8 @@ export class Service {
   constructor(private http: HttpClient) { }
 
   opts = [];
-
+  copts = [];
+  lopts = [];
   getData() {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,6 +40,24 @@ export class Service {
       of(this.opts) :
       this.http.get<any>(environment.URL + '/vehicle',httpOptions).pipe(tap(data => this.opts = data))
   }
+  countryData() {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.copts.length ?
+      of(this.copts) :
+      this.http.get<any>(environment.URL + '/country',httpOptions).pipe(tap(data => this.copts = data))
+  }
+  lossData() {
+    console.log("lossspayeeeeeeeeeeeeeeeeee");
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.lopts.length ?
+      of(this.lopts) :
+      this.http.get<any>(environment.URL + '/losspayee',httpOptions).pipe(tap(data => this.lopts = data))
+  }
+
 }
 export class driverservice {
   $data = new EventEmitter();
@@ -61,11 +82,19 @@ export class QuotepageComponent implements OnInit {
   selectDisabled = false;
   isReadonly = true;
   option = [];
+
+  countryoption = [];
   username: string;
   userrole: string;  
+  public summaries: any[];
+  public towns: any[];
+  public isduplicate: boolean = false;
+
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 filteredOption: Observable<any[]>;
+filteredOptionloss: Observable<any[]>;
+countryfilteredOption: Observable<any[]>;
 matTabs = [1,2,3];
 @ViewChild('tabGroup',{static:false}) tabGroup: MatTabGroup;
 @ViewChild(DrivertableComponent,{static:false}) child : DrivertableComponent ;
@@ -129,11 +158,13 @@ degreeTitleList = [];
     if(a.index == 2){
       this.onSubmit();
     }else{
-      console.log('Tab2 is not selected!')
+      console.log('Tab2 is not selected!');
     }
   }
+
   constructor(private  authenticationService : AuthenticationService,private driverservice: driverservice,private service: Service,private router: Router,public dialog: MatDialog,private dp: DatePipe,
     private route: ActivatedRoute,
+
     private http: HttpClient, private f1 : FormBuilder, 
     private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
    
@@ -143,7 +174,7 @@ degreeTitleList = [];
 
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
-
+   
     this.contactForm1 = this.f1.group({
       EngineCC: ['',Validators.required],
       vehicleType: ['',Validators.required],
@@ -189,6 +220,7 @@ degreeTitleList = [];
     netprem: [''],
     netpremusd: [''],
     remarks: [''],
+    quoted: [''],
      });
 
      this.contactForm4 = this.f4.group({
@@ -212,6 +244,16 @@ degreeTitleList = [];
       startWith(''),
       switchMap(value => this.doFilter(value))
     );
+    this.countryfilteredOption = this.contactForm4
+.get('country').valueChanges.pipe(
+      startWith(''),
+      switchMap(value => this.docountryFilter(value))
+    );
+    this.filteredOptionloss= this.contactForm2
+    .get('losspay').valueChanges.pipe(
+          startWith(''),
+          switchMap(value => this.dolossFilter(value))
+        );
      this.filteredOptions = this.contactForm1
      .get('Year').valueChanges
      .pipe(
@@ -321,7 +363,22 @@ degreeTitleList = [];
         }))
       )
   }
-  
+  docountryFilter(value){
+    return this.service.countryData()
+      .pipe(
+        map(response => response.filter(countryoption => {
+          return countryoption.Country.toLowerCase().indexOf(value.toLowerCase()) === 0
+        }))
+      )
+  }
+  dolossFilter(value){
+    return this.service.lossData()
+      .pipe(
+        map(response => response.filter(lossoption => {
+          return lossoption.Description.toLowerCase().indexOf(value.toLowerCase()) === 0
+        }))
+      )
+  }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -329,6 +386,12 @@ degreeTitleList = [];
   }
   displayFn(value) {
     if (value) { return value.MakeModelCC; }
+  }
+  displayFncountry(value) {
+    if (value) { return value.Country; }
+  }
+  displayFnloss(value){
+    if (value) { return value.Description; }
   }
   toggle() {
     this.hide = this.show
@@ -477,6 +540,7 @@ sd(abcd):void{
         }
         else{
           this.openduplicateDialog(res);
+          this.isduplicate = !this.isduplicate;
         }
     }, error => {
       console.error("Error", error);
@@ -489,6 +553,26 @@ sd(abcd):void{
     // }
 
   }
+  onrequote(){
+    let quoteid = this.contactForm3.get('quoted').value;
+    console.log(quoteid);
+    var username = localStorage.getItem('name');
+      var userrole = localStorage.getItem('Role');
+      console.log(userrole);
+      console.log(username)
+      if(userrole == "cs"){
+        var status = "Review"
+      }
+      const httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      };
+      return this.http.post<any>(environment.URL + '/requote', {quoteid:quoteid,username:username,userrole:userrole,reviewstatus:status,quotestatus:status},httpOptions ).subscribe((res: any) => { // not callback
+    console.log(res);
+        this.openSnackBar("Requote of quote is successfully submitted", "Dismiss")
+    }, error => {
+      console.error("Error", error);
+    });
+  }
   openduplicateDialog(quotedata) {
     const dialogRef = this.dialog.open(DuplicatedialogComponent,{
       width: '450px',
@@ -498,9 +582,8 @@ sd(abcd):void{
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-
    console.log("after closed ", result);
-
+   
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
   //  this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
   //  this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
@@ -518,9 +601,12 @@ sd(abcd):void{
   //  this.contactForm1.get('vehicleType').setValue(result['quotedata']['vehtype']);
    this.contactForm1.get('softtop').setValue(result['quotedata']['softop']);
    this.contactForm1.get('clienttype').setValue(result['quotedata']['ct']);
+   
    this.contactForm2.get('financed').setValue(result['quotedata']['financed']);
+   this.contactForm2.get('financed').disable();
    this.contactForm2.get('claimfree').setValue(result['quotedata']['claimfre']);
    let typeofcover = result['quotedata']['covertype'];
+
    if(typeofcover == "Third Party"){
     typeofcover = "TP"
    }
@@ -550,6 +636,7 @@ sd(abcd):void{
    this.contactForm3.get('annualgrosspremium').setValue(result['quotedata']['agp']);
    this.contactForm3.get('netprem').setValue(result['quotedata']['anp']);
    this.ncdvalue = result['quotedata']['autod'];
+   this.contactForm3.get('quoted').setValue(result['quotedata']['result']);
    this.driverdata = result['quotedata']['driverdata'];
    this.driverservice.driver(this.driverdata);
    console.log(this.driverdata);
@@ -635,6 +722,10 @@ sd(abcd):void{
       console.log(soft)
       let ct = this.contactForm1.get('clienttype').value;
       let finance = this.contactForm2.get('financed').value;
+      if(finance == null || finance == undefined){
+        finance = false
+      }
+      console.log(finance)
       let claimfre = this.contactForm2.get('claimfree').value;
       if(!claimfre){
         claimfre = 0
@@ -753,11 +844,16 @@ sd(abcd):void{
       let vehicletype = this.contactForm1.get('vehicleType').value;
       let soft = this.contactForm1.get('softtop').value;
       let ct = this.contactForm1.get('clienttype').value;
+      
       if(ct == null || ct == undefined){
         ct = false
       }
       console.log("client type in onsave"+ ct);
       let finance = this.contactForm2.get('financed').value;
+      if(finance == null || finance == undefined){
+        finance = false
+      }
+      console.log(finance);
       let claimfre = this.contactForm2.get('claimfree').value;
       let losspayee = this.contactForm2.get('losspay').value;
       let losslocation = this.contactForm2.get('lossloc').value;
@@ -776,6 +872,7 @@ sd(abcd):void{
       var netpre = this.contactForm3.get('netprem').value;
       var username = localStorage.getItem('name');
       var userrole = localStorage.getItem('Role');
+      console.log(userrole);
       if(userrole == "cs"){
         var status = "Review"
       }
@@ -807,6 +904,44 @@ sd(abcd):void{
       this.router.navigateByUrl('/home');
       // window.location.reload();
        })
+  }
+  OncountrySelected(Selectedcountry) {
+    
+    console.log('### Trigger');
+    var country = Selectedcountry['Country'];
+    console.log(Selectedcountry);
+    console.log(country);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.http.post<any>(environment.URL + '/zipcode', {Country:country},httpOptions).subscribe(result => {
+      console.log("-----------------------------------------");
+      this.summaries = result;
+      console.log(typeof(result));
+      console.log(result);
+    }, error => console.error(error));
+      
+      
+    
+  }
+  OnzipSelected(Selectedzip) {
+    
+    console.log('### Trigger');
+    
+    var zip = Selectedzip['Zipcode'];
+console.log(Selectedzip);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.http.post<any>(environment.URL + '/town', {Zipcode:zip},httpOptions).subscribe(result => {
+      console.log("-----------------------------------------");
+      this.towns = result;
+      console.log(typeof(result));
+      console.log(result);
+    }, error => console.error(error));
+      
+      
+    
   }
 }
 
