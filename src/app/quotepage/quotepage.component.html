@@ -212,7 +212,8 @@
   </mat-grid-tile>
 </mat-grid-list>
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" type="submit" style="margin-left:50px">Next</button>
+<button mat-raised-button color="primary" *ngIf="this.userrole != 'uw'" type="submit" style="margin-left:50px">Next</button>
+<button mat-raised-button color="primary" *ngIf="this.userrole != 'cs'" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">Next</button>
 </div></form>   </mat-tab>
 <mat-tab label="Coverage /Driver Details" [disabled]="true">
    
@@ -416,7 +417,7 @@
       -->
      
      
-        <button mat-raised-button color="primary" (click)="onSave()" style="margin-left:5px">Save</button>
+        <button mat-raised-button color="primary" (click)="onSave()" style="margin-left:5px">Submit For Review</button>
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
      
    

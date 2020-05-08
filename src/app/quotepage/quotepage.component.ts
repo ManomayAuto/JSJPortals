@@ -175,7 +175,8 @@ degreeTitleList = [];
 
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
-   
+    this.userrole = localStorage.getItem('Role');
+    console.log(this.userrole);
     this.contactForm1 = this.f1.group({
       EngineCC: ['',Validators.required],
       vehicleType: ['',Validators.required],
@@ -392,7 +393,7 @@ degreeTitleList = [];
   }
   displayFn(value) {
 
-    if (value.MakeModelC) { 
+    if (value.MakeModelCC) { 
     
       return value.MakeModelCC; }
     else if(value){
@@ -402,7 +403,10 @@ return value;
     }
   }
   displayFncountry(value) {
-    if (value) { return value.Country; }
+    if (value.Country) { return value.Country; }
+    else if(value){
+return value;
+    }
   }
   displayFnloss(value){
     if (value) { return value.Description; }
@@ -491,9 +495,22 @@ sd(abcd):void{
      this.contactForm1.get('idNumber').setValue(result['idno']);
      this.contactForm1.get('dob').setValue(result['phn']);
      this.contactForm1.get('dob1').setValue(result['email']);
-     this.contactForm1.get('clienttype').setValue(true);
+     if(result){
+      this.contactForm1.get('clienttype').setValue(true);
+     }
      
+     this.contactForm4.get('addressType').setValue(result['addresstype']);
+     this.contactForm4.get('streetName').setValue(result['street']);
+     var countri = result['country'];
+     this.displayFncountry(countri);
+     this.contactForm4.get('country').setValue(result['country']);
+     this.contactForm4.get('zipCode').setValue(result['zip']);
+    console.log(typeof(result['zip']));
+     this.summaries = result['zip'];
 
+
+    //  this.contactForm4.get('cityTown').setValue(result['town']);
+     this.towns = result['town'];
     // this.contactForm1 = this.f4.group({
     //   firstName: [result['name']],
     //   lastName:[result['lname']],
@@ -710,6 +727,14 @@ sd(abcd):void{
         }
       }
     
+  }
+  uwnext(tabName: string){
+    this.tabGroup._tabs['_results'][1].disabled = false;
+      for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
+          (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
+        }
+      }
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
