@@ -321,9 +321,12 @@ degreeTitleList = [];
     this.contactForm1.get('Use').setValue(result['use']);
     this.contactForm1.controls.vehicleType.setValue(result['vehtype']);
     this.educationLevelChangeAction(result['prod']);
-    this.contactForm1.get('softtop').setValue(result['softop']);
-    this.contactForm1.get('clienttype').setValue(result['ct']);
-    this.contactForm2.get('financed').setValue(result['financed']);
+    var softop = +result['softop'];
+   this.contactForm1.get('softtop').setValue(softop);
+   var ct = +result['ct'];
+   this.contactForm1.get('clienttype').setValue(ct);
+   var fin = +result['financed'];
+   this.contactForm2.get('financed').setValue(fin);
     this.contactForm2.get('claimfree').setValue(result['claimfre']);
     let typeofcover = result['covertype'];
     if(typeofcover == "Third Party"){
@@ -340,17 +343,22 @@ degreeTitleList = [];
       this.toggle1();
     }
     this.contactForm2.get('options1').setValue(typeofcover);
+    var layn = result['lpname'];
+    this.displayFnloss(layn); 
     this.contactForm2.get('losspay').setValue(result['lpname']);
     this.contactForm2.get('lossloc').setValue(result['lploc']);
     this.contactForm2.get('vehicleValue').setValue(result['vehvalue']);
-    this.contactForm2.get('alarm').setValue(result['alam']);
+    var alam = +result['alam']
+    this.contactForm2.get('alarm').setValue(alam);
     this.contactForm3.get('coverageinfo').setValue(result['covertype']);
     +this.contactForm3.get('manualloadp').setValue(result['manloadp']);
     this.contactForm3.get('manualloadr').setValue(result['manloadr']);
     +this.contactForm3.get('manualdisc').setValue(result['mandisp']);
     this.contactForm3.get('manualdiscr').setValue(result['mandisr']);
-    this.contactForm3.get('fleet').setValue(result['flet']);
-    this.contactForm3.get('promotion').setValue(result['prom']);
+    var flet = +result['flet']
+    this.contactForm3.get('fleet').setValue(flet);
+    var prom = +result['prom'];
+    this.contactForm3.get('promotion').setValue(prom);
     this.contactForm3.get('tax').setValue(result['tax']);
     this.contactForm3.get('annualgrosspremium').setValue(result['agp']);
     this.contactForm3.get('netprem').setValue(result['anp']);
@@ -409,7 +417,10 @@ return value;
     }
   }
   displayFnloss(value){
-    if (value) { return value.Description; }
+    if (value.Description) { return value.Description; }
+    else if(value){
+      return value;
+    }
   }
   toggle() {
     this.hide = this.show
@@ -486,41 +497,43 @@ sd(abcd):void{
   console.log("sa",this.abcd);
 
   dialogRef.afterClosed().subscribe(result => {
+if(result){
+  console.log("tbest",result);
+  this.contactForm1.get('firstName').setValue(result['name']);
+  this.contactForm1.get('lastName').setValue(result['lname']);
+  this.contactForm1.get('dab').setValue(result['dob']);
+  this.contactForm1.get('idType').setValue(result['idtype']);
+  this.contactForm1.get('idNumber').setValue(result['idno']);
+  this.contactForm1.get('dob').setValue(result['phn']);
+  this.contactForm1.get('dob1').setValue(result['email']);
+ 
+   this.contactForm1.get('clienttype').setValue(true);
+ 
+  
+  this.contactForm4.get('addressType').setValue(result['addresstype']);
+  this.contactForm4.get('streetName').setValue(result['street']);
+  var countri = result['country'];
+  this.displayFncountry(countri);
+  this.contactForm4.get('country').setValue(result['country']);
+  this.contactForm4.get('zipCode').setValue(result['zip']);
+ console.log(typeof(result['zip']));
+  this.summaries = result['zip'];
 
-    console.log("tbest",result);
-     this.contactForm1.get('firstName').setValue(result['name']);
-     this.contactForm1.get('lastName').setValue(result['lname']);
-     this.contactForm1.get('dab').setValue(result['dob']);
-     this.contactForm1.get('idType').setValue(result['idtype']);
-     this.contactForm1.get('idNumber').setValue(result['idno']);
-     this.contactForm1.get('dob').setValue(result['phn']);
-     this.contactForm1.get('dob1').setValue(result['email']);
-     if(result){
-      this.contactForm1.get('clienttype').setValue(true);
-     }
-     
-     this.contactForm4.get('addressType').setValue(result['addresstype']);
-     this.contactForm4.get('streetName').setValue(result['street']);
-     var countri = result['country'];
-     this.displayFncountry(countri);
-     this.contactForm4.get('country').setValue(result['country']);
-     this.contactForm4.get('zipCode').setValue(result['zip']);
-    console.log(typeof(result['zip']));
-     this.summaries = result['zip'];
 
+ //  this.contactForm4.get('cityTown').setValue(result['town']);
+  this.towns = result['town'];
+ // this.contactForm1 = this.f4.group({
+ //   firstName: [result['name']],
+ //   lastName:[result['lname']],
+ //   dab:[result['dob']],
+ //   idType:[result['idtype']],
+ //   idNumber:[result['idno']],
+ //   dob:[result['phn']],
+ //   dob1:[result['email']],
 
-    //  this.contactForm4.get('cityTown').setValue(result['town']);
-     this.towns = result['town'];
-    // this.contactForm1 = this.f4.group({
-    //   firstName: [result['name']],
-    //   lastName:[result['lname']],
-    //   dab:[result['dob']],
-    //   idType:[result['idtype']],
-    //   idNumber:[result['idno']],
-    //   dob:[result['phn']],
-    //   dob1:[result['email']],
-
-    // })
+ // })
+}
+ 
  
   })
 
@@ -594,14 +607,15 @@ sd(abcd):void{
       console.log(userrole);
       console.log(username)
       if(userrole == "cs"){
-        var status = "Review"
+        var status = "For Review"
+        var typeofaction = "Requote Request"
       }
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
-      return this.http.post<any>(environment.URL + '/requote', {quoteid:quoteid,username:username,userrole:userrole,reviewstatus:status,quotestatus:status},httpOptions ).subscribe((res: any) => { // not callback
+      return this.http.post<any>(environment.URL + '/requote', {quoteid:quoteid,username:username,userrole:userrole,reviewstatus:status,quotestatus:status,typeofaction:typeofaction},httpOptions ).subscribe((res: any) => { // not callback
     console.log(res);
-        this.openSnackBar("Requote of quote is successfully submitted", "Dismiss")
+        this.openSnackBar("Requote request has been submitted", "Dismiss")
     }, error => {
       console.error("Error", error);
     });
@@ -635,10 +649,16 @@ sd(abcd):void{
    var makey = result['quotedata']['make'];
    this.displayFn(makey);
    console.log(result['quotedata']['make']);
-   this.contactForm1.get('softtop').setValue(result['quotedata']['softop']);
-   this.contactForm1.get('clienttype').setValue(result['quotedata']['ct']);
-   
-   this.contactForm2.get('financed').setValue(result['quotedata']['financed']);
+   var softop = +result['quotedata']['softop'];
+   this.contactForm1.get('softtop').setValue(softop);
+   var ct = +result['quotedata']['ct'];
+   this.contactForm1.get('clienttype').setValue(ct);
+   var fin = +result['quotedata']['financed'];
+   this.contactForm2.get('financed').setValue(fin);
+   console.log("finacneeee"+result['quotedata']['financed']);
+  //  if(result['quotedata']['financed'] == 0){
+     
+  //  }
    this.contactForm2.get('financed').disable();
    this.contactForm2.get('claimfree').setValue(result['quotedata']['claimfre']);
    let typeofcover = result['quotedata']['covertype'];
@@ -657,17 +677,22 @@ sd(abcd):void{
      this.toggle1();
    }
    this.contactForm2.get('options1').setValue(typeofcover);
+   var layn = result['quotedata']['lpname'];
+   this.displayFnloss(layn); 
    this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
    this.contactForm2.get('lossloc').setValue(result['quotedata']['lploc']);
    this.contactForm2.get('vehicleValue').setValue(result['quotedata']['vehvalue']);
-   this.contactForm2.get('alarm').setValue(result['quotedata']['alam']);
+   var alam = +result['quotedata']['alam']
+   this.contactForm2.get('alarm').setValue(alam);
    this.contactForm3.get('coverageinfo').setValue(result['quotedata']['covertype']);
    +this.contactForm3.get('manualloadp').setValue(result['quotedata']['manloadp']);
    this.contactForm3.get('manualloadr').setValue(result['quotedata']['manloadr']);
    +this.contactForm3.get('manualdisc').setValue(result['quotedata']['mandisp']);
    this.contactForm3.get('manualdiscr').setValue(result['quotedata']['mandisr']);
-   this.contactForm3.get('fleet').setValue(result['quotedata']['flet']);
-   this.contactForm3.get('promotion').setValue(result['quotedata']['prom']);
+   var flet = +result['quotedata']['flet']
+   this.contactForm3.get('fleet').setValue(flet);
+   var prom = +result['quotedata']['prom'];
+   this.contactForm3.get('promotion').setValue(prom);
    this.contactForm3.get('tax').setValue(result['quotedata']['tax']);
    this.contactForm3.get('annualgrosspremium').setValue(result['quotedata']['agp']);
    this.contactForm3.get('netprem').setValue(result['quotedata']['anp']);
@@ -676,6 +701,16 @@ sd(abcd):void{
    this.driverdata = result['quotedata']['driverdata'];
    this.driverservice.driver(this.driverdata);
    console.log(this.driverdata);
+   var countri = result['country'];
+   this.displayFncountry(countri);
+   this.contactForm4.get('country').setValue(result['country']);
+  //  this.contactForm4.get('zipCode').setValue(result['zip']);
+  // console.log(typeof(result['zip']));
+  //  this.summaries = result['zip'];
+ 
+ 
+  //  this.contactForm4.get('cityTown').setValue(result['town']);
+   this.towns = result['town'];
    this.contactForm1.disable();
    this.contactForm2.disable();
    this.contactForm3.disable();

@@ -225,7 +225,7 @@
       <mat-grid-tile style="right: unset !important">
         <div class="text-inside" style="margin-left:15px;">
         Is your Vehicle Financed?
-          <mat-checkbox class="example-margin" formControlName="financed" (click)="toggle3()"></mat-checkbox>
+          <mat-checkbox class="example-margin" formControlName="financed" binary="true" (click)="toggle3()"></mat-checkbox>
         </div>
       </mat-grid-tile>
         <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
@@ -407,14 +407,14 @@
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
  
-  <!-- <button mat-raised-button color="primary" style="margin-left:5px">Print</button>
+  <button mat-raised-button color="primary" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Print</button>
  
  
-    <button mat-raised-button color="primary" style="margin-left:5px">Approve</button>
+    <button mat-raised-button color="primary" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
    
    
-      <button mat-raised-button color="primary" style="margin-left:5px">Decline</button>
-      -->
+      <button mat-raised-button color="primary" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
+     
      
      
         <button mat-raised-button color="primary" (click)="onSave()" style="margin-left:5px">Submit For Review</button>
