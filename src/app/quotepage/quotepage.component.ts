@@ -874,7 +874,10 @@ sd(abcd):void{
       var userrole = localStorage.getItem('Role');
       console.log(userrole);
       if(userrole == "cs"){
-        var status = "Review"
+        var status = "For Review"
+      }
+      if(userrole == "cs"){
+        var typeofaction = "Referral Review"
       }
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -883,7 +886,7 @@ sd(abcd):void{
         emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
         losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
         manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-        driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,username:username,userrole:userrole,reviewstatus:status,quotestatus:status},httpOptions ).subscribe((res: any) => { // not callback
+        driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:status,quotestatus:status},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res.result);
         let qd = res.result;
         console.log("in on save");
