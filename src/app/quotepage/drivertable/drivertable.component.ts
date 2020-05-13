@@ -119,10 +119,24 @@ removeAt(index: number) {
   
 }
 editUser(user) {
+  console.log(user);
+  console.log(user.Driverclient);
+  console.log(user.claimhistory);
+  console.log(user.drunk);
+  console.log(user.lossclaim);
+  console.log(user.physical);
+  console.log(user.previous);
+  user.Driverclient = +user.Driverclient;
+  user.claimhistory = +user.claimhistory;
+  user.drunk = +user.drunk;
+  user.lossclaim = +user.lossclaim;
+  user.physical = +user.physical;
+  user.previous = +user.previous;
   const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
     width: '1350px',
     height: '600px',
     data: user
+  
   });
 
   dialogRef.afterClosed().subscribe(result => {

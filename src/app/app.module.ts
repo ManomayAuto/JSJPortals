@@ -46,6 +46,8 @@ import {driverservice} from './quotepage/quotepage.component';
 import { from } from 'rxjs';
 import { QtableService } from './_services/qtable.service';
 
+import { QletterdialogComponent } from './quotepage/qletterdialog/qletterdialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +72,8 @@ import { QtableService } from './_services/qtable.service';
     SearchclientdialogComponent,
     DuplicatedialogComponent,
     NewquotedialogComponent,
-    DialogOverviewExampleDialog
+    DialogOverviewExampleDialog,
+    QletterdialogComponent
   ],
   imports: [
     BrowserModule,
@@ -121,6 +124,6 @@ import { QtableService } from './_services/qtable.service';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents:[NewquotedialogComponent,DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent,DialogOverviewExampleDialog]
+  entryComponents:[NewquotedialogComponent,QletterdialogComponent,DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent,DialogOverviewExampleDialog]
 })
 export class AppModule { }
