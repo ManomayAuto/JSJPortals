@@ -56,7 +56,7 @@
                   </ng-container>
                   <ng-container matColumnDef="Action" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
-                    <mat-cell data-label="Action"  *matCellDef="let element"> <button mat-button  *ngIf="this.role != 'cs'" (click)="getRecord(element.quoteid)"  style="color:rgb(19, 152, 204)">Pickup for Review</button></mat-cell>
+                    <mat-cell data-label="Action"  *matCellDef="let element"> <button mat-button *ngIf="this.role != 'cs'"  (click)="getRecord(element.quoteid,element.reviewerusername)"  style="color:rgb(19, 152, 204)">Pickup for Review</button></mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns;">

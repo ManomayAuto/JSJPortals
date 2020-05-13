@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { SimpleNotificationsComponent } from 'angular2-notifications';
 import { NotificationsService } from 'angular2-notifications';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, MatSnackBar} from '@angular/material';
 import { QtableService } from 'src/app/_services/qtable.service';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { DOCUMENT } from '@angular/common';
@@ -35,10 +35,12 @@ export class ReviewtableComponent implements OnInit {
   @ViewChild(MatPaginator, {static:true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   role: string;
+  name: string;
+  message: string;
 
   constructor( private userService : QtableService,
     @Inject(DOCUMENT) private _document: Document,
-    private http:HttpClient, private router : Router
+    private http:HttpClient, private router : Router,public snackBar: MatSnackBar
     ) { }
 
 ngOnInit(){
@@ -54,17 +56,34 @@ ngOnInit(){
 }
 
 
-getRecord(quoteid){
+getRecord(quoteid,reviewerusername){
+  this.name = localStorage.getItem('name');
+  this.message="Quote is already picked up by " +reviewerusername;
+  console.log(reviewerusername);
+  console.log(this.name);
+  if(reviewerusername == null || reviewerusername ==this.name){
   console.log("rev quoteid",quoteid);
-
-  //  Set as(any)
-  //   {
-  //     this.dataService.SharedData = result;
-  //   }
+  var reviewstatus = "In Progress"
+  var userrole = localStorage.getItem('Role');
+  var name = localStorage.getItem('name');
+  const httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+  return this.http.post<any>(environment.URL + '/undquotestatus', {quoteid:quoteid,reviewstatus:reviewstatus,userrole:userrole,name:name},httpOptions ).
+  subscribe((res: any) => {
     this.router.navigate(['/quotepage',{title:quoteid}]);
+  });
 
+  }
+  else{
+    this.snackBar.open(this.message, "Dismiss", {
+      duration: 1000,
+    }); 
+  }
 
 }
+
+
 
 }
 

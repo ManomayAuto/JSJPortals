@@ -705,6 +705,7 @@ sd(abcd):void{
   //   console.log("in pre")
   // }
   moveToSelectedTab1(tabName: string) {
+   if(this.child.driverdata.length !=0){
     if(this.contactForm2.valid){
       this.tabGroup._tabs['_results'][2].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
@@ -713,11 +714,16 @@ sd(abcd):void{
         }
       }
       this.onSubmit();
+      console.log("drivertable values",this.child.driverdata);
     }
     else{
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
     }
-  }
+ }
+ else{
+  this.openSnackBar("Atleast one driver should be added", "Dismiss")
+}
+}
   moveToSelectedTab2(tabName: string) {
  
       this.tabGroup._tabs['_results'][3].disabled = false;
