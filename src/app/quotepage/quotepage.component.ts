@@ -1,4 +1,4 @@
-import { Component, Injectable,OnInit,AfterViewInit, ViewChild, ViewChildren, EventEmitter ,QueryList} from '@angular/core';
+import { Component, Injectable,OnInit,AfterViewInit, ViewChild, ViewChildren, EventEmitter ,QueryList, Output} from '@angular/core';
 import {FormGroup, FormBuilder, FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 
 import {switchMap, debounceTime, tap, finalize, isEmpty} from 'rxjs/operators';
@@ -16,8 +16,8 @@ import {SearchclientdialogComponent} from './searchclientdialog/searchclientdial
 import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
 import { DrivertableComponent } from './drivertable/drivertable.component';
 import {NewquotedialogComponent} from './newquotedialog/newquotedialog.component';
-
-import { Observable, of, Subscription,zip } from 'rxjs';
+import {QletterdialogComponent} from './qletterdialog/qletterdialog.component';
+import { Observable, of, Subscription,zip, Subject } from 'rxjs';
 import {Router, ActivatedRoute} from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 
@@ -71,6 +71,7 @@ export class driverservice {
     this.$data.emit(driverdata);
   }
 }
+
 @Component({
   selector: 'app-quotepage',
   templateUrl: './quotepage.component.html',
@@ -126,6 +127,8 @@ degreeTitleList = [];
   // search: any;
   search: any = [];
   abc: any;
+  Selectedzip: any;
+  Selectedtown: any;
   
   educationLevelChangeAction(education) {
     this.exam_title="";
@@ -223,6 +226,7 @@ degreeTitleList = [];
     netpremusd: [''],
     remarks: [''],
     quoted: [''],
+    deductibles:  [''],
      });
 
      this.contactForm4 = this.f4.group({
@@ -237,7 +241,6 @@ degreeTitleList = [];
       currency:  ['',Validators.required],
       businessClass:  ['',Validators.required],
       branch:  ['',Validators.required],
-      deductibles:  [''],
       EngineNumber:  ['',Validators.required],
     });
     
@@ -344,8 +347,14 @@ degreeTitleList = [];
     }
     this.contactForm2.get('options1').setValue(typeofcover);
     var layn = result['lpname'];
+    if(layn != null || layn != undefined)
+   {
     this.displayFnloss(layn); 
-    this.contactForm2.get('losspay').setValue(result['lpname']);
+    this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+   }
+   else{
+     console.log("not in layn");
+   }
     this.contactForm2.get('lossloc').setValue(result['lploc']);
     this.contactForm2.get('vehicleValue').setValue(result['vehvalue']);
     var alam = +result['alam']
@@ -411,16 +420,18 @@ return value;
     }
   }
   displayFncountry(value) {
-    if (value.Country) { return value.Country; }
-    else if(value){
-return value;
-    }
+    if(value.Country){
+      return value.Country;
+          }
+    else if (value) { return value; }
+    
   }
   displayFnloss(value){
-    if (value.Description) { return value.Description; }
-    else if(value){
-      return value;
+   
+    if(value.Description){
+      return value.Description;
     }
+    else if (value) { return value; }
   }
   toggle() {
     this.hide = this.show
@@ -513,15 +524,30 @@ if(result){
   this.contactForm4.get('addressType').setValue(result['addresstype']);
   this.contactForm4.get('streetName').setValue(result['street']);
   var countri = result['country'];
-  this.displayFncountry(countri);
-  this.contactForm4.get('country').setValue(result['country']);
-  this.contactForm4.get('zipCode').setValue(result['zip']);
- console.log(typeof(result['zip']));
-  this.summaries = result['zip'];
-
-
- //  this.contactForm4.get('cityTown').setValue(result['town']);
-  this.towns = result['town'];
+ 
+  if(countri != null || countri != undefined)
+   {
+    this.displayFncountry(countri);
+    this.contactForm4.get('country').setValue(result['country']);
+   }
+   else{
+     console.log("not in countri");
+   }
+  
+//   this.contactForm4.get('zipCode').setValue(result['zip']);
+//  console.log(typeof(result['zip']));
+  // this.summaries = Array.of(result['zip']);
+  this.summaries = [{Zipcode: result['zip']}];
+  this.towns = [{Town: result['town']}];
+  this.Selectedzip = this.summaries[0];
+  this.Selectedtown = this.towns[0];
+//   this.contactForm4.get('zipCode').setValue(this.summaries[0]);
+//  console.log(this.summaries);
+  
+  // this.towns = Array.of(result['town']);
+  
+  // this.contactForm4.get('cityTown').setValue(this.towns[0]);
+  // console.log(this.towns);
  // this.contactForm1 = this.f4.group({
  //   firstName: [result['name']],
  //   lastName:[result['lname']],
@@ -678,8 +704,14 @@ if(result){
    }
    this.contactForm2.get('options1').setValue(typeofcover);
    var layn = result['quotedata']['lpname'];
-   this.displayFnloss(layn); 
-   this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+   if(layn != null || layn != undefined)
+   {
+    this.displayFnloss(layn); 
+    this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+   }
+   else{
+     console.log("not in layn");
+   }
    this.contactForm2.get('lossloc').setValue(result['quotedata']['lploc']);
    this.contactForm2.get('vehicleValue').setValue(result['quotedata']['vehvalue']);
    var alam = +result['quotedata']['alam']
@@ -702,8 +734,15 @@ if(result){
    this.driverservice.driver(this.driverdata);
    console.log(this.driverdata);
    var countri = result['country'];
-   this.displayFncountry(countri);
-   this.contactForm4.get('country').setValue(result['country']);
+   if(countri != null || countri != undefined)
+   {
+    this.displayFncountry(countri);
+    this.contactForm4.get('country').setValue(result['country']);
+   }
+   else{
+     console.log("not in countri");
+   }
+  
   //  this.contactForm4.get('zipCode').setValue(result['zip']);
   // console.log(typeof(result['zip']));
   //  this.summaries = result['zip'];
@@ -987,6 +1026,35 @@ if(result){
       // window.location.reload();
        })
   }
+  onquoteletter(){
+    console.log("in qlet");
+    let first = this.contactForm1.get('firstName').value;
+      let last = this.contactForm1.get('lastName').value;
+      let prod = this.contactForm1.get('Product').value;
+      let make = this.contactForm1.get('userInput').value;
+      let losspayee = this.contactForm2.get('losspay').value;
+      let netpre = this.contactForm3.get('netprem').value;
+      let deduct = this.contactForm3.get('deductibles').value;
+      console.log("drivertable values",this.child.driverdata);
+      console.log(this.child.driverdata[0]['Driverwar']);
+      let driverwar = this.child.driverdata[0]['Driverwar'];
+      let promotion = this.contactForm3.get('promotion').value;
+      let username = localStorage.getItem('name');
+      var quotedata ={first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar};
+    // this.quoteletterservice.quoteletter(quotedata);
+    
+    this.openquotelet(quotedata);
+  }
+  openquotelet(quotedata) {
+    const dialogRef1 = this.dialog.open(QletterdialogComponent,{
+      width: '1350px',
+  
+      height: '800px',
+      
+      data:{quotedata:quotedata,},
+    });
+    
+  }
   OncountrySelected(Selectedcountry) {
     
     console.log('### Trigger');
@@ -1025,5 +1093,6 @@ console.log(Selectedzip);
       
     
   }
+
 }
 
