@@ -14,24 +14,20 @@
               </div> -->
               <div class="example-container mat-elevation-z8">
       
-                <mat-table [dataSource]="dataSource" matSort>
+                <mat-table #MatSort="matSort" [dataSource]="this.allSource" matSort>
               
-                  <!-- ID Column -->
-                  <ng-container matColumnDef="Sno">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> S.No </mat-header-cell>
-                    <mat-cell data-label="Sno" *matCellDef="let element">{{element.Sno}}  </mat-cell>
-                  </ng-container>
+                 
               
                   <!-- Progress Column -->
-                  <ng-container matColumnDef="QuoteID">
+                  <ng-container matColumnDef="quoteid">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Quote ID </mat-header-cell>
-                    <mat-cell data-label="QuoteID" *matCellDef="let element"> {{element.QuoteID}}  </mat-cell>
+                    <mat-cell data-label="quoteid" *matCellDef="let element"> {{element.quoteid}}  </mat-cell>
                   </ng-container>
               
                   <!-- Name Column -->
                   <ng-container matColumnDef="Add">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
-                    <mat-cell data-label="Status" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">{{element.Add}}</button></mat-cell>
+                    <mat-cell data-label="Status" *matCellDef="let element"><button mat-button style="color:rgb(19, 152, 204)">Add Details</button></mat-cell>
                   </ng-container>
               
                  

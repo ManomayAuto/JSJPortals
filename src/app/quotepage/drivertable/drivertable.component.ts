@@ -85,7 +85,7 @@ export class DrivertableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      console.log("test2",result);
+      console.log("testtable2",result);
       if(result){
       this.driverdata.push(result);
       if(this.driverdata.length<=5){

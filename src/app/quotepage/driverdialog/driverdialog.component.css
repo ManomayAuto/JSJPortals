@@ -16,11 +16,18 @@
   .mat-raised-button.mat-primary {
     background-color: #6cc6f0;
 }
+.mat-raised-button.mat-primary:disabled {
+  background-color:#9ea7a8;
+}
+
 mat-form-field {
   width: 300px;
   right: initial !important;
   margin-left: 15px;
   
+}
+button:disabled{
+  background-color: #9ea7a8;
 }
 .example-margin {
   margin: 0 10px;

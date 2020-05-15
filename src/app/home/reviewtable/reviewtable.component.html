@@ -15,7 +15,7 @@
               </div>
               <div class="example-container mat-elevation-z8">
       
-                <mat-table [dataSource]="this.dataSource" matSort>
+                <mat-table #MatSort="matSort" [dataSource]="this.allSource" matSort>
               
                   <!-- ID Column -->
                   <!-- <ng-container matColumnDef="Sno">

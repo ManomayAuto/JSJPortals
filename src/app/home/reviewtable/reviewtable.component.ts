@@ -37,6 +37,7 @@ export class ReviewtableComponent implements OnInit {
   role: string;
   name: string;
   message: string;
+  allSource: MatTableDataSource<import("c:/Users/consultants1/git us/JSJPortals/src/app/models/user.model").User>;
 
   constructor( private userService : QtableService,
     @Inject(DOCUMENT) private _document: Document,
@@ -47,16 +48,24 @@ ngOnInit(){
   this.role=localStorage.getItem('Role');
   console.log("role",this.role != 'cs');
   this.userService.getUser().subscribe(results => {
-    console.log("Qtable",results);
+   //console.log("Qtable",results);
     this.dataSource = new MatTableDataSource(results);
-    this.dataSource.paginator = this.paginator;
+    //try
+    const filterred = "Completed";
+    const result0 = results.filter(user => {
+      return user.reviewstatus != filterred;
+    }); 
+   // console.log("trial",result0)
+    this.allSource = new MatTableDataSource(result0);
+    this.allSource.paginator = this.paginator;
+    this.allSource.sort = this.sort;
   }, error =>{
       console.log(error);
   })
 }
 
 
-getRecord(quoteid,reviewerusername){
+getRecord(quoteid,reviewerusername){ 
   this.name = localStorage.getItem('name');
   this.message="Quote is already picked up by " +reviewerusername;
   console.log(reviewerusername);
