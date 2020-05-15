@@ -47,7 +47,7 @@ import { from } from 'rxjs';
 import { QtableService } from './_services/qtable.service';
 
 import { QletterdialogComponent } from './quotepage/qletterdialog/qletterdialog.component';
-
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 @NgModule({
   declarations: [
     AppComponent,
@@ -114,6 +114,7 @@ import { QletterdialogComponent } from './quotepage/qletterdialog/qletterdialog.
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    PDFExportModule,
     // HttpClientInMemoryWebApiModule.forRoot(
     //   InMemDataService, { dataEncapsulation: false, passThruUnknownUrl: true,delay: 1000 }
     //   ),

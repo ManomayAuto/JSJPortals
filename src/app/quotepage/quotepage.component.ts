@@ -126,6 +126,8 @@ degreeTitleList = [];
   abcd : any = [];
   // search: any;
   search: any = [];
+  manualloadlist=[];
+  manualdisclist=[];
   abc: any;
   Selectedzip: any;
   Selectedtown: any;
@@ -158,6 +160,7 @@ degreeTitleList = [];
   contactForm4 : FormGroup;
   searchdata : any;
   selectedvehtype :any;
+  actionvalue: string;
   test(a) {
     if(a.index == 2){
       this.onSubmit();
@@ -179,6 +182,47 @@ degreeTitleList = [];
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
     this.userrole = localStorage.getItem('Role');
+    if(this.userrole == "cs"){
+      console.log("inarr")
+    this.manualloadlist = [
+    
+          { id : 10, manpercentage: '10%'},
+        { id : 15, manpercentage: '15%'},
+      ];
+    this.manualdisclist =[
+      { id : 5, manpercentage: '5%'},
+      { id : 10, manpercentage: '10%'},
+    ];
+    }
+    else{
+      this.manualloadlist = [
+          { id : 10, manpercentage: '10%'},
+        { id : 15, manpercentage: '15%'},
+        { id : 20, manpercentage: '20%'},
+        { id : 25, manpercentage: '25%'},
+        { id : 30, manpercentage: '30%'},
+        { id : 35, manpercentage: '35%'},
+        { id : 40, manpercentage: '40%'},
+        { id : 45, manpercentage: '45%'},
+        { id : 50, manpercentage: '50%'},
+        { id : 55, manpercentage: '55%'},
+        { id : 60, manpercentage: '60%'},
+        { id : 65, manpercentage: '65%'},
+        { id : 70, manpercentage: '70%'},
+        { id : 75, manpercentage: '75%'},
+        { id : 80, manpercentage: '80%'},
+        { id : 85, manpercentage: '85%'},
+        { id : 90, manpercentage: '90%'},
+        { id : 95, manpercentage: '95%'},
+        { id : 100, manpercentage: '100%'},
+      ];
+      this.manualdisclist =[
+        { id : 5, manpercentage: '5%'},
+        { id : 10, manpercentage: '10%'},
+        { id : 15, manpercentage: '15%'},
+        { id : 20, manpercentage: '20%'},
+      ];
+    }
     console.log(this.userrole);
     this.contactForm1 = this.f1.group({
       EngineCC: ['',Validators.required],
@@ -373,6 +417,7 @@ degreeTitleList = [];
     this.contactForm3.get('netprem').setValue(result['anp']);
     this.ncdvalue = result['autod'];
     this.driverdata = result['driverdata'];
+    this.contactForm3.get('quoted').setValue(result['quoteid']);
     this.driverservice.driver(this.driverdata);
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
@@ -863,12 +908,14 @@ if(result){
       let alam = this.contactForm2.get('alarm').value;
       let coverinfo = this.contactForm3.get('coverageinfo').value;
       let manload = +this.contactForm3.get('manualloadp').value;
+      console.log(manload);
       if(manload == null || manload == undefined){
         manload = 0
       }
       else{
         manload =(+manload) / 100;
       }
+      console.log(manload);
       let manloadr = this.contactForm3.get('manualloadr').value;
       let manualdis = +this.contactForm3.get('manualdisc').value;
       if(manualdis == null || manualdis == undefined){
@@ -877,6 +924,7 @@ if(result){
       else{
        manualdis = (+manualdis) / 100;
       }
+      console.log(manualdis);
       let manualdiscr = this.contactForm3.get('manualdiscr').value;
       let fleet = this.contactForm3.get('fleet').value;
       console.log(fleet)
@@ -947,7 +995,9 @@ if(result){
       console.error("Error", error);
     });
   }
-  onSave(){
+  onSave(action){
+    var actionvalue = action;
+    console.log(actionvalue);
     this.onSubmit();
     console.log("drivertable values",this.child.driverdata);
       let first = this.contactForm1.get('firstName').value;
@@ -997,27 +1047,56 @@ if(result){
       var username = localStorage.getItem('name');
       var userrole = localStorage.getItem('Role');
       console.log(userrole);
+      
+      // var target = event.target || event.srcElement || event.currentTarget;
+      // var idAttr = target.attributes.id;
+      // var actionvalue = idAttr.value;
+      // console.log(actionvalue);
+      // console.log(String(actionvalue));
       if(userrole == "cs"){
-        var status = "For Review"
-      }
-      if(userrole == "cs"){
+        var quotestatus = "For Review"
+        var reviewstatus = "For Review"
         var typeofaction = "Referral Review"
+      }
+      else{
+        var quotestatus = String(actionvalue);
+      }
+      if(actionvalue == "Active" || actionvalue =="Decline"){
+        var reviewstatus = "Completed"
       }
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
-      return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
-        emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
-        losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
-        manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-        driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:status,quotestatus:status},httpOptions ).subscribe((res: any) => { // not callback
-        console.log(res.result);
-        let qd = res.result;
-        console.log("in on save");
-        this.openquoteDialog(qd);
-    }, error => {
-      console.error("Error", error);
-    });
+      if(actionvalue == "Save"){
+        return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
+          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+          losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
+          manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
+          driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus},httpOptions ).subscribe((res: any) => { // not callback
+          console.log(res.result);
+          let qd = res.result;
+          console.log("in on save");
+          this.openquoteDialog(qd);
+      }, error => {
+        console.error("Error", error);
+      });
+      }
+      
+      else if(actionvalue == "Active" || actionvalue == "Decline"){
+        let quoteid = this.contactForm3.get('quoted').value;
+        return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
+          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+          losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
+          manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
+          driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus},httpOptions ).subscribe((res: any) => { // not callback
+
+          console.log("in on save-Approve or Decline");
+          this.openSnackBar("Request has been Submitted", "Dismiss");
+      
+      }, error => {
+        console.error("Error", error);
+      });
+      }
   }
   openquoteDialog(quoteid) {
     const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
@@ -1041,12 +1120,13 @@ if(result){
       let losspayee = this.contactForm2.get('losspay').value;
       let netpre = this.contactForm3.get('netprem').value;
       let deduct = this.contactForm3.get('deductibles').value;
+      let cover = this.contactForm3.get('coverageinfo').value;
       console.log("drivertable values",this.child.driverdata);
       console.log(this.child.driverdata[0]['Driverwar']);
-      let driverwar = this.child.driverdata[0]['Driverwar'];
+      let driverwar = this.child.driverdata[0]['Driverwar'].viewValue;
       let promotion = this.contactForm3.get('promotion').value;
       let username = localStorage.getItem('name');
-      var quotedata ={first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar};
+      var quotedata ={cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar};
     // this.quoteletterservice.quoteletter(quotedata);
     
     this.openquotelet(quotedata);

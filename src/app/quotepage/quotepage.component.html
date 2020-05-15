@@ -356,12 +356,24 @@
         </div>
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="iwqt">Manual Load</label></div>
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><input type="number" placeholder="" onKeyPress="if(this.value.length==3) return false;" min="0" max="100" formControlName="manualloadp" class="form-control"/></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3">
+              <select class="form-control" formControlName="manualloadp">
+                <option *ngFor="let manual of manualloadlist" [value]="manual.id">
+                  {{manual.manpercentage}}
+                </option>
+              </select></div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><textarea rows="1" placeholder="Reason for Load" formControlName="manualloadr" class="form-control"></textarea></div>
         </div>
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ivm9j">Manual Discount</label></div>
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><input type="number" placeholder="" onKeyPress="if(this.value.length==3) return false;" min="0" max="100" formControlName="manualdisc" class="form-control"/></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3">
+              <select class="form-control" formControlName="manualdisc">
+                <option *ngFor="let manual of manualdisclist" [value]="manual.id">
+                  {{manual.manpercentage}}
+                </option>
+              </select>
+        
+            </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><textarea rows="1" placeholder="Reason for discount" formControlName="manualdiscr" class="form-control"></textarea></div>
         </div>
         <div class="row">
@@ -403,9 +415,9 @@
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ii72f">Remarks</label></div>
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><textarea rows="2" formControlName="remarks" class="form-control"></textarea></div>
         </div>
-        <div *ngIf="isduplicate" class="row">
-            <div *ngIf="isduplicate" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote ID</label></div>
-            <div *ngIf="isduplicate" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="quoted" class="form-control" /></div>
+        <div *ngIf="isduplicate || this.userrole != 'cs'" class="row">
+            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote ID</label></div>
+            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="quoted" class="form-control" /></div>
         </div>
         <button mat-raised-button color="primary" (click)="onSubmit()" style="float: right;margin-bottom: 20px;">Generate Premium</button>
 
@@ -414,14 +426,14 @@
   <a mat-raised-button color="primary" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</a>
  
  
-    <button mat-raised-button color="primary" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
+    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
    
    
-      <button mat-raised-button color="primary" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
+      <button mat-raised-button color="primary" #Decline (click)="onSave('Decline')" id="Decline" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
      
      
-        <button mat-raised-button color="primary" (click)="onSave()" style="margin-left:5px">Submit For Review</button>
+        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" style="margin-left:5px">Submit For Review</button>
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
      
    
