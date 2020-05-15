@@ -27,6 +27,7 @@ export class QletterdialogComponent implements OnInit {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 2
   }
   @ViewChild('content',{static:false}) content: ElementRef;
+
 public export(){
 let doc = new jsPDF();
 let specialElementHandlers = {
