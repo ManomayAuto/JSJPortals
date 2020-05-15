@@ -1120,12 +1120,13 @@ if(result){
       let losspayee = this.contactForm2.get('losspay').value;
       let netpre = this.contactForm3.get('netprem').value;
       let deduct = this.contactForm3.get('deductibles').value;
+      let cover = this.contactForm3.get('coverageinfo').value;
       console.log("drivertable values",this.child.driverdata);
       console.log(this.child.driverdata[0]['Driverwar']);
-      let driverwar = this.child.driverdata[0]['Driverwar'];
+      let driverwar = this.child.driverdata[0]['Driverwar'].viewValue;
       let promotion = this.contactForm3.get('promotion').value;
       let username = localStorage.getItem('name');
-      var quotedata ={first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar};
+      var quotedata ={cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar};
     // this.quoteletterservice.quoteletter(quotedata);
     
     this.openquotelet(quotedata);
