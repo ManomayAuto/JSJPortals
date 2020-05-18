@@ -48,14 +48,14 @@ ngOnInit(){
   this.role=localStorage.getItem('Role');
   console.log("role",this.role != 'cs');
   this.userService.getUser().subscribe(results => {
-   //console.log("Qtable",results);
+  console.log("Qtable",results);
     this.dataSource = new MatTableDataSource(results);
     //try
     const filterred = "Completed";
     const result0 = results.filter(user => {
       return user.reviewstatus != filterred;
     }); 
-   // console.log("trial",result0)
+   console.log("trial",result0)
     this.allSource = new MatTableDataSource(result0);
     this.allSource.paginator = this.paginator;
     this.allSource.sort = this.sort;

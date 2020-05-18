@@ -38,5 +38,4 @@ this.user = this.data['quotedata']['username'];
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 2
   }
-  
 }

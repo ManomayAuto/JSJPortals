@@ -638,6 +638,9 @@ if(result){
 
       }
       let soft = this.contactForm1.get('softtop').value;
+      // if(soft==0){
+      //   soft=false;
+      // }
       console.log(soft)
       let ct = this.contactForm1.get('clienttype').value;
       const httpOptions = {

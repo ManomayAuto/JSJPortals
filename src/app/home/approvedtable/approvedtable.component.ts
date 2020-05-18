@@ -29,7 +29,7 @@ export class ApprovedtableComponent implements OnInit {
     private http:HttpClient, private router : Router,public snackBar: MatSnackBar) { }
 
  
-  displayedColumns = ['quoteid', 'Add',];
+  displayedColumns = ['quoteid', 'initiatedusername','Add',];
   
   dataSource;
   
@@ -52,5 +52,8 @@ export class ApprovedtableComponent implements OnInit {
     }, error =>{
         console.log(error);
     })
+  }
+  getRecord(quoteid){ 
+    this.router.navigate(['/quotepage',{title:quoteid}]);
   }
 }
