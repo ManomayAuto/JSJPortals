@@ -212,8 +212,8 @@
   </mat-grid-tile>
 </mat-grid-list>
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" *ngIf="this.userrole != 'uw'" type="submit" style="margin-left:50px">Next</button>
-<button mat-raised-button color="primary" *ngIf="this.userrole != 'cs'" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">Next</button>
+<button mat-raised-button color="primary" *ngIf="this.userrole != 'uw' && !this.dupnext" type="submit" style="margin-left:50px">Next</button>
+<button mat-raised-button color="primary" *ngIf="this.userrole != 'cs' || this.dupnext" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">uwNext</button>
 </div></form>   </mat-tab>
 <mat-tab label="Coverage /Driver Details" [disabled]="true">
    
@@ -230,10 +230,10 @@
       </mat-grid-tile>
         <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
         <div class="text-inside" *ngIf="(sho)">
-          <mat-form-field class="example-full-width">
-            <input type="text" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
+          <mat-form-field class="example-full-width" *ngIf="(sho)">
+            <input type="text" [(ngModel)]="Selectedlosspay" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
             <mat-autocomplete #lossauto="matAutocomplete" [displayWith]="displayFnloss">
-              <mat-option *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
+              <mat-option (click)="OnlossSelected(Selectedlosspay)" *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
                 {{lossoption.Description}}
               </mat-option>
             </mat-autocomplete>
@@ -243,8 +243,13 @@
    
   <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
     <div class="text-inside" *ngIf="(sho)">
-      <mat-form-field>
-        <input matInput type="text" placeholder="Loss Payee Location" formControlName="lossloc">
+      <mat-form-field *ngIf="(sho)">
+        <mat-select placeholder="Loss Payee Location" formControlName="lossloc">
+          <mat-option *ngFor="let data of lossaddress" [value]="data" style="line-height:normal;white-space: normal;">
+            {{data.lossad}}
+        </mat-option>
+        </mat-select>
+   
       </mat-form-field>
     </div>
   </mat-grid-tile>
@@ -328,8 +333,7 @@
 </mat-tab>
 <mat-tab label="Premium Summary" [disabled]="true">
   
-  <!-- <form fxLayout="column" (ngSubmit)='moveToSelectedTab2("Additional Details")' [formGroup]="contactForm3"> -->
-    <form fxLayout="column" [formGroup]="contactForm3">
+  <form fxLayout="column" [formGroup]="contactForm3">
       <div class="container" style="width:1000px">
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="i6h9k">Coverage Information</label></div>
@@ -348,6 +352,8 @@
                
                   </mat-expansion-panel-header>
                   NCD {{ncdvalue}}
+                  Extra{{extraprem}}
+                  Prom{{prom}}
                 </mat-expansion-panel>
              
               </mat-accordion>
@@ -437,7 +443,7 @@
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
      
    
-        <button mat-raised-button color="primary" style="margin-left:5px" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
+        <button mat-raised-button color="primary" style="margin-left:5px" *ngIf="isaddfinal" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
         </div>
     </div>
 
@@ -519,9 +525,9 @@
 
 </form>
 </mat-tab>
-<!-- <mat-tab label="Additional Details" [disabled]="true"> -->
-<mat-tab label="Additional Details">
-  <form fxLayout="column" [formGroup]="contactForm4">
+<mat-tab label="Additional Details" [disabled]="true">
+<!-- <mat-tab label="Additional Details"> -->
+  <form fxLayout="column" (ngSubmit)='addsubmit()' [formGroup]="contactForm4">
   <mat-card>Personal Details</mat-card> <mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
 
  
@@ -688,7 +694,7 @@
 </mat-grid-list>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" style="margin-left:50px">Submit</button>
+<button mat-raised-button #Final (click)="onSave('Final')" id="Final" color="primary" style="margin-left:50px">Submit</button>
 </div> </form> </mat-tab>
 </mat-tab-group></mat-tab></mat-tab-group>
 
