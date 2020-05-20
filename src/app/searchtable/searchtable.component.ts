@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 
@@ -37,7 +37,8 @@ export class SearchtableComponent implements OnInit {
   quoteidFilter = new FormControl();
   filteredValues = { name:'', dob:'',product:'',
   quoteid:'', edit:''};
-
+  //SearchForm: FormGroup;
+ 
   constructor(private http:HttpClient) { }
 ngOnInit() {
  
@@ -92,12 +93,14 @@ ngOnInit() {
   }
  
 
-  onSe1arch(){
+  onSearch1(){
+    
+    console.log("name",this.nameFilter.value,this.quoteidFilter.value,this.dobFilter.value);
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     console.log("searchdone");
-    this.http.post<any>(environment.URL + `/searchquote`, {quote:'PVICBPC-00018',DOB:'1984-02-03' },httpOptions).subscribe((result) => { 
+    this.http.post<any>(environment.URL + `/searchquote`, {name:this.nameFilter.value,quote:this.quoteidFilter.value,DOB:this.dobFilter.value },httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result)
     });  
     console.log("searchdone!!!!");
