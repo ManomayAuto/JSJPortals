@@ -57,7 +57,7 @@ export class AuthenticationService{
         localStorage.setItem("Role",Message);
       }
       let Message1 = "uw Manager";
-      if(data.permissions=='QI,QRU,QRP'){
+      if(data.permissions=='QI,QRU,QRP' || data.permissions == 'QI,QRU,QRM'){
         console.log("try sdad"); 
         localStorage.setItem("Role",Message1);
       }
