@@ -31,27 +31,27 @@
                 <mat-table [dataSource]="dataSource" matSort>
               
                   <!-- ID Column -->
-                  <ng-container matColumnDef="name">
+                  <ng-container matColumnDef="ClientName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Client Name</mat-header-cell>
-                    <mat-cell *matCellDef="let element" data-label="name"> {{element.name}} </mat-cell>
+                    <mat-cell *matCellDef="let element" data-label="ClientName"> {{element.ClientName}} </mat-cell>
                   </ng-container>
               
                   <!-- Progress Column -->
-                  <ng-container matColumnDef="dob">
+                  <ng-container matColumnDef="QuoteID">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Quote ID </mat-header-cell>
-                    <mat-cell *matCellDef="let element" data-label="dob"> {{element.dob}} </mat-cell>
+                    <mat-cell *matCellDef="let element" data-label="QuoteID"> {{element.QuoteID}} </mat-cell>
                   </ng-container>
               
                   <!-- Name Column -->
-                  <ng-container matColumnDef="product">
+                  <ng-container matColumnDef="QuoteIssuanceDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Quote Issuance Date </mat-header-cell>
-                    <mat-cell *matCellDef="let element" data-label="product"> {{element.product}}</mat-cell>
+                    <mat-cell *matCellDef="let element" data-label="QuoteIssuanceDate"> {{element.QuoteIssuanceDate}}</mat-cell>
                   </ng-container>
               
                   <!-- Color Column -->
-                  <ng-container matColumnDef="quoteid">
+                  <ng-container matColumnDef="QuoteStatus">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Quote Status </mat-header-cell>
-                    <mat-cell *matCellDef="let element" data-label="quoteid">{{element.quoteid}}</mat-cell>
+                    <mat-cell *matCellDef="let element" data-label="QuoteStatus">{{element.QuoteStatus}}</mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="edit">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>

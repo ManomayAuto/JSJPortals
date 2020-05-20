@@ -13,10 +13,7 @@ export interface PeriodicElement {
   edit: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { name: 'John Smith', dob: 'QPV1003' , product: '01/01/2020', quoteid: 'Active', edit: 'x'},
-    { name: 'Phil Doey', dob:'QPV1004' , product: '08/02/2020', quoteid: 'Declined', edit: 'x' },
-];
+
 
 
 
@@ -27,8 +24,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class SearchtableComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'dob', 'product', 'quoteid', 'edit'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['ClientName', 'QuoteIssuanceDate', 'QuoteStatus', 'QuoteID', 'edit'];
+  dataSource;
 
   
   nameFilter = new FormControl();
@@ -37,6 +34,9 @@ export class SearchtableComponent implements OnInit {
   quoteidFilter = new FormControl();
   filteredValues = { name:'', dob:'',product:'',
   quoteid:'', edit:''};
+  name: string;
+  dob: any;
+  quote: any;
   //SearchForm: FormGroup;
  
   constructor(private http:HttpClient) { }
@@ -95,13 +95,17 @@ ngOnInit() {
 
   onSearch1(){
     
-    console.log("name",this.nameFilter.value,this.quoteidFilter.value,this.dobFilter.value);
+    console.log("name1",this.nameFilter.value);
+    console.log("name2",this.dobFilter.value);
+    console.log("name3",this.quoteidFilter.value);
+
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     console.log("searchdone");
     this.http.post<any>(environment.URL + `/searchquote`, {name:this.nameFilter.value,quote:this.quoteidFilter.value,DOB:this.dobFilter.value },httpOptions).subscribe((result) => { 
-      console.log("searchdone!!!!",result)
+      console.log("searchdone!!!!",result);
+      this.dataSource = new MatTableDataSource(result);
     });  
     console.log("searchdone!!!!");
   }
