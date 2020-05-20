@@ -93,15 +93,19 @@ export class dataformservice {
 })
 export class QuotepageComponent implements OnInit {
   ncdvalue = '';
+  extraprem = '';
+  prom = '';
   selectDisabled = false;
   isReadonly = true;
   option = [];
-
+  dupnext = false;
+  isaddfinal = false;
   countryoption = [];
   username: string;
   userrole: string;  
   public summaries: any[];
   public towns: any[];
+  public lossaddress: any[];
   public isduplicate: boolean = false;
 
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
@@ -198,17 +202,19 @@ degreeTitleList = [];
     if(this.userrole == "cs"){
       console.log("inarr")
     this.manualloadlist = [
-    
+      { id : 0, manpercentage: '0%'},
           { id : 10, manpercentage: '10%'},
         { id : 15, manpercentage: '15%'},
       ];
     this.manualdisclist =[
+      { id : 0, manpercentage: '0%'},
       { id : 5, manpercentage: '5%'},
       { id : 10, manpercentage: '10%'},
     ];
     }
     else{
       this.manualloadlist = [
+        { id : 0, manpercentage: '0%'},
           { id : 10, manpercentage: '10%'},
         { id : 15, manpercentage: '15%'},
         { id : 20, manpercentage: '20%'},
@@ -230,6 +236,7 @@ degreeTitleList = [];
         { id : 100, manpercentage: '100%'},
       ];
       this.manualdisclist =[
+        { id : 0, manpercentage: '0%'},
         { id : 5, manpercentage: '5%'},
         { id : 10, manpercentage: '10%'},
         { id : 15, manpercentage: '15%'},
@@ -352,8 +359,22 @@ degreeTitleList = [];
   }
   }
   getSomething(){
+    if(this.userrole == 'cs'){
+      // this.contactForm1.markAllAsTouched();
+      this.contactForm2.clearValidators();
+      this.contactForm2.clearAsyncValidators();
+      // this.contactForm2.markAllAsTouched();
+      // this.contactForm3.markAllAsTouched();
+     this.contactForm1.disable();
+     this.contactForm2.disable();
+     this.contactForm3.disable();
+   
+     
+     this.dupnext = true;
+    }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
+    this.isaddfinal = true;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -498,14 +519,16 @@ return value;
       this.hide = !this.show
       }
       toggle3() {
-        this.sho = !this.sho
+        this.sho = !this.sho;
+        this.contactForm2.get('losspay').clearValidators();
+          this.contactForm2.get('losspay').updateValueAndValidity();
         if(this.contactForm2.get('financed').value == false){
           this.contactForm2.get('losspay').setValidators([Validators.required])
-          this.contactForm2.get('losspay').updateValueAndValidity;
+          this.contactForm2.get('losspay').updateValueAndValidity();
         }
         else{
           this.contactForm2.get('losspay').clearValidators();
-          this.contactForm2.get('losspay').updateValueAndValidity;
+          this.contactForm2.get('losspay').updateValueAndValidity();
         }
         }
   public onResize(event: any): void {
@@ -840,6 +863,7 @@ if(result){
   //   console.log("in pre")
   // }
   moveToSelectedTab1(tabName: string) {
+    this.contactForm2.enable();
    if(this.child.driverdata.length !=0){
     if(this.contactForm2.valid){
       this.tabGroup._tabs['_results'][2].disabled = false;
@@ -870,6 +894,16 @@ if(result){
       }
     
   }
+  addsubmit() {
+ 
+    if(this.contactForm4.valid){
+    
+    }
+    else{
+      this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+    }
+
+}
   uwnext(tabName: string){
     this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
@@ -1011,6 +1045,8 @@ if(result){
         var coverinfo = this.contactForm3.get('coverageinfo').setValue(softu)
         this.contactForm3.get('netpremusd').setValue(res.annualnet)
         this.ncdvalue = res.nc
+        this.extraprem = res.extraprem
+        this.prom = res.prom
  
     }, error => {
       console.error("Error", error);
@@ -1118,6 +1154,38 @@ if(result){
         console.error("Error", error);
       });
       }
+       
+      else if(actionvalue == "Final"){
+        let quoteid = this.contactForm3.get('quoted').value;
+        let addresstype = this.contactForm4.get('addressType').value;
+        let streetname = this.contactForm4.get('streetName').value;
+        let country = this.contactForm4.get('country').value;
+        let zip = this.contactForm4.get('zipCode').value;
+        let citytown = this.contactForm4.get('cityTown').value;
+        let policystartDate = this.dp.transform(this.contactForm4.get('policystartDate').value, 'yyyy-MM-dd','es-ES');
+        let policyendDate = this.dp.transform(this.contactForm4.get('policyendDate').value, 'yyyy-MM-dd','es-ES');
+        let policyType = this.contactForm4.get('policyType').value;
+        let currency = this.contactForm4.get('currency').value;
+        let businessclass = this.contactForm4.get('businessClass').value;
+        let branch = this.contactForm4.get('branch').value;
+        let engineno = this.contactForm4.get('EngineNumber').value;
+
+        return this.http.post<any>(environment.URL + '/finalsubmit', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
+          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+          losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
+          manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
+          driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,
+          addresstype:addresstype,streetname:streetname,country:country,zip:zip,citytown:citytown,policystartDate:policystartDate,policyendDate:policyendDate,policyType:policyType,
+          currency:currency,businessclass:businessclass,branch:branch,engineno:engineno,
+        },httpOptions ).subscribe((res: any) => { // not callback
+
+          console.log("in on save-Approve or Decline");
+          this.openSnackBar("Request has been Submitted", "Dismiss");
+      
+      }, error => {
+        console.error("Error", error);
+      });
+      }
   }
   openquoteDialog(quoteid) {
     const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
@@ -1174,6 +1242,25 @@ if(result){
     return this.http.post<any>(environment.URL + '/zipcode', {Country:country},httpOptions).subscribe(result => {
       console.log("-----------------------------------------");
       this.summaries = result;
+      console.log(typeof(result));
+      console.log(result);
+    }, error => console.error(error));
+      
+      
+    
+  }
+  OnlossSelected(Selectedlosspay) {
+    
+    console.log('### Trigger');
+    var losspay = Selectedlosspay['code'];
+    console.log(Selectedlosspay);
+    console.log(losspay);
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.http.post<any>(environment.URL + '/losspayadr', {losspay:losspay},httpOptions).subscribe(result => {
+      console.log("-----------------------------------------");
+      this.lossaddress = result;
       console.log(typeof(result));
       console.log(result);
     }, error => console.error(error));
