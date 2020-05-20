@@ -499,7 +499,10 @@ return value;
     }
   }
   displayFncountry(value) {
-    if(value.Country){
+    if(value == undefined){
+      console.log("value undefined of country");
+    }
+    else if(value.Country){
       return value.Country;
           }
     else if (value) { return value; }
@@ -704,9 +707,9 @@ if(result){
      
 
     }
-    // else{
-    //   this.openSnackBar("Please fill the mandatory fields", "Dismiss")
-    // }
+    else{
+      this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+    }
 
   }
   onrequote(){
@@ -817,11 +820,11 @@ if(result){
    this.driverdata = result['quotedata']['driverdata'];
    this.driverservice.driver(this.driverdata);
    console.log(this.driverdata);
-   var countri = result['country'];
+   var countri = result['quotedata']['country'];
    if(countri != null || countri != undefined)
    {
     this.displayFncountry(countri);
-    this.contactForm4.get('country').setValue(result['country']);
+    this.contactForm4.get('country').setValue(result['quotedata']['country']);
    }
    else{
      console.log("not in countri");
@@ -905,7 +908,10 @@ if(result){
 
 }
   uwnext(tabName: string){
-    this.tabGroup._tabs['_results'][1].disabled = false;
+    this.contactForm1.enable();
+    if(this.contactForm1.valid){
+      this.contactForm1.disable();
+      this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
@@ -914,6 +920,11 @@ if(result){
           this.as.dataform = con;
 
         }
+      }
+    }
+    
+      else{
+        this.openSnackBar("Please fill the mandatory fields", "Dismiss")
       }
   }
   openSnackBar(message: string, action: string) {
