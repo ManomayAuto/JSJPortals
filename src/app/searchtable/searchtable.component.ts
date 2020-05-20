@@ -44,37 +44,37 @@ export class SearchtableComponent implements OnInit {
   constructor(private http:HttpClient,public datepipe: DatePipe,) { }
 ngOnInit() {
  
-  this.nameFilter.valueChanges.subscribe((nameFilterValue)        => {
-    this.filteredValues['name'] = nameFilterValue;
-    this.dataSource.filter = JSON.stringify(this.filteredValues);
-    });
+  // this.nameFilter.valueChanges.subscribe((nameFilterValue)        => {
+  //   this.filteredValues['name'] = nameFilterValue;
+  //   this.dataSource.filter = JSON.stringify(this.filteredValues);
+  //   });
 
-    this.dobFilter.valueChanges.subscribe((dobFilterValue) => {
-      this.filteredValues['dob'] = dobFilterValue;
-      this.dataSource.filter = JSON.stringify(this.filteredValues);
-    });
+  //   this.dobFilter.valueChanges.subscribe((dobFilterValue) => {
+  //     this.filteredValues['dob'] = dobFilterValue;
+  //     this.dataSource.filter = JSON.stringify(this.filteredValues);
+  //   });
 
-    this.productFilter.valueChanges.subscribe((productFilterValue) => {
-      this.filteredValues['product'] = productFilterValue;
-      this.dataSource.filter = JSON.stringify(this.filteredValues);
-    });
+  //   this.productFilter.valueChanges.subscribe((productFilterValue) => {
+  //     this.filteredValues['product'] = productFilterValue;
+  //     this.dataSource.filter = JSON.stringify(this.filteredValues);
+  //   });
 
-    this.quoteidFilter.valueChanges.subscribe((quoteidFilterValue) => {
-      this.filteredValues['quoteid'] = quoteidFilterValue;
-      this.dataSource.filter = JSON.stringify(this.filteredValues);
-    });
-    this.quoteidFilter.valueChanges.subscribe((quoteidFilterValue) => {
-      this.filteredValues['edit'] = quoteidFilterValue;
-      this.dataSource.filter = JSON.stringify(this.filteredValues);
-    });
-  this.dataSource.filterPredicate = this.customFilterPredicate();
+  //   this.quoteidFilter.valueChanges.subscribe((quoteidFilterValue) => {
+  //     this.filteredValues['quoteid'] = quoteidFilterValue;
+  //     this.dataSource.filter = JSON.stringify(this.filteredValues);
+  //   });
+  //   this.quoteidFilter.valueChanges.subscribe((quoteidFilterValue) => {
+  //     this.filteredValues['edit'] = quoteidFilterValue;
+  //     this.dataSource.filter = JSON.stringify(this.filteredValues);
+  //   });
+  // this.dataSource.filterPredicate = this.customFilterPredicate();
   
 }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
-  }
+  // applyFilter(filterValue: string) {
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   this.dataSource.filter = filterValue;
+  // }
 
   // numFilter(filterValue: string) {
   //   this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -85,14 +85,14 @@ ngOnInit() {
   //   this.dataSource.filter = filterValue;
   // }
 
-  customFilterPredicate() {
-    const myFilterPredicate = function(data:PeriodicElement,filter:string) :boolean {
-      let searchString = JSON.parse(filter);
-      return data.quoteid.toString().trim().indexOf      (searchString.quoteid) !== -1 && 
-    data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1;
-    }
-    return myFilterPredicate;
-  }
+  // customFilterPredicate() {
+  //   const myFilterPredicate = function(data:PeriodicElement,filter:string) :boolean {
+  //     let searchString = JSON.parse(filter);
+  //     return data.quoteid.toString().trim().indexOf      (searchString.quoteid) !== -1 && 
+  //   data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1;
+  //   }
+  //   return myFilterPredicate;
+  // }
  
 
   onSearch1(){

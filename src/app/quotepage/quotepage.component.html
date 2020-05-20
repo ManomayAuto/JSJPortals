@@ -234,7 +234,7 @@
             <input type="text" [(ngModel)]="Selectedlosspay" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
             <mat-autocomplete #lossauto="matAutocomplete" [displayWith]="displayFnloss">
               <mat-option (click)="OnlossSelected(Selectedlosspay)" *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
-                {{lossoption.Description}}
+                {{lossoption?.Description}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
@@ -244,7 +244,7 @@
   <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
     <div class="text-inside" *ngIf="(sho)">
       <mat-form-field *ngIf="(sho)">
-        <mat-select placeholder="Loss Payee Location" formControlName="lossloc">
+        <mat-select [(ngModel)]="Selectedloss" placeholder="Loss Payee Location" formControlName="lossloc">
           <mat-option *ngFor="let data of lossaddress" [value]="data" style="line-height:normal;white-space: normal;">
             {{data?.lossad}}
         </mat-option>

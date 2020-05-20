@@ -148,7 +148,7 @@ degreeTitleList = [];
   abc: any;
   Selectedzip: any;
   Selectedtown: any;
-  
+  Selectedloss: any;
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -442,6 +442,10 @@ this.toggle3();
      console.log("not in layn");
    }
     this.contactForm2.get('lossloc').setValue(result['lploc']);
+    this.lossaddress = [{lossad: result['lploc']}];
+    console.log(this.lossaddress[0]);
+    this.Selectedloss = this.lossaddress[0];
+    console.log(this.lossaddress);
     this.contactForm2.get('vehicleValue').setValue(result['vehvalue']);
     var alam = +result['alam']
     this.contactForm2.get('alarm').setValue(alam);
@@ -507,24 +511,26 @@ return value;
     }
   }
   displayFncountry(value) {
-    if(value == undefined){
-      console.log("value undefined of country");
-    }
-    else if(value.Country){
+  
+    if(value.Country){
       return value.Country;
           }
-    else if (value) { return value; }
+    else if (value) { 
+      return value; }
     
   }
   displayFnloss(value){
+    
     console.log("lossval"+ value);
-    if(value == undefined){
-      console.log("value undefined of loss");
-    }
-    else if(value.Description){
+    // if(value == undefined){
+    //   console.log("value undefined of loss");
+    // }
+    if(value.Description){
+      console.log("value and desc");
       return value.Description;
     }
-    else if (value) { return value; }
+    else if (value) { console.log(value);
+    return value; }
   }
   toggle() {
     this.hide = this.show
@@ -849,7 +855,7 @@ if(result){
  
  
   //  this.contactForm4.get('cityTown').setValue(result['town']);
-   this.towns = result['town'];
+  //  this.towns = result['town'];
    this.contactForm1.disable();
    this.contactForm2.disable();
    this.contactForm3.disable();
