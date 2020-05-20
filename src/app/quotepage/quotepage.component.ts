@@ -148,7 +148,7 @@ degreeTitleList = [];
   abc: any;
   Selectedzip: any;
   Selectedtown: any;
-  
+  Selectedloss: any;
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -408,7 +408,13 @@ degreeTitleList = [];
    this.contactForm1.get('clienttype').setValue(ct);
    var fin = +result['financed'];
    this.contactForm2.get('financed').setValue(fin);
-    this.contactForm2.get('claimfree').setValue(result['claimfre']);
+   if(fin == 1){
+this.toggle3();
+   }
+   console.log(result['claimfre']);
+   console.log(typeof(result['claimfre']));
+   var claimy = result['claimfre'].toString();
+    this.contactForm2.get('claimfree').setValue(claimy);
     let typeofcover = result['covertype'];
     if(typeofcover == "Third Party"){
      typeofcover = "TP"
@@ -425,15 +431,21 @@ degreeTitleList = [];
     }
     this.contactForm2.get('options1').setValue(typeofcover);
     var layn = result['lpname'];
+    console.log(layn)
     if(layn != null || layn != undefined)
    {
+     console.log("In layn"+ layn)
     this.displayFnloss(layn); 
-    this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+    this.contactForm2.get('losspay').setValue(result['lpname']);
    }
    else{
      console.log("not in layn");
    }
     this.contactForm2.get('lossloc').setValue(result['lploc']);
+    this.lossaddress = [{lossad: result['lploc']}];
+    console.log(this.lossaddress[0]);
+    this.Selectedloss = this.lossaddress[0];
+    console.log(this.lossaddress);
     this.contactForm2.get('vehicleValue').setValue(result['vehvalue']);
     var alam = +result['alam']
     this.contactForm2.get('alarm').setValue(alam);
@@ -499,21 +511,26 @@ return value;
     }
   }
   displayFncountry(value) {
-    if(value == undefined){
-      console.log("value undefined of country");
-    }
-    else if(value.Country){
+  
+    if(value.Country){
       return value.Country;
           }
-    else if (value) { return value; }
+    else if (value) { 
+      return value; }
     
   }
   displayFnloss(value){
-   
+    
+    console.log("lossval"+ value);
+    // if(value == undefined){
+    //   console.log("value undefined of loss");
+    // }
     if(value.Description){
+      console.log("value and desc");
       return value.Description;
     }
-    else if (value) { return value; }
+    else if (value) { console.log(value);
+    return value; }
   }
   toggle() {
     this.hide = this.show
@@ -685,7 +702,7 @@ if(result){
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
-     
+     if(this.userrole == 'cs'){
       return this.http.post<any>(environment.URL + '/duplicate', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,emp:emp,sale:sale,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,prod:prod},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
         if(res.result == "NoQuote")
@@ -704,6 +721,8 @@ if(result){
     }, error => {
       console.error("Error", error);
     });
+     }
+      
      
 
     }
@@ -836,7 +855,7 @@ if(result){
  
  
   //  this.contactForm4.get('cityTown').setValue(result['town']);
-   this.towns = result['town'];
+  //  this.towns = result['town'];
    this.contactForm1.disable();
    this.contactForm2.disable();
    this.contactForm3.disable();
@@ -910,7 +929,7 @@ if(result){
   uwnext(tabName: string){
     this.contactForm1.enable();
     if(this.contactForm1.valid){
-      this.contactForm1.disable();
+      // this.contactForm1.disable();
       this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {

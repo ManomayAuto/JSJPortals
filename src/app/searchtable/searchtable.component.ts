@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 export interface PeriodicElement {
   name: string;
@@ -11,6 +12,7 @@ export interface PeriodicElement {
   product: string;
   quoteid: string;
   edit: string;
+
 }
 
 
@@ -39,11 +41,11 @@ export class SearchtableComponent implements OnInit {
   quote: any;
   SearchForm: any;
   days: string;
-  // SearchForm: FormGroup;
- 
-  constructor(private http:HttpClient,public datepipe: DatePipe,) { }
-ngOnInit() {
 
+ 
+  constructor(private http:HttpClient,public datepipe: DatePipe,private router : Router) { }
+ngOnInit() {
+ 
 }
 
   onSearch1(){
@@ -65,5 +67,12 @@ ngOnInit() {
     });  
     console.log("searchdone!!!!");
   }
- 
+  getRecord(QuoteID){ 
+    this.router.navigate(['/quotepage/new',{title:QuoteID}]);
+    var url = window.location.href;  
+    url += {title:QuoteID}
+    this.ngOnInit();
+    //window.location.reload();
+    console.log("puppy",url);
+  }
 }
