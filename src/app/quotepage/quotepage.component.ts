@@ -408,7 +408,13 @@ degreeTitleList = [];
    this.contactForm1.get('clienttype').setValue(ct);
    var fin = +result['financed'];
    this.contactForm2.get('financed').setValue(fin);
-    this.contactForm2.get('claimfree').setValue(result['claimfre']);
+   if(fin == 1){
+this.toggle3();
+   }
+   console.log(result['claimfre']);
+   console.log(typeof(result['claimfre']));
+   var claimy = result['claimfre'].toString();
+    this.contactForm2.get('claimfree').setValue(claimy);
     let typeofcover = result['covertype'];
     if(typeofcover == "Third Party"){
      typeofcover = "TP"
@@ -425,10 +431,12 @@ degreeTitleList = [];
     }
     this.contactForm2.get('options1').setValue(typeofcover);
     var layn = result['lpname'];
+    console.log(layn)
     if(layn != null || layn != undefined)
    {
+     console.log("In layn"+ layn)
     this.displayFnloss(layn); 
-    this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+    this.contactForm2.get('losspay').setValue(result['lpname']);
    }
    else{
      console.log("not in layn");
@@ -509,8 +517,11 @@ return value;
     
   }
   displayFnloss(value){
-   
-    if(value.Description){
+    console.log("lossval"+ value);
+    if(value == undefined){
+      console.log("value undefined of loss");
+    }
+    else if(value.Description){
       return value.Description;
     }
     else if (value) { return value; }
@@ -685,7 +696,7 @@ if(result){
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
-     
+     if(this.userrole == 'cs'){
       return this.http.post<any>(environment.URL + '/duplicate', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,emp:emp,sale:sale,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,prod:prod},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
         if(res.result == "NoQuote")
@@ -704,6 +715,8 @@ if(result){
     }, error => {
       console.error("Error", error);
     });
+     }
+      
      
 
     }
@@ -910,7 +923,7 @@ if(result){
   uwnext(tabName: string){
     this.contactForm1.enable();
     if(this.contactForm1.valid){
-      this.contactForm1.disable();
+      // this.contactForm1.disable();
       this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
