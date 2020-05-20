@@ -43,6 +43,7 @@ import { SearchclientdialogComponent } from './quotepage/searchclientdialog/sear
 import { DuplicatedialogComponent } from './quotepage/duplicatedialog/duplicatedialog.component';
 import { NewquotedialogComponent } from './quotepage/newquotedialog/newquotedialog.component';
 import {driverservice} from './quotepage/quotepage.component';
+import {dataformservice} from './quotepage/quotepage.component';
 import { from } from 'rxjs';
 import { QtableService } from './_services/qtable.service';
 
@@ -120,7 +121,7 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
     //   ),
   ],
   providers: [UserService,RedService, NonService,DatePipe, AuthenticationService,QtableService,
-    SecureLocalStorageService,driverservice,
+    SecureLocalStorageService,driverservice,dataformservice,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

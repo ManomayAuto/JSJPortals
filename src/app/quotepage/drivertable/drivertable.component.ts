@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DriverdialogComponent } from '../driverdialog/driverdialog.component';
 import { anl } from 'src/app/models/user.model';
 import {driverservice} from '../quotepage.component';
+import {dataformservice} from '../quotepage.component';
 
 export interface driverdata {
 
@@ -42,20 +43,20 @@ export class DrivertableComponent implements OnInit {
   message: string = 'More than 5 drivers cant be added';
   action :string='close';
   user: any;
-  constructor(private driverservice: driverservice,public dialog: MatDialog,public snackBar: MatSnackBar) { }
+  constructor(private driverservice: driverservice,private dataformservice:dataformservice,public dialog: MatDialog,public snackBar: MatSnackBar) { }
 
  
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource(this.driverdata); 
-    console.log(this.dataSource);
+    
   }
   ngAfterViewInit() {
     this.driverservice.$data.subscribe((data)=>{
       this.driverdata = data
       console.log("in driver table now ng after view");
       console.log(this.driverdata);
-
+     
       this.dataSource = new MatTableDataSource(this.driverdata.filter(value => Object.keys(value).length !== 0));
           });
           
@@ -68,11 +69,12 @@ export class DrivertableComponent implements OnInit {
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-  openDialog(DriverName,DOB,LicenseIssueDate,LicenseNumber,Driverclient,Driverwar,physical,drunk,previous,claimhistory,lossclaim): void {
-    //console.log("s",this.driverdata.length<6);
-
+  openDialog(): void {
+    //console.log("s",DriverName);
+   
     if(this.driverdata.length<=4){
       console.log("traol",this.driverdata );
+   
     const dialogRef = this.dialog.open(DriverdialogComponent, {
 
       width: '1350px',
