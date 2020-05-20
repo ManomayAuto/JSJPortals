@@ -6,7 +6,7 @@
             <div data-type="default" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 py-3">
               
               <div class="example-header" fxLayout="row">
-                <form fxLayout="column"  [formGroup]="SearchForm">
+                <form #myForm="ngForm" fxLayout="column"  [formGroup]="SearchForm">
                 <!-- <mat-form-field>
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
                   </mat-form-field> -->
@@ -22,7 +22,7 @@
                     <input matInput class="form-field" [formControl]="quoteidFilter" placeholder="Quote ID">
                   </mat-form-field>
                   <button mat-raised-button (click)="onSearch1()" type="button" color="primary" style="margin-left: 30px;">Search</button>
-                  <button mat-raised-button color="primary" style="margin-left: 30px;">Reset</button>
+                  <button mat-raised-button  color="primary" style="margin-left: 30px;">Reset</button>
                 </form>
                 </div>
               
