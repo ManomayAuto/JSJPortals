@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-
+import { DatePipe } from '@angular/common';
 
 export interface PeriodicElement {
   name: string;
@@ -37,9 +37,11 @@ export class SearchtableComponent implements OnInit {
   name: string;
   dob: any;
   quote: any;
-  //SearchForm: FormGroup;
+  SearchForm: any;
+  days: string;
+  // SearchForm: FormGroup;
  
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,public datepipe: DatePipe,) { }
 ngOnInit() {
  
   this.nameFilter.valueChanges.subscribe((nameFilterValue)        => {
@@ -94,19 +96,23 @@ ngOnInit() {
  
 
   onSearch1(){
-    
+    this.datepipe = new DatePipe('en-Us');
     console.log("name1",this.nameFilter.value);
     console.log("name2",this.dobFilter.value);
     console.log("name3",this.quoteidFilter.value);
-
+    let day=this.dobFilter.value;
+    console.log("name23",day);
+    this.days = this.datepipe.transform(day, 'yyyy-MM-dd');
+    console.log("name3",this.days);
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     console.log("searchdone");
-    this.http.post<any>(environment.URL + `/searchquote`, {name:this.nameFilter.value,quote:this.quoteidFilter.value,DOB:this.dobFilter.value },httpOptions).subscribe((result) => { 
+    this.http.post<any>(environment.URL + `/searchquote`, {name:this.nameFilter.value,quote:this.quoteidFilter.value,DOB:this.days},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
       this.dataSource = new MatTableDataSource(result);
     });  
     console.log("searchdone!!!!");
   }
+ 
 }
