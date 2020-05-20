@@ -45,14 +45,15 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Remarks </mat-header-cell>
                     <mat-cell data-label="remarks" *matCellDef="let element"> {{element.remarks}}</mat-cell>
                   </ng-container>
-                  <!-- <ng-container matColumnDef="reviewerusername">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Reviewer </mat-header-cell>
-                    <mat-cell data-label="reviewerusername" *matCellDef="let element">{{element.reviewerusername}} </mat-cell>
-                  </ng-container> -->
+                  
                   
                   <ng-container matColumnDef="lastupdatedat">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Last Updated At </mat-header-cell>
                     <mat-cell data-label="lastupdatedat" *matCellDef="let element"> {{element.lastupdatedat}}  </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="reviewerusername">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Reviewer</mat-header-cell>
+                    <mat-cell data-label="reviewerusername" *matCellDef="let element"> {{element.reviewerusername}}  </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="Action" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>

@@ -28,7 +28,7 @@ export interface PeriodicElement {
 })
 export class ReviewtableComponent implements OnInit {
   //name = 'Angular 5';
-  displayedColumns = [ 'quoteid', 'reviewstatus', 'typeofaction', 'remarks', 'lastupdatedat', 'Action'];
+  displayedColumns = [ 'quoteid', 'reviewstatus', 'typeofaction','reviewerusername', 'remarks', 'lastupdatedat', 'Action'];
   dataSource;
 
   

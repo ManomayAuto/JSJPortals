@@ -29,7 +29,7 @@ export class ApprovedtableComponent implements OnInit {
     private http:HttpClient, private router : Router,public snackBar: MatSnackBar) { }
 
  
-  displayedColumns = ['quoteid', 'initiatedusername','Add',];
+  displayedColumns = ['quoteid', 'reviewerusername','Add',];
   
   dataSource;
   
