@@ -38,7 +38,7 @@ export class Service {
     };
     return this.opts.length ?
       of(this.opts) :
-      this.http.get<any>(environment.URL + '/vehicle',httpOptions).pipe(tap(data => this.opts = data))
+      this.http.get<any>(environment.URL + '/vehicle',httpOptions).pipe(tap(data => this.opts = data));
   }
   countryData() {
     const httpOptions = {
@@ -46,7 +46,7 @@ export class Service {
     };
     return this.copts.length ?
       of(this.copts) :
-      this.http.get<any>(environment.URL + '/country',httpOptions).pipe(tap(data => this.copts = data))
+      this.http.get<any>(environment.URL + '/country',httpOptions).pipe(tap(cdata => this.copts = cdata));
   }
   lossData() {
     console.log("lossspayeeeeeeeeeeeeeeeeee");
@@ -55,7 +55,7 @@ export class Service {
     };
     return this.lopts.length ?
       of(this.lopts) :
-      this.http.get<any>(environment.URL + '/losspayee',httpOptions).pipe(tap(data => this.lopts = data))
+      this.http.get<any>(environment.URL + '/losspayee',httpOptions).pipe(tap(ldata => this.lopts = ldata));
   }
 
 }
@@ -103,6 +103,8 @@ export class QuotepageComponent implements OnInit {
   option = [];
   dupnext = false;
   isaddfinal = false;
+  btnDisabled = false;
+  btnDisableduw = false;
   countryoption = [];
   username: string;
   userrole: string;  
@@ -110,10 +112,11 @@ export class QuotepageComponent implements OnInit {
   public towns: any[];
   public lossaddress: any[];
   public isduplicate: boolean = false;
-
+  public isduplicatecs: boolean = false;
+  today: Date = new Date();
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
-filteredOption: Observable<any[]>;
+filteredOption: Observable<string[]>;
 filteredOptionloss: Observable<any[]>;
 countryfilteredOption: Observable<any[]>;
 matTabs = [1,2,3];
@@ -152,6 +155,7 @@ degreeTitleList = [];
   Selectedzip: any;
   Selectedtown: any;
   Selectedloss: any;
+  Selectedlosspay: any;
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -374,6 +378,7 @@ degreeTitleList = [];
    
      
      this.dupnext = true;
+     this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
@@ -439,7 +444,8 @@ this.toggle3();
    {
      console.log("In layn"+ layn)
     this.displayFnloss(layn); 
-    this.contactForm2.get('losspay').setValue(result['lpname']);
+    // this.contactForm2.get('losspay').setValue(result['lpname']);
+    this.Selectedlosspay = result['lpname'];
    }
    else{
      console.log("not in layn");
@@ -468,6 +474,13 @@ this.toggle3();
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
     this.driverservice.driver(this.driverdata);
+    if(result['quotestatus'] == "Active"){
+      this.btnDisabled = true;
+      if(this.userrole == "uw"){
+        this.btnDisableduw = true;
+      }
+    }
+    
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
@@ -514,26 +527,35 @@ return value;
     }
   }
   displayFncountry(value) {
+    if(value != undefined){
+      if(value.Country){
+        return value.Country;
+            }
+      else if (value) {
+        console.log(value);
+        console.log(typeof(value)); 
+        return value; }
+    }
   
-    if(value.Country){
-      return value.Country;
-          }
-    else if (value) { 
-      return value; }
     
   }
   displayFnloss(value){
     
     console.log("lossval"+ value);
-    // if(value == undefined){
-    //   console.log("value undefined of loss");
-    // }
-    if(value.Description){
-      console.log("value and desc");
-      return value.Description;
+    if(value != undefined){
+      if(value.Description){
+        console.log("value and desc");
+        return value.Description;
+      }
+      else if (value) {console.log(value);
+        console.log(typeof(value));
+      return value; }
     }
-    else if (value) { console.log(value);
-    return value; }
+    else{
+      console.log("value is undefined");
+      return value;
+    }
+    
   }
   toggle() {
     this.hide = this.show
@@ -720,6 +742,7 @@ if(result){
         else{
           this.openduplicateDialog(res);
           this.isduplicate = !this.isduplicate;
+          this.isduplicatecs = !this.isduplicatecs;
         }
     }, error => {
       console.error("Error", error);
@@ -750,7 +773,10 @@ if(result){
       };
       return this.http.post<any>(environment.URL + '/requote', {quoteid:quoteid,username:username,userrole:userrole,reviewstatus:status,quotestatus:status,typeofaction:typeofaction},httpOptions ).subscribe((res: any) => { // not callback
     console.log(res);
-        this.openSnackBar("Requote request has been submitted", "Dismiss")
+        this.openSnackBar("Requote request has been submitted", "Dismiss");
+        setTimeout(() => {
+          this.router.navigateByUrl('/home');
+          }, 3000);
     }, error => {
       console.error("Error", error);
     });
@@ -790,12 +816,16 @@ if(result){
    this.contactForm1.get('clienttype').setValue(ct);
    var fin = +result['quotedata']['financed'];
    this.contactForm2.get('financed').setValue(fin);
+   if(fin == 1){
+    this.toggle3();
+       }
    console.log("finacneeee"+result['quotedata']['financed']);
   //  if(result['quotedata']['financed'] == 0){
      
   //  }
    this.contactForm2.get('financed').disable();
-   this.contactForm2.get('claimfree').setValue(result['quotedata']['claimfre']);
+   var claimy = result['quotedata']['claimfre'].toString();
+   this.contactForm2.get('claimfree').setValue(claimy);
    let typeofcover = result['quotedata']['covertype'];
 
    if(typeofcover == "Third Party"){
@@ -816,11 +846,17 @@ if(result){
    if(layn != null || layn != undefined)
    {
     this.displayFnloss(layn); 
-    this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+    // this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+    this.Selectedlosspay = result['quotedata']['lpname'];
    }
    else{
      console.log("not in layn");
    }
+   this.contactForm2.get('lossloc').setValue(result['quotedata']['lploc']);
+   this.lossaddress = [{lossad: result['quotedata']['lploc']}];
+   console.log(this.lossaddress[0]);
+   this.Selectedloss = this.lossaddress[0];
+   console.log(this.lossaddress);
    this.contactForm2.get('lossloc').setValue(result['quotedata']['lploc']);
    this.contactForm2.get('vehicleValue').setValue(result['quotedata']['vehvalue']);
    var alam = +result['quotedata']['alam']
@@ -932,6 +968,9 @@ if(result){
   uwnext(tabName: string){
     this.contactForm1.enable();
     if(this.contactForm1.valid){
+      if(this.userrole == 'cs'){
+        this.contactForm1.disable();
+      }
       // this.contactForm1.disable();
       this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
@@ -1102,6 +1141,7 @@ if(result){
       let sale = this.contactForm1.get('pointofsale').value;
       let prod = this.contactForm1.get('Product').value;
       let make = this.contactForm1.get('userInput').value;
+      console.log(make);
       let yr = this.contactForm1.get('Year').value;
       let cc = this.contactForm1.get('EngineCC').value;
       let use = this.contactForm1.get('Use').value;
@@ -1120,6 +1160,8 @@ if(result){
       console.log(finance);
       let claimfre = this.contactForm2.get('claimfree').value;
       let losspayee = this.contactForm2.get('losspay').value;
+      console.log(losspayee);
+      
       let losslocation = this.contactForm2.get('lossloc').value;
       let vehiclevalue = this.contactForm2.get('vehicleValue').value;
       let alam = this.contactForm2.get('alarm').value;
@@ -1151,9 +1193,15 @@ if(result){
       else{
         var quotestatus = String(actionvalue);
       }
-      if(actionvalue == "Active" || actionvalue =="Decline"){
+      if(actionvalue == "Active" || actionvalue =="Declined"){
         var reviewstatus = "Completed"
       }
+      else if(actionvalue == "Saveu"){
+        var reviewstatus = "Pending"
+      }
+      var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
+      console.log("last updateddddddd");
+      console.log(lastupdated)
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
@@ -1172,16 +1220,35 @@ if(result){
       });
       }
       
-      else if(actionvalue == "Active" || actionvalue == "Decline"){
+      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saveu"){
         let quoteid = this.contactForm3.get('quoted').value;
         return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-          driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus},httpOptions ).subscribe((res: any) => { // not callback
-
+          driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
+console.log(res);
           console.log("in on save-Approve or Decline");
-          this.openSnackBar("Request has been Submitted", "Dismiss");
+          if(res['quotestaus'] == "Active")
+          { 
+            this.openSnackBar("This Quote has been approved", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+          else if(res['reviewstatus'] == "Pending"){
+            this.openSnackBar("This Quote has been Saved", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+          else{
+            this.openSnackBar("This quote has been declined", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+         
       
       }, error => {
         console.error("Error", error);
@@ -1215,6 +1282,9 @@ if(result){
 
           console.log("in on save-Approve or Decline");
           this.openSnackBar("Request has been Submitted", "Dismiss");
+          setTimeout(() => {
+            this.router.navigateByUrl('/home');
+            }, 5000);
       
       }, error => {
         console.error("Error", error);

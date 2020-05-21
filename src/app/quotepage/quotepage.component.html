@@ -234,7 +234,7 @@
             <input type="text" [(ngModel)]="Selectedlosspay" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
             <mat-autocomplete #lossauto="matAutocomplete" [displayWith]="displayFnloss">
               <mat-option (click)="OnlossSelected(Selectedlosspay)" *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
-                {{lossoption?.Description}}
+                {{lossoption.Description}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
@@ -246,7 +246,7 @@
       <mat-form-field *ngIf="(sho)">
         <mat-select [(ngModel)]="Selectedloss" placeholder="Loss Payee Location" formControlName="lossloc">
           <mat-option *ngFor="let data of lossaddress" [value]="data" style="line-height:normal;white-space: normal;">
-            {{data?.lossad}}
+            {{data.lossad}}
         </mat-option>
         </mat-select>
    
@@ -432,14 +432,14 @@
   <a mat-raised-button color="primary" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</a>
  
  
-    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
+    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" [disabled] = "btnDisabled" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
    
    
-      <button mat-raised-button color="primary" #Decline (click)="onSave('Decline')" id="Decline" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
+      <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
+      <button mat-raised-button color="primary" #Saveu (click)="onSave('Saveu')" [disabled] = "btnDisableduw" id="Saveu" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
      
-     
-        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" style="margin-left:5px">Submit For Review</button>
+        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole == 'cs' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
      
    
