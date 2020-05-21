@@ -432,14 +432,14 @@
   <a mat-raised-button color="primary" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</a>
  
  
-    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
+    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" [disabled] = "btnDisabled" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
    
    
-      <button mat-raised-button color="primary" #Decline (click)="onSave('Decline')" id="Decline" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
+      <button mat-raised-button color="primary" #Decline (click)="onSave('Decline')" [disabled] = "btnDisabled" id="Decline" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
+      <button mat-raised-button color="primary" #Saveu (click)="onSave('Saveu')" id="Saveu" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
      
-     
-        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" style="margin-left:5px">Submit For Review</button>
+        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Submit For Review</button>
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
      
    

@@ -100,6 +100,7 @@ export class QuotepageComponent implements OnInit {
   option = [];
   dupnext = false;
   isaddfinal = false;
+  btnDisabled = false;
   countryoption = [];
   username: string;
   userrole: string;  
@@ -467,6 +468,9 @@ this.toggle3();
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
     this.driverservice.driver(this.driverdata);
+    if(result['quotestatus'] == "Active"){
+      this.btnDisabled = true;
+    }
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
@@ -758,7 +762,10 @@ if(result){
       };
       return this.http.post<any>(environment.URL + '/requote', {quoteid:quoteid,username:username,userrole:userrole,reviewstatus:status,quotestatus:status,typeofaction:typeofaction},httpOptions ).subscribe((res: any) => { // not callback
     console.log(res);
-        this.openSnackBar("Requote request has been submitted", "Dismiss")
+        this.openSnackBar("Requote request has been submitted", "Dismiss");
+        setTimeout(() => {
+          this.router.navigateByUrl('/home');
+          }, 3000);
     }, error => {
       console.error("Error", error);
     });
@@ -1175,6 +1182,9 @@ if(result){
       if(actionvalue == "Active" || actionvalue =="Decline"){
         var reviewstatus = "Completed"
       }
+      else if(actionvalue == "Saveu"){
+        var reviewstatus = "Pending"
+      }
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
@@ -1193,16 +1203,35 @@ if(result){
       });
       }
       
-      else if(actionvalue == "Active" || actionvalue == "Decline"){
+      else if(actionvalue == "Active" || actionvalue == "Decline" || actionvalue == "Saveu"){
         let quoteid = this.contactForm3.get('quoted').value;
         return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
           driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus},httpOptions ).subscribe((res: any) => { // not callback
-
+console.log(res);
           console.log("in on save-Approve or Decline");
-          this.openSnackBar("Request has been Submitted", "Dismiss");
+          if(res['quotestaus'] == "Active")
+          { 
+            this.openSnackBar("This Quote has been approved", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+          else if(res['reviewstatus'] == "Pending"){
+            this.openSnackBar("This Quote has been Saved", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+          else{
+            this.openSnackBar("This quote has been declined", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+         
       
       }, error => {
         console.error("Error", error);
@@ -1236,6 +1265,9 @@ if(result){
 
           console.log("in on save-Approve or Decline");
           this.openSnackBar("Request has been Submitted", "Dismiss");
+          setTimeout(() => {
+            this.router.navigateByUrl('/home');
+            }, 5000);
       
       }, error => {
         console.error("Error", error);
