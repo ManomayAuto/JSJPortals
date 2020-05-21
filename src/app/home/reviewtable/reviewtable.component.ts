@@ -7,7 +7,7 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 import { DOCUMENT } from '@angular/common';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-
+import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 export interface PeriodicElement {
@@ -37,11 +37,12 @@ export class ReviewtableComponent implements OnInit {
   role: string;
   name: string;
   message: string;
+  today: Date = new Date();
   allSource: MatTableDataSource<import("c:/Users/consultants1/git us/JSJPortals/src/app/models/user.model").User>;
 
   constructor( private userService : QtableService,
     @Inject(DOCUMENT) private _document: Document,
-    private http:HttpClient, private router : Router,public snackBar: MatSnackBar
+    private http:HttpClient, private router : Router,public snackBar: MatSnackBar,public datepipe: DatePipe,
     ) { }
 
 ngOnInit(){
@@ -75,10 +76,14 @@ getRecord(quoteid,reviewerusername){
   var reviewstatus = "In Progress"
   var userrole = localStorage.getItem('Role');
   var name = localStorage.getItem('name');
+  this.datepipe = new DatePipe('en-Us');
+  var lastupdated = this.datepipe.transform(this.today, 'yyyy-MM-dd');
+  console.log("last updatedddddddddddddddddddddddd");
+  console.log(lastupdated);
   const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  return this.http.post<any>(environment.URL + '/undquotestatus', {quoteid:quoteid,reviewstatus:reviewstatus,userrole:userrole,name:name},httpOptions ).
+  return this.http.post<any>(environment.URL + '/undquotestatus', {quoteid:quoteid,reviewstatus:reviewstatus,userrole:userrole,name:name,lastupdated:lastupdated},httpOptions ).
   subscribe((res: any) => {
     this.router.navigate(['/quotepage',{title:quoteid}]);
   });

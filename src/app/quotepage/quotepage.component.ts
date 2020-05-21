@@ -101,6 +101,7 @@ export class QuotepageComponent implements OnInit {
   dupnext = false;
   isaddfinal = false;
   btnDisabled = false;
+  btnDisableduw = false;
   countryoption = [];
   username: string;
   userrole: string;  
@@ -108,7 +109,8 @@ export class QuotepageComponent implements OnInit {
   public towns: any[];
   public lossaddress: any[];
   public isduplicate: boolean = false;
-
+  public isduplicatecs: boolean = false;
+  today: Date = new Date();
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 filteredOption: Observable<string[]>;
@@ -373,6 +375,7 @@ degreeTitleList = [];
    
      
      this.dupnext = true;
+     this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
@@ -470,7 +473,11 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
+      if(this.userrole == "uw"){
+        this.btnDisableduw = true;
+      }
     }
+    
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
@@ -732,6 +739,7 @@ if(result){
         else{
           this.openduplicateDialog(res);
           this.isduplicate = !this.isduplicate;
+          this.isduplicatecs = !this.isduplicatecs;
         }
     }, error => {
       console.error("Error", error);
@@ -957,6 +965,9 @@ if(result){
   uwnext(tabName: string){
     this.contactForm1.enable();
     if(this.contactForm1.valid){
+      if(this.userrole == 'cs'){
+        this.contactForm1.disable();
+      }
       // this.contactForm1.disable();
       this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
@@ -1179,12 +1190,15 @@ if(result){
       else{
         var quotestatus = String(actionvalue);
       }
-      if(actionvalue == "Active" || actionvalue =="Decline"){
+      if(actionvalue == "Active" || actionvalue =="Declined"){
         var reviewstatus = "Completed"
       }
       else if(actionvalue == "Saveu"){
         var reviewstatus = "Pending"
       }
+      var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
+      console.log("last updateddddddd");
+      console.log(lastupdated)
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
@@ -1203,13 +1217,13 @@ if(result){
       });
       }
       
-      else if(actionvalue == "Active" || actionvalue == "Decline" || actionvalue == "Saveu"){
+      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saveu"){
         let quoteid = this.contactForm3.get('quoted').value;
         return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-          driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus},httpOptions ).subscribe((res: any) => { // not callback
+          driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
 console.log(res);
           console.log("in on save-Approve or Decline");
           if(res['quotestaus'] == "Active")
