@@ -19,6 +19,8 @@ export class DriverdialogComponent implements OnInit {
   driverdata: any;
   abc: any;
   ngModelChecked = false;
+  abcd: any;
+  authenticate: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private formBuilder: FormBuilder,
@@ -42,12 +44,67 @@ export class DriverdialogComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.abcd=this.dataformservice.dataforms;
+    console.log("table",this.abcd);
+    if(this.abcd==0){
+     if(this.abcd[0].Driverclient==false){//1
+      this.authenticate = true;
+      console.log("afs[0]",this.abcd[0].Driverclient);
+        if(this.abcd.length>1){
+            if(this.abcd[1].Driverclient==false){//2
+              this.authenticate = true;
+              console.log("afs[1]",this.abcd[1].Driverclient);
+              if(this.abcd.length>2){
+                if(this.abcd[2].Driverclient==false){//3
+                  this.authenticate = true;
+                  console.log("afs[2]",this.abcd[2].Driverclient);
+                    if(this.abcd.length>3){
+                      if(this.abcd[3].Driverclient==false){//4
+                        this.authenticate = true;
+                        console.log("afs[3]",this.abcd[3].Driverclient);
+                          if(this.abcd.length>4){
+                            if(this.abcd[4].Driverclient==false){//5
+                              this.authenticate = true;
+                              console.log("afs[4]",this.abcd[4].Driverclient);
+                              }else{
+                                this.authenticate = false;
+                              }
+                            }
+                      }else{
+                        this.authenticate = false;
+                      }
+                    }
+                }else{
+                  this.authenticate = false;
+                }
+              }
+            }else{
+              this.authenticate = false;
+            }
+        }
+     }else{
+      this.authenticate = false;
+     }
+    }
+    else{
+      console.log("loft ");
+      this.authenticate = true;
+    }
+    //console.log("table",this.abcd[0].Driverclient);
     this.breakpoint = window.innerWidth <= 790 ? 1 : 2; //
     //console.log("popup ");
-    this.dataformservice.$datas.subscribe((data)=>{
-      var con = data;
-     // console.log("popup",con);
-    });
+
+    // this.abcd.forEach(projet=>//console.log(projet.Driverclient)
+    // {
+    //   let a= projet.Driverclient;
+    //   if(a==false){
+    //     this.authenticate = true;
+    //     console.log("condtion",this.authenticate);
+    //   }
+    //   else{
+    //     this.authenticate = false;
+    //   }
+    // });
   }
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 2

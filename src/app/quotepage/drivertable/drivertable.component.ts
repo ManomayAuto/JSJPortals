@@ -43,7 +43,8 @@ export class DrivertableComponent implements OnInit {
   message: string = 'More than 5 drivers cant be added';
   action :string='close';
   user: any;
-  constructor(private driverservice: driverservice,private dataformservice:dataformservice,public dialog: MatDialog,public snackBar: MatSnackBar) { }
+  constructor(private driverservice: driverservice,private dataformservice:dataformservice,public dialog: MatDialog,
+    public snackBar: MatSnackBar,private asp : dataformservice,) { }
 
  
 
@@ -94,6 +95,7 @@ export class DrivertableComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.driverdata); 
       console.log("test3l",this.driverdata.length );
       console.log("test3",this.driverdata );
+      this.asp.dataforms = this.driverdata;
       }
     else{
       this.snackBar.open(this.message,this.action, {

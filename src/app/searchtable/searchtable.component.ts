@@ -69,10 +69,5 @@ ngOnInit() {
   }
   getRecord(QuoteID){ 
     this.router.navigate(['/quotepage/new',{title:QuoteID}]);
-    var url = window.location.href;  
-    url += {title:QuoteID}
-    this.ngOnInit();
-    //window.location.reload();
-    console.log("puppy",url);
   }
 }

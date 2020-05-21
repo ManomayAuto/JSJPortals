@@ -74,15 +74,18 @@ export class driverservice {
 export class dataformservice {
   $datas = new EventEmitter();
   dataform: any;
+  dataforms: any;
   as;
+  asp;
   constructor() { }
 
   driver1(dataform) {
     console.log("contactform");
-    console.log(dataform);
-    console.log(typeof(dataform));
-    this.$datas.emit(dataform);
-    console.log(this.$datas);
+ 
+  }
+  driver2(dataforms) {
+    console.log("contactform");
+
   }
 }
 @Component({
