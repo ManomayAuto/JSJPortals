@@ -46,7 +46,7 @@ export class DriverdialogComponent implements OnInit {
   ngOnInit() {
     this.abcd=this.dataformservice.dataforms;
     console.log("table",this.abcd);
-    if(this.abcd==0){
+    if(this.abcd){
      if(this.abcd[0].Driverclient==false){//1
       this.authenticate = true;
       console.log("afs[0]",this.abcd[0].Driverclient);

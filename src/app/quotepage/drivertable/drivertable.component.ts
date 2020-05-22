@@ -72,13 +72,15 @@ export class DrivertableComponent implements OnInit {
 
   openDialog(): void {
     console.log("s",this.driverdata.length);
-    this.driverdata.forEach(projet=>{console.log(projet)
-      let entries = Object.entries(projet);
-      entries = entries.filter(([key, value]) => value !== ""); 
-      //return Object.fromEntries(entries);
-    }
+    this.driverdata=this.driverdata.filter(value => Object.keys(value).length !== 0)
+    console.log(this.driverdata);
+    //   {console.log(projet)
+    //   let entries = Object.entries(projet);
+    //   entries = entries.filter(([key, value]) => value !== ""); 
+    //   //return Object.fromEntries(entries);
+    // }
     
-    );
+    // );
     if(this.driverdata.length<=4){
       console.log("traol",this.driverdata );
    
