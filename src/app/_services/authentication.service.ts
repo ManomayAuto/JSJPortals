@@ -50,6 +50,7 @@ export class AuthenticationService{
         this.securestore.setitem('currentUser',JSON.stringify(data.Token));
         localStorage.setItem("name", data.Name);
         localStorage.setItem("permission", data.permissions);
+        localStorage.setItem("Branch", data.Branch);
         let Message = "uw Manager";
         
       if(data.permissions=='QI,QRU,QRM,QRP,DF,DR,ARRP'){

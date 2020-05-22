@@ -5,16 +5,20 @@
     <h1 class="example-app-name">JSJ Portals</h1>
     <span class="example-spacer"></span>
     <button #r="matMenuTrigger" mat-icon-button [matMenuTriggerFor]="menu" style="color: white;">
-      <mat-icon (mouseover)="open(r)">scatter_plot</mat-icon>
+      <mat-icon (mouseover)="open(r)">account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu" [overlapTrigger]="false">
       <button mat-menu-item>
-        <mat-icon>home</mat-icon>
-        <span>Home</span>
+        <mat-icon>person</mat-icon>
+        <span><b>{{this.name}}</b></span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>domain</mat-icon>
+        <span> <b>{{this.Branch}}</b></span>
       </button>
       <button mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
-        <span>Logout</span>
+        <span><b>Logout</b></span>
       </button>
     </mat-menu>
   </mat-toolbar>
@@ -44,7 +48,7 @@
       
       <mat-nav-list>
         <div class="nav-link-group">
-          <button [routerLink]="['/menu']" style="margin-left:5px;text-align: left;margin-right:5px;color:#ffffff;height:50px;width:250px;background: rgb(137,218,245);
+          <button [routerLink]="['/home']" style="margin-left:5px;text-align: left;margin-right:5px;color:#ffffff;height:50px;width:250px;background: rgb(137,218,245);
           background: linear-gradient(180deg, rgb(0, 184, 255) 0%, rgba(0, 191, 255, 0.62) 100%);" mat-raised-button color="accent" [routerLinkActive]="['active']"><mat-icon>dashboard</mat-icon><b style="margin-left: 30px;">Home</b></button>
           
         </div>
@@ -71,12 +75,7 @@
               </span> -->
             <span class="user">
                Role: {{this.role}}
-              </span>
-              <span class="followers">
-                Logged in as-{{this.name}}
-                <!-- {{user.ClientName}}  --> 
-              </span>
-             
+              </span>                    
             </li>
           </ul>
         </div>

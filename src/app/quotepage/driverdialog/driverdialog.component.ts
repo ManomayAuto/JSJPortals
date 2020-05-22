@@ -94,17 +94,17 @@ export class DriverdialogComponent implements OnInit {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 2; //
     //console.log("popup ");
 
-    // this.abcd.forEach(projet=>//console.log(projet.Driverclient)
-    // {
-    //   let a= projet.Driverclient;
-    //   if(a==false){
-    //     this.authenticate = true;
-    //     console.log("condtion",this.authenticate);
-    //   }
-    //   else{
-    //     this.authenticate = false;
-    //   }
-    // });
+    //  this.abcd.forEach(projet=>//console.log(projet.Driverclient)
+    //  {
+    //    let a= projet.Driverclient;
+    //    if(a==false){
+    //      this.authenticate = true;
+    //      console.log("condtion",this.authenticate);
+    //    }
+    //    else{
+    //      this.authenticate = false;
+    //    }
+    //  });
   }
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 2

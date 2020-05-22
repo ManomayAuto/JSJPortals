@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
@@ -25,7 +25,7 @@ export interface PeriodicElement {
   styleUrls: ['./searchtable.component.css']
 })
 export class SearchtableComponent implements OnInit {
-
+  @ViewChild(MatPaginator, {static:true}) paginator: MatPaginator;
   displayedColumns: string[] = ['ClientName', 'QuoteIssuanceDate', 'QuoteStatus', 'QuoteID', 'edit'];
   dataSource;
 
@@ -64,6 +64,7 @@ ngOnInit() {
     this.http.post<any>(environment.URL + `/searchquote`, {name:this.nameFilter.value,quote:this.quoteidFilter.value,DOB:this.days},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
       this.dataSource = new MatTableDataSource(result);
+      this.dataSource.paginator = this.paginator;
     });  
     console.log("searchdone!!!!");
   }

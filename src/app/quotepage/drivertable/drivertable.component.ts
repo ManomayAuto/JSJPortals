@@ -71,8 +71,14 @@ export class DrivertableComponent implements OnInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   openDialog(): void {
-    //console.log("s",DriverName);
-   
+    console.log("s",this.driverdata.length);
+    this.driverdata.forEach(projet=>{console.log(projet)
+      let entries = Object.entries(projet);
+      entries = entries.filter(([key, value]) => value !== ""); 
+      //return Object.fromEntries(entries);
+    }
+    
+    );
     if(this.driverdata.length<=4){
       console.log("traol",this.driverdata );
    
@@ -98,6 +104,7 @@ export class DrivertableComponent implements OnInit {
       this.asp.dataforms = this.driverdata;
       }
     else{
+      console.log("one");
       this.snackBar.open(this.message,this.action, {
         duration: 1000,
       });
@@ -108,6 +115,7 @@ export class DrivertableComponent implements OnInit {
     console.log("test4",this.driverdata);
   } 
   else{
+    console.log("two");
     this.snackBar.open(this.message,this.action, {
       duration: 1000,
     });
