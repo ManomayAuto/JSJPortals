@@ -437,13 +437,13 @@
    
       <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
-      <button mat-raised-button color="primary" #Saveu (click)="onSave('Saveu')" [disabled] = "btnDisableduw" id="Saveu" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
+      <button mat-raised-button color="primary" #Saved (click)="onSave('Saved')" [disabled] = "btnDisableduw" id="Saved" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
      
         <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole == 'cs' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
      
    
-        <button mat-raised-button color="primary" style="margin-left:5px" *ngIf="isaddfinal" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
+        <button mat-raised-button color="primary" style="margin-left:5px" [disabled] = "btnDisablednext" *ngIf="isaddfinal" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
         </div>
     </div>
 

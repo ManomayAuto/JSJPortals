@@ -105,6 +105,7 @@ export class QuotepageComponent implements OnInit {
   isaddfinal = false;
   btnDisabled = false;
   btnDisableduw = false;
+  btnDisablednext = true;
   countryoption = [];
   username: string;
   userrole: string;  
@@ -206,6 +207,7 @@ degreeTitleList = [];
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
     this.userrole = localStorage.getItem('Role');
+    
     if(this.userrole == "cs"){
       console.log("inarr")
     this.manualloadlist = [
@@ -476,6 +478,7 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
+      this.btnDisablednext = false;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
@@ -1196,7 +1199,7 @@ if(result){
       if(actionvalue == "Active" || actionvalue =="Declined"){
         var reviewstatus = "Completed"
       }
-      else if(actionvalue == "Saveu"){
+      else if(actionvalue == "Saved"){
         var reviewstatus = "Pending"
       }
       var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
@@ -1220,7 +1223,7 @@ if(result){
       });
       }
       
-      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saveu"){
+      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
         let quoteid = this.contactForm3.get('quoted').value;
         return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
@@ -1229,9 +1232,28 @@ if(result){
           driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
 console.log(res);
           console.log("in on save-Approve or Decline");
-          if(res['quotestaus'] == "Active")
+          if(res['quotestatus'] == "Active")
           { 
             this.openSnackBar("This Quote has been approved", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+          else if(res['quotestatus'] == "Active" && res['quotestatus'] == "Saved")
+          { 
+            this.openSnackBar("This Quote has been approved", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+          else if(res['quotestatus'] == "Declined"){
+            this.openSnackBar("This quote has been declined", "Dismiss");
+            setTimeout(() => {
+              this.router.navigateByUrl('/home');
+              }, 3000);
+          }
+          else if(res['quotestatus'] == "Declined" && res['quotestatus'] == "Saved"){
+            this.openSnackBar("This quote has been declined", "Dismiss");
             setTimeout(() => {
               this.router.navigateByUrl('/home');
               }, 3000);
@@ -1242,12 +1264,7 @@ console.log(res);
               this.router.navigateByUrl('/home');
               }, 3000);
           }
-          else{
-            this.openSnackBar("This quote has been declined", "Dismiss");
-            setTimeout(() => {
-              this.router.navigateByUrl('/home');
-              }, 3000);
-          }
+          
          
       
       }, error => {
