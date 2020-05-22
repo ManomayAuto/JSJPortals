@@ -56,7 +56,7 @@
                   <ng-container matColumnDef="edit">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
                     <mat-cell *matCellDef="let element" data-label="edit"><button mat-button style="color:rgb(19, 152, 204)">View</button>
-                      <button mat-button (click)="getRecord(element.QuoteID)" style="color:rgb(19, 152, 204)">Edit</button>
+                      <button mat-button *ngIf="element.QuoteStatus=='Declined'" (click)="getRecord(element.QuoteID)" style="color:rgb(19, 152, 204)">Edit</button>
                     </mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

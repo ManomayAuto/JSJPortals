@@ -7,7 +7,7 @@
   <mat-grid-tile>
     <div class="text-inside">
         
-      *Is the driver same as the client?<mat-checkbox *ngIf="authenticate" class="example-margin" [ngModel]="ngModelChecked"
+      *Is the driver same as the client?<mat-checkbox [disabled]="!authenticate" class="example-margin" [ngModel]="ngModelChecked"
       (ngModelChange)="onNgModelChangeEvent($event)" formControlName="Driverclient" [checked]="false"> </mat-checkbox>
     </div>
   </mat-grid-tile>
