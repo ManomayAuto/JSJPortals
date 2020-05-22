@@ -731,6 +731,9 @@ if(result){
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
      if(this.userrole == 'cs'){
+      var con=this.contactForm1;
+      this.dataformservice.driver1(con);
+      this.as.dataform = con;
       return this.http.post<any>(environment.URL + '/duplicate', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,emp:emp,sale:sale,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,prod:prod},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
         if(res.result == "NoQuote")
@@ -739,6 +742,7 @@ if(result){
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
+         
         }
       }
         }

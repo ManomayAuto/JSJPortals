@@ -120,6 +120,7 @@ export class DriverdialogComponent implements OnInit {
 
     if (this.ngModelChecked) {
       var abc= this.dataformservice.dataform;
+      console.log("name",abc); 
       var name = abc.value.firstName+ " " + abc.value.lastName;
       this.driverForm.get('DriverName').setValue([name]);
       this.driverForm.get('DOB').setValue(abc['value']['dab']);
