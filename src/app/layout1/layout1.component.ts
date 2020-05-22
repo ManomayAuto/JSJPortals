@@ -45,6 +45,15 @@ open(r){
       this.name=localStorage.getItem('name');
       this.Branch=localStorage.getItem('Branch');
       this.role=localStorage.getItem('Role');
+      if(this.role == "cs"){
+        this.role = "CS"
+      }
+      else if(this.role == "uw"){
+        this.role = "Underwriter"
+      }
+      else if(this.role == "uw Manager"){
+        this.role = "UW Manager"
+      }
       console.log("ass",this.name);
     this.mobileQuery = media.matchMedia('(max-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
