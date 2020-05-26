@@ -214,6 +214,17 @@ degreeTitleList = [];
       { id : 0, manpercentage: '0%'},
           { id : 10, manpercentage: '10%'},
         { id : 15, manpercentage: '15%'},
+        { id : 20, manpercentage: '20%'},
+        { id : 25, manpercentage: '25%'},
+        { id : 30, manpercentage: '30%'},
+        { id : 35, manpercentage: '35%'},
+        { id : 40, manpercentage: '40%'},
+        { id : 45, manpercentage: '45%'},
+        { id : 50, manpercentage: '50%'},
+        { id : 55, manpercentage: '55%'},
+        { id : 60, manpercentage: '60%'},
+        { id : 65, manpercentage: '65%'},
+        { id : 70, manpercentage: '70%'},
       ];
     this.manualdisclist =[
       { id : 0, manpercentage: '0%'},
