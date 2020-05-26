@@ -102,7 +102,6 @@ export class DrivertableComponent implements OnInit {
       if(this.driverdata.length<=5){
       this.dataSource = new MatTableDataSource(this.driverdata); 
       console.log("test3l",this.driverdata.length );
-      console.log("test3",this.driverdata );
       this.asp.dataforms = this.driverdata;
       }
     else{
