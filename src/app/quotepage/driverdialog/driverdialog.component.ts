@@ -122,7 +122,7 @@ export class DriverdialogComponent implements OnInit {
       var abc= this.dataformservice.dataform;
       console.log("name",abc); 
       var name = abc.value.firstName+ " " + abc.value.lastName;
-      this.driverForm.get('DriverName').setValue([name]);
+      this.driverForm.get('DriverName').setValue(name);
       this.driverForm.get('DOB').setValue(abc['value']['dab']);
       //localStorage.setItem("permission", "sd");
     }
@@ -138,6 +138,9 @@ export class DriverdialogComponent implements OnInit {
       var con = data;
       console.log("popup",con);
     });
+   
+    // var nams=JSON.stringify(this.driverform.DriverName.value);
+    // console.log(nams);
     let driverdata = {
       DriverName :this.driverform.DriverName.value,
       LicenseIssueDate :this.datePipe.transform(this.driverform.LicenseIssueDate.value,  'yyyy-MM-dd'),
