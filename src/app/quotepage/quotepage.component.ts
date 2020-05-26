@@ -316,7 +316,7 @@ degreeTitleList = [];
       branch:  ['',Validators.required],
       EngineNumber:  ['',Validators.required],
     });
-    
+    this.contactForm4.get('currency').setValue('BahamianDollars');
     this.filteredOption = this.contactForm1
 .get('userInput').valueChanges.pipe(
       startWith(''),
@@ -1206,12 +1206,23 @@ if(result){
       else if(actionvalue == "Saved"){
         var reviewstatus = "Pending"
       }
+      // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
       var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
       console.log(lastupdated)
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
+      console.log(losspayee);
+      console.log(typeof(losspayee));
+      if(losslocation == null || losslocation == undefined || losslocation === ""){
+        console.log("in loc");
+        losslocation = ''
+      }
+      if(losspayee == null || losspayee == undefined || losspayee === ""){
+        console.log("in pay");
+        losspayee = ''
+      }
       if(actionvalue == "Save"){
         return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
