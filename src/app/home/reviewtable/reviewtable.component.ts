@@ -71,7 +71,7 @@ getRecord(quoteid,reviewerusername){
   this.message="Quote is already picked up by " +reviewerusername;
   console.log(reviewerusername);
   console.log(this.name);
-  if(reviewerusername == null || reviewerusername ==this.name){
+  if(reviewerusername == null || reviewerusername ==this.name|| reviewerusername == "Underwriter"||reviewerusername == "UW Manager"){
   console.log("rev quoteid",quoteid);
   var reviewstatus = "In Progress"
   var userrole = localStorage.getItem('Role');
