@@ -98,6 +98,8 @@ export class QuotepageComponent implements OnInit {
   ncdvalue = '';
   extraprem = '';
   prom = '';
+  discp = '';
+  anp = '';
   selectDisabled = false;
   isReadonly = true;
   option = [];
@@ -109,6 +111,7 @@ export class QuotepageComponent implements OnInit {
   countryoption = [];
   username: string;
   userrole: string;  
+  remarksin: string;
   public summaries: any[];
   public towns: any[];
   public lossaddress: any[];
@@ -309,6 +312,7 @@ degreeTitleList = [];
     netprem: [''],
     netpremusd: [''],
     remarks: [''],
+    addremarks: [''],
     quoted: [''],
     deductibles:  [''],
      });
@@ -983,6 +987,18 @@ if(result){
     }
 
 }
+addremarkstest() {
+  let f = localStorage.getItem('name');
+  let e = this.contactForm3.get('addremarks').value;
+  if(this.remarksin == null || this.remarksin == undefined ||this.remarksin == ''){
+this.remarksin = "@"+ f + "-" + e + "\n"
+  }
+  else{
+    this.remarksin += "@"+ f + "-" + e + "\n"
+  }
+  this.contactForm3.get('remarks').setValue(this.remarksin)
+
+}
   uwnext(tabName: string){
     this.contactForm1.enable();
     if(this.contactForm1.valid){
@@ -1137,6 +1153,8 @@ if(result){
         this.ncdvalue = res.nc
         this.extraprem = res.extraprem
         this.prom = res.prom
+        this.discp = res.discp
+        this.anp = res.anp
  
     }, error => {
       console.error("Error", error);
@@ -1217,8 +1235,8 @@ if(result){
       else if(actionvalue == "Saved"){
         var reviewstatus = "Pending"
       }
-      // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
-      var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
+      var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
+      // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
       console.log(lastupdated)
       const httpOptions = {
@@ -1363,7 +1381,10 @@ console.log(res);
       let driverwar = this.child.driverdata[0]['Driverwar'].viewValue;
       let promotion = this.contactForm3.get('promotion').value;
       let username = localStorage.getItem('name');
-      var quotedata ={cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar};
+      let vehval = this.contactForm2.get('vehicleValue').value;
+      let discp = this.discp;
+      let anp = this.anp;
+      var quotedata ={vehval:vehval,cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar,discp:discp,anp:anp};
     // this.quoteletterservice.quoteletter(quotedata);
     
     this.openquotelet(quotedata);
