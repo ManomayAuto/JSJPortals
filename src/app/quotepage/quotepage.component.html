@@ -277,9 +277,9 @@
         <mat-grid-list style="margin-top:-60px" cols="3" [cols]="breakpoint" rowHeight="125px" (window:resize)="onResize($event)">
    
           <mat-grid-tile style="right: unset !important;margin-top: 50px;margin-left:15px;">
-            <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: red;">*Type of cover:</label> 
+            <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: red;">Type of cover *:</label> 
   
-            <label id="example-radio-group-label" *ngIf="!contactForm2.get('options1').hasError('required')">*Type of Cover:</label>
+            <label id="example-radio-group-label" *ngIf="!contactForm2.get('options1').hasError('required')">Type of Cover *:</label>
            <mat-radio-button class="example-radio-button" name="COMP" value="COMP" (click)="toggle1()" style="margin-left: 20px;">
               Comprehensive
             </mat-radio-button>
@@ -338,12 +338,15 @@
   <form fxLayout="column" [formGroup]="contactForm3">
       <div class="container" style="width:1000px">
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="i6h9k">Coverage Information</label></div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" placeholder="" formControlName="coverageinfo" class="form-control" readonly /></div>
-        </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="i6h9k">Coverage Information</label></div>
+          <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3">
+            <input type="text" placeholder="" formControlName="coverageinfo" class="form-control" readonly /></div>
+         
+      </div>
+      
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="imdk1">Automatic Discount</label></div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="imdk1">Automatic Discount</label></div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3">
               <div class="basic-container">
                 <mat-accordion style="height:38px !important">
                 <mat-expansion-panel hideToggle="true" #xyz>
@@ -355,7 +358,9 @@
                   </mat-expansion-panel-header>
                   NCD: {{ncdvalue}}<br>
                   Extra Premium: {{extraprem}}<br>
-                  Promotion Discount Amount : {{prom}}
+                  Promotion Discount Amount : {{prom}}<br>
+                  Discounted Premium: {{discp}}<br>
+                  Annual Premium: {{anp}}
                 </mat-expansion-panel>
              
               </mat-accordion>
@@ -400,32 +405,36 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="iv4t2">Annual Gross Premium (in $)</label></div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="annualgrosspremium" class="form-control" readonly/></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="iv4t2">Annual Gross Premium (in $)</label></div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="annualgrosspremium" class="form-control" readonly/></div>
         </div>
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ix943">Taxes (in $)</label></div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="tax" class="form-control" /></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ix943">Taxes (in $)</label></div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="tax" class="form-control" /></div>
         </div>
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="iefu3">Annual Net Premium (in $)</label></div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="netprem" class="form-control" readonly/></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="iefu3">Annual Net Premium (in $)</label></div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="netprem" class="form-control" readonly/></div>
         </div>
         <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ixf87">Annual Net Premium (in $USD)</label></div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="netpremusd" class="form-control" readonly/></div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ixf87">Annual Net Premium (in $USD)</label></div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="netpremusd" class="form-control" readonly/></div>
         </div>
         <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ixf87">Deductibles</label></div>
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="number" placeholder="Deductibles" formControlName="deductibles" class="form-control"/></div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ixf87">Deductibles</label></div>
+          <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="number" placeholder="Deductibles" formControlName="deductibles" class="form-control"/></div>
       </div>
-        <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ii72f">Remarks</label></div>
-            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><textarea rows="2" formControlName="remarks" class="form-control"></textarea></div>
+      <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ii72f">Remarks</label></div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3">
+          <textarea rows="2" formControlName="addremarks" class="form-control"></textarea>
+            <button (click)="addremarkstest()">Add Remarks</button>
         </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><textarea rows="5" placeholder="Remarks" formControlName="remarks" class="form-control"></textarea></div>
+    </div>
         <div *ngIf="isduplicate || this.userrole != 'cs'" class="row">
-            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote ID</label></div>
-            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" formControlName="quoted" class="form-control" /></div>
+            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote ID</label></div>
+            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="quoted" class="form-control" readonly/></div>
         </div>
         <button mat-raised-button color="primary" (click)="onSubmit()" style="float: right;margin-bottom: 20px;">Generate Premium</button>
 

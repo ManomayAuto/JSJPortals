@@ -49,7 +49,7 @@
                   
                   <ng-container matColumnDef="lastupdatedat">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Last Updated At </mat-header-cell>
-                    <mat-cell data-label="lastupdatedat" *matCellDef="let element"> {{element.lastupdatedat}}  </mat-cell>
+                    <mat-cell data-label="lastupdatedat" *matCellDef="let element"> {{element.lastupdatedat | date :'short'}}  </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="reviewerusername">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Reviewer/Group</mat-header-cell>
