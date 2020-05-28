@@ -29,7 +29,8 @@ const routes: Routes = [
   { path: 'layout1', component: Layout1Component },
   { path: 'reports', component: ReportsComponent },
   { path: 'quotepage', component: QuotepageComponent, canActivate: [AuthGuard], 
-  data:{roles : [Role.one,Role.two,Role.three,Role.four,Role.five,Role.six,Role.hi,Role.ho,Role.jo,Role.lo,Role.ok]} },
+  data:{roles : [Role.one,Role.two,Role.three,Role.four,Role.five,Role.six,Role.hi,Role.ho,Role.jo,Role.lo,Role.ok]},
+  },
   { path: 'quotepage/new', component: QuotepageComponent, canActivate: [AuthGuard], 
   data:{roles : [Role.one,Role.two,Role.three,Role.four,Role.five,Role.six,Role.hi,Role.ho,Role.jo,Role.lo,Role.ok]} },
  
