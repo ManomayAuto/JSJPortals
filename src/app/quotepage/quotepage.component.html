@@ -1,9 +1,11 @@
-<div class="container-fluid" style="padding: 20px;"><mat-tab-group><mat-tab label="Search Quote">
+<div class="container-fluid" style="padding: 20px;">
+<mat-tab-group [selectedIndex]="selectedIndex">
+  <mat-tab label="Search Quote">
 
   <app-searchtable></app-searchtable>
 
  </mat-tab>
-    <mat-tab label="New Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)" [(selectedIndex)]="selectedIndex">
+    <mat-tab label="New Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)">
      <a >
    <mat-tab label="Basic Details">    
     <form fxLayout="column" (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
