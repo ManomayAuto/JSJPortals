@@ -3,7 +3,7 @@
   <app-searchtable></app-searchtable>
 
  </mat-tab>
-    <mat-tab label="New Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)" [(selectedIndex)]="selectedIndex">
+    <mat-tab label="Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)" [(selectedIndex)]="selectedIndex">
      <a >
    <mat-tab label="Basic Details">    
     <form fxLayout="column" (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
