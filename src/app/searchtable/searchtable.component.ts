@@ -68,6 +68,9 @@ ngOnInit() {
     });  
     console.log("searchdone!!!!");
   }
+  getRed(QuoteID){ 
+    this.router.navigate(['/quotepage/new',{view:QuoteID}]);
+  }
   getRecord(QuoteID){ 
     this.router.navigate(['/quotepage/new',{title:QuoteID}]);
   }

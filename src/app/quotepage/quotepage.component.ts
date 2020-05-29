@@ -95,6 +95,7 @@ export class dataformservice {
   providers: [DatePipe]
 })
 export class QuotepageComponent implements OnInit {
+
   ncdvalue = '';
   extraprem = '';
   prom = '';
@@ -374,13 +375,145 @@ degreeTitleList = [];
       }
   
   )
+  let quotei =  this.route.snapshot.paramMap.get('view');
+  console.log("view",quotei);  
+    if(quotei != null){
+      console.log("not null");
+    this.getSomethings();
+  }
   // this.abc=this.dataService.SharedData;
   let quoteid =  this.route.snapshot.paramMap.get('title');
-  console.log("trail1",quoteid);  
+  console.log("edit",quoteid);  
     if(quoteid != null){
       console.log("not null");
     this.getSomething();
   }
+  }
+  getSomethings(){
+    console.log("view")
+    if(this.userrole == 'cs'){
+      // this.contactForm1.markAllAsTouched();
+      this.contactForm2.clearValidators();
+      this.contactForm2.clearAsyncValidators();
+      // this.contactForm2.markAllAsTouched();
+      // this.contactForm3.markAllAsTouched();
+    //  this.contactForm1.disable();
+    //  this.contactForm2.disable();
+    //  this.contactForm3.disable();
+   
+     
+     this.dupnext = true;
+     this.isduplicatecs = !this.isduplicatecs;
+    }
+    let quoteid =  this.route.snapshot.paramMap.get('view');
+    console.log("getSomething not null");
+    this.isaddfinal = true;
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
+      console.log("searchdone!!!!",result);
+      console.log(result);
+    this.contactForm1.get('dob1').setValue(result['email']);
+    this.contactForm1.get('firstName').setValue(result['first']);
+    this.contactForm1.get('lastName').setValue(result['last']);
+    this.contactForm1.get('dab').setValue(result['dob']);
+    this.contactForm1.get('idType').setValue(result['idtype']);
+    this.contactForm1.get('idNumber').setValue(result['idno']);
+    this.contactForm1.get('dob').setValue(result['mob']);
+    var makey = result['make'];
+    // console.log(result['make']);
+    this.displayFn(makey);
+    this.contactForm1.get('userInput').setValue(makey);
+    this.contactForm1.get('occupation').setValue(result['ocp']);
+    this.contactForm1.get('employement').setValue(result['emplace']);
+    this.contactForm1.get('pointofsale').setValue(result['sale']);
+    this.contactForm1.get('Product').setValue(result['prod']);
+    console.log(result['prod']);
+    this.contactForm1.get('Year').setValue(result['yr']); 
+    this.contactForm1.get('EngineCC').setValue(result['cc']);
+    this.contactForm1.get('Use').setValue(result['use']);
+    this.contactForm1.controls.vehicleType.setValue(result['vehtype']);
+    this.educationLevelChangeAction(result['prod']);
+    var softop = +result['softop'];
+   this.contactForm1.get('softtop').setValue(softop);
+   var ct = +result['ct'];
+   this.contactForm1.get('clienttype').setValue(ct);
+   this.contactForm1.disable();
+   var fin = +result['financed'];
+   this.contactForm2.get('financed').setValue(fin);
+   if(fin == 1){
+this.toggle3();
+   }
+   console.log(result['claimfre']);
+   console.log(typeof(result['claimfre']));
+   var claimy = result['claimfre'].toString();
+    this.contactForm2.get('claimfree').setValue(claimy);
+    let typeofcover = result['covertype'];
+    if(typeofcover == "Third Party"){
+     typeofcover = "TP"
+    }
+    else if(typeofcover == "Comprehensive")
+    {
+     typeofcover = "COMP"
+     this.toggle1();
+    }
+    else if(typeofcover == "Third Party Fire and Theft")
+    {
+      typeofcover = "TPFT"
+      this.toggle1();
+    }
+    this.contactForm2.get('options1').setValue(typeofcover);
+    var layn = result['lpname'];
+    console.log(layn)
+    if(layn != null || layn != undefined)
+   {
+     console.log("In layn"+ layn)
+    this.displayFnloss(layn); 
+    // this.contactForm2.get('losspay').setValue(result['lpname']);
+    this.Selectedlosspay = result['lpname'];
+   }
+   else{
+     console.log("not in layn");
+   }
+    this.contactForm2.get('lossloc').setValue(result['lploc']);
+    this.lossaddress = [{lossad: result['lploc']}];
+    console.log(this.lossaddress[0]);
+    this.Selectedloss = this.lossaddress[0];
+    console.log(this.lossaddress);
+    this.contactForm2.get('vehicleValue').setValue(result['vehvalue']);
+    var alam = +result['alam']
+    this.contactForm2.get('alarm').setValue(alam);
+    this.contactForm2.disable();
+    this.contactForm3.get('coverageinfo').setValue(result['covertype']);
+    +this.contactForm3.get('manualloadp').setValue(result['manloadp']);
+    this.contactForm3.get('manualloadr').setValue(result['manloadr']);
+    +this.contactForm3.get('manualdisc').setValue(result['mandisp']);
+    this.contactForm3.get('manualdiscr').setValue(result['mandisr']);
+    var flet = +result['flet']
+    this.contactForm3.get('fleet').setValue(flet);
+    var prom = +result['prom'];
+    this.contactForm3.get('promotion').setValue(prom);
+    this.contactForm3.get('tax').setValue(result['tax']);
+    this.contactForm3.get('annualgrosspremium').setValue(result['agp']);
+    this.contactForm3.get('netprem').setValue(result['anp']);
+    this.ncdvalue = result['autod'];
+    this.driverdata = result['driverdata'];
+    this.contactForm3.get('quoted').setValue(result['quoteid']);
+    this.driverservice.driver(this.driverdata);
+    if(result['quotestatus'] == "Active"){
+      this.btnDisabled = true;
+      this.btnDisablednext = false;
+      if(this.userrole == "uw"){
+        this.btnDisableduw = true;
+      }
+    }
+    this.contactForm3.disable();
+    // this.contactForm1.markAllAsTouched;
+    // this.contactForm2.markAllAsTouched;
+    // this.contactForm3.markAllAsTouched;
+    });  
+    
   }
   getSomething(){
     if(this.userrole == 'cs'){
@@ -531,6 +664,7 @@ this.toggle3();
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
     });  
+    
   }
   doFilter(value) {
     return this.service.getData()

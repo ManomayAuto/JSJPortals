@@ -124,9 +124,11 @@ export class DrivertableComponent implements OnInit {
 }
 
 
-removeAt(index: number) {
+removeAt(i: number,element):void {
+ // console.log(this.dataSource.data.findIndex(element));
+ console.log(i)
   const data = this.dataSource.data;
-  data.splice( index, 1);
+  data.splice(i,1);
 
   this.dataSource.data = data;
   
