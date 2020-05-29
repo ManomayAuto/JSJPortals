@@ -109,6 +109,7 @@ export class QuotepageComponent implements OnInit {
   btnDisabled = false;
   btnDisableduw = false;
   btnDisablednext = true;
+  selectedIndex: any;
   countryoption = [];
   username: string;
   userrole: string;  
@@ -161,6 +162,8 @@ degreeTitleList = [];
   Selectedtown: any;
   Selectedloss: any;
   Selectedlosspay: any;
+ 
+  
   educationLevelChangeAction(education) {
     this.exam_title="";
     let dropDownData = this.educationList.find((data: any) => data.educationLevelName === education);
@@ -387,9 +390,13 @@ degreeTitleList = [];
     if(quoteid != null){
       console.log("not null");
     this.getSomething();
+    
   }
   }
   getSomethings(){
+     
+      this.selectedIndex =  1;
+    
     console.log("view")
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
@@ -516,6 +523,8 @@ this.toggle3();
     
   }
   getSomething(){
+    this.selectedIndex =  1;
+    
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
       this.contactForm2.clearValidators();
