@@ -2,9 +2,12 @@
       <div data-type="default" class="container" style="padding:30px;">
         
         <div data-type="default" class="row">
-          <mat-toolbar style=" background: rgb(131, 230, 255);
+          <mat-toolbar *ngIf="this.role != 'cs'" style=" background: rgb(131, 230, 255);
           color: #fff;border-radius: 5px;white-space: normal;
     ">Quotes For Review</mat-toolbar>
+    <mat-toolbar *ngIf="this.role == 'cs'" style=" background: rgb(131, 230, 255);
+    color: #fff;border-radius: 5px;white-space: normal;
+">Quotes Review Status</mat-toolbar>
           <!-- / Quotes Status -->
             <div data-type="default" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 py-3">
        

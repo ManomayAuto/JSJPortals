@@ -640,7 +640,35 @@ this.toggle3();
         this.btnDisableduw = true;
       }
     }
-    
+   
+    this.contactForm4.get('addressType').setValue(result['adtype']);
+      this.contactForm4.get('streetName').setValue(result['street']);
+      console.log(result['countri'])
+      console.log(result['zipc'])
+      console.log(result['city'])
+      var countri = result['countri']
+    //  this.contactForm4.get('zipCode').setValue(result['zip']);
+    //  this.contactForm4.get('cityTown').setValue(result['city']);
+ 
+  if(countri != null || countri != undefined)
+   {
+    this.displayFncountry(countri);
+    this.contactForm4.get('country').setValue(result['countri']);
+   }
+   else{
+     console.log("not in countri");
+   }
+  
+//   this.contactForm4.get('zipCode').setValue(result['zip']);
+//  console.log(typeof(result['zip']));
+  // this.summaries = Array.of(result['zip']);
+  this.summaries = [{Zipcode: result['zipc']}];
+  this.towns = [{Town: result['city']}];
+  this.Selectedzip = this.summaries[0];
+  this.Selectedtown = this.towns[0];
+//   this.contactForm4.get('zipCode').setValue(this.summaries[0]);
+//  console.log(this.summaries);
+  
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
@@ -985,9 +1013,6 @@ if(result){
     this.toggle3();
        }
    console.log("finacneeee"+result['quotedata']['financed']);
-  //  if(result['quotedata']['financed'] == 0){
-     
-  //  }
    this.contactForm2.get('financed').disable();
    var claimy = result['quotedata']['claimfre'].toString();
    this.contactForm2.get('claimfree').setValue(claimy);
@@ -1395,12 +1420,25 @@ this.remarksin = "@"+ f + "-" + e + "\n"
         console.log("in pay");
         losspayee = ''
       }
+      let adtype = this.contactForm4.get('addressType').value;
+      let street = this.contactForm4.get('streetName').value;
+      let countri = this.contactForm4.get('country').value;
+      let zip = this.contactForm4.get('zipCode').value;
+      zip= zip['Zipcode'];
+      let city= this.contactForm4.get('cityTown').value;
+      city= city['Town'];
+      console.log(adtype);
+      console.log(street);
+      console.log(countri);
+      console.log(zip);
+      console.log(city);
       if(actionvalue == "Save"){
         return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-          driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus},httpOptions ).subscribe((res: any) => { // not callback
+          driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,
+          adtype:adtype,street:street,countri:countri,zipc:zip,citi:city},httpOptions ).subscribe((res: any) => { // not callback
           console.log(res.result);
           let qd = res.result;
           console.log("in on save");
