@@ -1421,12 +1421,33 @@ this.remarksin = "@"+ f + "-" + e + "\n"
         losspayee = ''
       }
       let adtype = this.contactForm4.get('addressType').value;
+      if(adtype == null || adtype == undefined){
+        adtype = ''
+      }
       let street = this.contactForm4.get('streetName').value;
+      if(street == null || street == undefined){
+        street = ''
+      }
       let countri = this.contactForm4.get('country').value;
+      if(countri == null || countri == undefined){
+        countri = ''
+      }
       let zip = this.contactForm4.get('zipCode').value;
-      zip= zip['Zipcode'];
+      if(zip == null || zip == undefined){
+        zip = ''
+      }
+      else{
+        zip= zip['Zipcode'];
+      }
+      
       let city= this.contactForm4.get('cityTown').value;
-      city= city['Town'];
+      if(city == null || city == undefined){
+        city = ''
+      }
+      else{
+        city= city['Town'];
+      }
+      
       console.log(adtype);
       console.log(street);
       console.log(countri);
