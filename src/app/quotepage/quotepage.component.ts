@@ -394,7 +394,7 @@ degreeTitleList = [];
   }
   }
   getSomethings(){
-     
+    this.dupnext = true;
       this.selectedIndex =  1;
     
     console.log("view")
@@ -407,9 +407,9 @@ degreeTitleList = [];
     //  this.contactForm1.disable();
     //  this.contactForm2.disable();
     //  this.contactForm3.disable();
-   
+    // this.dupnext = true;
      
-     this.dupnext = true;
+     
      this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('view');
@@ -421,6 +421,7 @@ degreeTitleList = [];
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
       console.log(result);
+      // this.dupnext = true;
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
     this.contactForm1.get('lastName').setValue(result['last']);
@@ -507,6 +508,9 @@ this.toggle3();
     this.ncdvalue = result['autod'];
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
+    console.log(result['remarks']);
+    this.contactForm3.get('remarks').setValue(result['remarks']);
+    
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
@@ -523,6 +527,7 @@ this.toggle3();
     
   }
   getSomething(){
+    this.dupnext = true;
     this.selectedIndex =  1;
     
     if(this.userrole == 'cs'){
@@ -534,9 +539,7 @@ this.toggle3();
      this.contactForm1.disable();
      this.contactForm2.disable();
      this.contactForm3.disable();
-   
-     
-     this.dupnext = true;
+    //  this.dupnext = true;
      this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('title');
@@ -632,6 +635,8 @@ this.toggle3();
     this.ncdvalue = result['autod'];
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
+    console.log(result['remarks']);
+    this.contactForm3.get('remarks').setValue(result['remarks']);
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
@@ -1158,12 +1163,26 @@ if(result){
 addremarkstest() {
   let f = localStorage.getItem('name');
   let e = this.contactForm3.get('addremarks').value;
-  if(this.remarksin == null || this.remarksin == undefined ||this.remarksin == ''){
-this.remarksin = "@"+ f + "-" + e + "\n"
-  }
-  else{
-    this.remarksin += "@"+ f + "-" + e + "\n"
-  }
+  
+//   if(this.remarksin == null || this.remarksin == undefined ||this.remarksin == ''){
+// this.remarksin = "@"+ f + "-" + e + "\n"
+
+//   }
+  // else{
+    var lastupdated = this.dp.transform(this.today, 'yy-MM-dd HH:mm','es-ES');
+      let k = this.contactForm3.get('remarks').value;
+      if(k){
+ this.remarksin = k + "@"+ f + "-" + e + "("+lastupdated+")" + "\n"
+      }
+      else{
+        this.remarksin = "@"+ f + "-" + e + "("+lastupdated+")" + "\n"
+      }
+     
+
+    
+    
+    
+  // }
   this.contactForm3.get('remarks').setValue(this.remarksin)
 
 }
@@ -1580,7 +1599,7 @@ console.log(res);
       let cover = this.contactForm3.get('coverageinfo').value;
       console.log("drivertable values",this.child.driverdata);
       console.log(this.child.driverdata[0]['Driverwar']);
-      let driverwar = this.child.driverdata[0]['Driverwar'].viewValue;
+      let driverwar = this.child.driverdata[0]['Driverwar'];
       let promotion = this.contactForm3.get('promotion').value;
       let username = localStorage.getItem('name');
       let vehval = this.contactForm2.get('vehicleValue').value;
