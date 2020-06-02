@@ -1,24 +1,19 @@
 export enum Role {
-    // AE='DF,DR',
-    // Noncall='DF',
-    // Nonred='DR',
-    // Quote='QI||QRU||QRM',
-    // Quotea='QI,QRU,QRM',
-    one='QI,DR',
-    two='QI,QRU,QRP,DF,DR,ARRP',
-    three='QI,QRU,QRP,DF,DR',
-    four='QI,QRU,QRM,QRP,DF,DR',
-    five='QI,QRU,QRM,QRP,DF,DR,ARRP',
-    six='QI,QRU,QRP,DR',
+    one='QI,DR',//cs
+    two='QI,QRU,QRP,DF,DR,ARRP',//ud 
+    three='QI,QRU,QRP,DF,DR',//ud
+    four='QI,QRU,QRM,QRP,DF,DR',//udm
+    five='QI,QRU,QRM,QRP,DF,DR,ARRP',//udm
+    six='QI,QRU,QRP,DR',//ud
     seven='DF',
     eight='DF,ARRP',
     nine='DF,DR',
     ten='DR',
-    hi='QI',
-    ho='QI,QRU',
-    jo='QI,QRU,QRM',
-    lo='QI,QRU,QRP',
-    ok='QI,QRU,QRM,QRP',
+    hi='QI',//cs
+    ho='QI,QRU',//ud
+    jo='QI,QRU,QRM',//ud m
+    lo='QI,QRU,QRP',//ud
+    ok='QI,QRU,QRM,QRP',//ud m
     ao='DR,ARRP',
     so='DR,DF,ARRP'
 }

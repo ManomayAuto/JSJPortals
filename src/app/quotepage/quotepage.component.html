@@ -6,7 +6,7 @@
 
  </mat-tab>
     <mat-tab label="New Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)">
-     <a >
+    
    <mat-tab label="Basic Details">    
     <form fxLayout="column" (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
     <mat-card>Personal Details</mat-card><mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
@@ -708,7 +708,7 @@
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
 <button mat-raised-button color="primary" style="margin-left:50px">Submit</button>
-</div> </form> </mat-tab></a>
+</div> </form> </mat-tab>
 </mat-tab-group></mat-tab></mat-tab-group>
 
 </div>
