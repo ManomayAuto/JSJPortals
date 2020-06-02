@@ -140,7 +140,7 @@ degreeTitleList = [];
       ]
     },
     {
-      'educationLevelName': 'Private Vehicle Golf Carts - ICB',
+      'educationLevelName': 'Private Golf Cart - ICB',
       degreeTitleList: [
         'Golf'
       ]
@@ -1354,7 +1354,7 @@ addremarkstest() {
       else if (prod == 'Motor Goods Carrying - ICB'){
       var edu = 'Motor'
       }
-      else if (prod == 'Private Vehicle Golf Carts - ICB'){
+      else if (prod == 'Private Golf Cart - ICB'){
         var edu = 'Private'
       }
       if(vehicletype == 'Standard')
