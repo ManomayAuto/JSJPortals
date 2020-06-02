@@ -12,7 +12,7 @@
     <form fxLayout="column" (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
     <mat-card>Personal Details</mat-card><mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
 
-  <mat-grid-tile style="right: unset !important">
+  <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
         <input matInput type="text" placeholder="First Name" [(ngModel)]="firstName" formControlName="firstName" required>
@@ -218,7 +218,7 @@
 </mat-grid-list>
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
 <button mat-raised-button color="primary" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
-<button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">UWNext</button>
+<button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">Next</button>
 </div></form>   </mat-tab>
 <mat-tab label="Coverage /Driver Details" [disabled]="true">
    
@@ -452,8 +452,8 @@
       <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
       <button mat-raised-button color="primary" #Saved (click)="onSave('Saved')" [disabled] = "btnDisableduw" id="Saved" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
-     
-        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole == 'cs' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
+      <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
+        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
      
    

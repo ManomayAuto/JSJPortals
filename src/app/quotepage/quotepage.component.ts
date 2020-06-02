@@ -106,8 +106,9 @@ export class QuotepageComponent implements OnInit {
   option = [];
   dupnext = false;
   isaddfinal = false;
-  btnDisabled = false;
-  btnDisableduw = false;
+  btnDisabled = true;
+  btnDisableduw = true;
+  btnDisabledcs = false;
   btnDisablednext = true;
   selectedIndex: any;
   countryoption = [];
@@ -396,7 +397,8 @@ degreeTitleList = [];
   getSomethings(){
     this.dupnext = true;
       this.selectedIndex =  1;
-    
+      this.btnDisabled = false;
+      this.btnDisableduw = false;
     console.log("view")
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
@@ -409,7 +411,7 @@ degreeTitleList = [];
     //  this.contactForm3.disable();
     // this.dupnext = true;
      
-     
+    this.btnDisabledcs = true;
      this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('view');
@@ -523,13 +525,39 @@ this.toggle3();
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
+    this.contactForm4.get('addressType').setValue(result['adtype']);
+    this.contactForm4.get('streetName').setValue(result['street']);
+    console.log(result['countri'])
+    console.log(result['zipc'])
+    console.log(result['citi'])
+    var countri = result['countri']
+  //  this.contactForm4.get('zipCode').setValue(result['zip']);
+  //  this.contactForm4.get('cityTown').setValue(result['city']);
+
+if(countri != null || countri != undefined)
+ {
+  this.displayFncountry(countri);
+  this.contactForm4.get('country').setValue(result['countri']);
+ }
+ else{
+   console.log("not in countri");
+ }
+
+//   this.contactForm4.get('zipCode').setValue(result['zip']);
+//  console.log(typeof(result['zip']));
+// this.summaries = Array.of(result['zip']);
+this.summaries = [{Zipcode: result['zipc']}];
+this.towns = [{Town: result['citi']}];
+this.Selectedzip = this.summaries[0];
+this.Selectedtown = this.towns[0];
     });  
     
   }
   getSomething(){
     this.dupnext = true;
     this.selectedIndex =  1;
-    
+    this.btnDisabled = false;
+      this.btnDisableduw = false;
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
       this.contactForm2.clearValidators();
@@ -540,6 +568,7 @@ this.toggle3();
      this.contactForm2.disable();
      this.contactForm3.disable();
     //  this.dupnext = true;
+    this.btnDisabledcs = true;
      this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('title');
@@ -650,7 +679,7 @@ this.toggle3();
       this.contactForm4.get('streetName').setValue(result['street']);
       console.log(result['countri'])
       console.log(result['zipc'])
-      console.log(result['city'])
+      console.log(result['citi'])
       var countri = result['countri']
     //  this.contactForm4.get('zipCode').setValue(result['zip']);
     //  this.contactForm4.get('cityTown').setValue(result['city']);
@@ -668,7 +697,7 @@ this.toggle3();
 //  console.log(typeof(result['zip']));
   // this.summaries = Array.of(result['zip']);
   this.summaries = [{Zipcode: result['zipc']}];
-  this.towns = [{Town: result['city']}];
+  this.towns = [{Town: result['citi']}];
   this.Selectedzip = this.summaries[0];
   this.Selectedtown = this.towns[0];
 //   this.contactForm4.get('zipCode').setValue(this.summaries[0]);
@@ -901,6 +930,16 @@ if(result){
       console.log(prod)
       console.log(typeof(prod))
       let make = this.contactForm1.get('userInput').value;
+      // var layn = result['quotedata']['lpname'];
+      // if(layn != null || layn != undefined)
+      // {
+      //  this.displayFnloss(layn); 
+      //  // this.contactForm2.get('losspay').setValue(result['quotedata']['lpname']);
+      //  this.Selectedlosspay = result['quotedata']['lpname'];
+      // }
+      // else{
+      //   console.log("not in layn");
+      // }
       console.log("indupiccccc"+ make);
       let yr = this.contactForm1.get('Year').value;
       let cc = this.contactForm1.get('EngineCC').value;
@@ -921,7 +960,7 @@ if(result){
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
-     if(this.userrole == 'cs'){
+
       var con=this.contactForm1;
       this.dataformservice.driver1(con);
       this.as.dataform = con;
@@ -945,7 +984,7 @@ if(result){
     }, error => {
       console.error("Error", error);
     });
-     }
+
       
      
 
@@ -1422,6 +1461,9 @@ addremarkstest() {
       else if(actionvalue == "Saved"){
         var reviewstatus = "Pending"
       }
+      else if(actionvalue == "Savedcs"){
+        quotestatus = "Not Issued"
+      }
       var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
@@ -1472,7 +1514,7 @@ addremarkstest() {
       console.log(countri);
       console.log(zip);
       console.log(city);
-      if(actionvalue == "Save"){
+      if(actionvalue == "Save" || actionvalue == "Savedcs"){
         return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
