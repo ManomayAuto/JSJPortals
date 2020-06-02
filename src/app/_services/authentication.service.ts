@@ -51,24 +51,23 @@ export class AuthenticationService{
         localStorage.setItem("name", data.Name);
         localStorage.setItem("permission", data.permissions);
         localStorage.setItem("Branch", data.Branch);
-        let Message = "uw Manager";
         
-      if(data.permissions=='QI,QRU,QRM,QRP,DF,DR,ARRP'){
-        console.log("try per"); 
-        localStorage.setItem("Role",Message);
-      }
+        
+     
       let Message1 = "uw Manager";
-      if(data.permissions=='QI,QRU,QRP' || data.permissions == 'QI,QRU,QRM'){
+      if(data.permissions=='QI,QRU,QRM,QRP,DF,DR' || data.permissions == 'QI,QRU,QRM,QRP,DF,DR,ARRP'|| data.permissions == 'QI,QRU,QRM'||
+       data.permissions == 'QI,QRU,QRM,QRP'){
         console.log("try sdad"); 
         localStorage.setItem("Role",Message1);
       }
       let Message2 = "uw";
-      if(data.permissions=='QI,QRU'){
+      if(data.permissions=='QI,QRU,QRP,DF,DR,ARRP'||data.permissions=='QI,QRU,QRP,DF,DR'|| data.permissions == 'QI,QRU,QRP,DR'|| 
+      data.permissions == 'QI,QRU'|| data.permissions == 'QI,QRU,QRP'){
         console.log("try sdsadad"); 
         localStorage.setItem("Role",Message2);
       }
       let Message3 = "cs";
-      if(data.permissions=='QI'){
+      if(data.permissions=='QI'||data.permissions=='QI,DR'){
         console.log("cs"); 
         localStorage.setItem("Role",Message3);
       }

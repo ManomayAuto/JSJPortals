@@ -25,7 +25,7 @@ export class MenuComponent implements OnInit {
     }
   }
   clickMe() {
-    // console.log("sssng");
+     console.log("sssng",this.per.includes('DR') && this.per.includes('DF'));
     console.log("nsssg",this.per);
     if (this.per.includes('DR') && this.per.includes('DF')) { 
      this.router.navigate(['/ae']);
