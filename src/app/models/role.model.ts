@@ -15,5 +15,5 @@ export enum Role {
     lo='QI,QRU,QRP',//ud
     ok='QI,QRU,QRM,QRP',//ud m
     ao='DR,ARRP',
-    so='DR,DF,ARRP'
+    so='DF,DR,ARRP'
 }

@@ -12,7 +12,6 @@ export interface PeriodicElement {
   product: string;
   quoteid: string;
   edit: string;
-
 }
 
 
@@ -41,7 +40,8 @@ export class SearchtableComponent implements OnInit {
   quote: any;
   SearchForm: any;
   days: string;
-
+  sta: boolean;
+ 
  
   constructor(private http:HttpClient,public datepipe: DatePipe,private router : Router) { }
 ngOnInit() {
@@ -61,13 +61,22 @@ ngOnInit() {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     console.log("searchdone");
-    this.http.post<any>(environment.URL + `/searchquote`, {name:this.nameFilter.value,quote:this.quoteidFilter.value,DOB:this.days},httpOptions).subscribe((result) => { 
+    this.http.post<any>(environment.URL + `/searchquote`, {name:this.nameFilter.value,quote:this.quoteidFilter.value,DOB:this.days},
+    httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
       this.dataSource = new MatTableDataSource(result);
+      console.log("searchdone!!!!",this.dataSource);
       this.dataSource.paginator = this.paginator;
+      // if(result.QuoteStatus=="For Review"){
+      //   console.log("rev")
+      //   this.sta = true;
+      //  }else{
+      //   this.sta = false;
+      // }
     });  
     console.log("searchdone!!!!");
   }
+
   getRed(QuoteID){ 
     this.router.navigate(['/quotepage/new',{view:QuoteID}]);
   }

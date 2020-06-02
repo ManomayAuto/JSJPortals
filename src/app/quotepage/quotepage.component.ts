@@ -579,7 +579,8 @@ this.Selectedtown = this.towns[0];
     };
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
-      console.log(result);
+    var status= result['quotestatus'];
+      console.log("stat",status);
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
     this.contactForm1.get('lastName').setValue(result['last']);
@@ -706,8 +707,17 @@ this.toggle3();
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
+    if(this.userrole == 'cs'){
+    if(status=='Not issued'||status=='Expired'){
+      this.contactForm1.disable();
+    }
+    if(status=='Active'){
+      this.contactForm1.disable();
+      this.contactForm2.disable();
+      this.contactForm3.disable();
+    }}
     });  
-    
+  
   }
   doFilter(value) {
     return this.service.getData()
