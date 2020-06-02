@@ -39,6 +39,28 @@ export class QletterdialogComponent implements OnInit {
 this.type=this.data['quotedata']['cover'];
 this.deduct = this.data['quotedata']['deduct'];
 this.drivewar = this.data['quotedata']['driverwar'];
+
+if(this.drivewar == "A"){
+  this.drivewar = "Any Driver"
+}
+else if(this.drivewar == "B"){
+  this.drivewar = "Insured Only"
+}
+else if(this.drivewar == "C"){
+  this.drivewar = "Insured + One Named Driver"
+}
+else if(this.drivewar == "D"){
+  this.drivewar = "Insured + Two Or More Named Drivers"
+}
+else if(this.drivewar == "E"){
+  this.drivewar = "Named driver(s) excluding the Insured"
+}
+else if(this.drivewar == "F"){
+  this.drivewar = "Anyone 21 yrs. & older with a licence for 2 yrs. or more"
+}
+else if(this.drivewar == "G"){
+  this.drivewar = "Anyone 25 yrs. & older with a licence for 2 yrs. or more"
+}
 this.user = this.data['quotedata']['username'];
 this.anp = this.data['quotedata']['anp'];
 this.discp = this.data['quotedata']['discp'];
