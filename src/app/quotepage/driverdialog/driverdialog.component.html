@@ -2,7 +2,7 @@
  <mat-toolbar style=" background: rgb(131, 230, 255);
  color: #fff;border-radius: 5px;white-space: normal;
  font-weight: 600;height:50px">Add Driver Details <span class="example-spacer"></span><div class="ad" style="text-align: center;" ><button mat-dialog-close mat-raised-button style="color:rgb(6, 149, 206)">Close</button></div></mat-toolbar>
-<mat-grid-list cols="2" [cols]="breakpoint" rowHeight="120px" (window:resize)="onResize($event)">
+<mat-grid-list cols="2" [cols]="breakpoint" rowHeight="85px" (window:resize)="onResize($event)">
   <form fxLayout="column" [formGroup]="driverForm" name="driverform">
   <mat-grid-tile>
     <div class="text-inside">

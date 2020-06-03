@@ -119,9 +119,11 @@ export class QuotepageComponent implements OnInit {
   public towns: any[];
   public lossaddress: any[];
   public isduplicate: boolean = false;
+  public isduplicater: boolean = false;
   public isduplicatecs: boolean = false;
-  today: Date = new Date();
-  options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
+  // today: Date = new Date();
+  today: number;
+  options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
 filteredOptions: Observable<string[]>;
 filteredOption: Observable<string[]>;
 filteredOptionloss: Observable<any[]>;
@@ -209,7 +211,9 @@ degreeTitleList = [];
     private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
    
 
-   
+      setInterval(() => {
+        this.today = Date.now();
+      }, 1);
   }
 
   ngOnInit() {
@@ -319,6 +323,7 @@ degreeTitleList = [];
     remarks: [''],
     addremarks: [''],
     quoted: [''],
+    quotestat: [''],
     deductibles:  [''],
      });
 
@@ -396,9 +401,11 @@ degreeTitleList = [];
   }
   getSomethings(){
     this.dupnext = true;
+    this.isduplicate = true;
       this.selectedIndex =  1;
       this.btnDisabled = false;
       this.btnDisableduw = false;
+      this.isduplicatecs = !this.isduplicatecs;
     console.log("view")
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
@@ -412,7 +419,7 @@ degreeTitleList = [];
     // this.dupnext = true;
      
     this.btnDisabledcs = true;
-     this.isduplicatecs = !this.isduplicatecs;
+    // this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('view');
     console.log("getSomething not null");
@@ -510,6 +517,7 @@ this.toggle3();
     this.ncdvalue = result['autod'];
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
+    this.contactForm3.get('quotestat').setValue(result['quotestatus']);
     console.log(result['remarks']);
     this.contactForm3.get('remarks').setValue(result['remarks']);
     
@@ -555,9 +563,11 @@ this.Selectedtown = this.towns[0];
   }
   getSomething(){
     this.dupnext = true;
+    this.isduplicate = true;
     this.selectedIndex =  1;
     this.btnDisabled = false;
       this.btnDisableduw = false;
+      this.isduplicatecs = !this.isduplicatecs;
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
       this.contactForm2.clearValidators();
@@ -569,7 +579,7 @@ this.Selectedtown = this.towns[0];
      this.contactForm3.disable();
     //  this.dupnext = true;
     this.btnDisabledcs = true;
-     this.isduplicatecs = !this.isduplicatecs;
+    //  this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
@@ -665,6 +675,7 @@ this.toggle3();
     this.ncdvalue = result['autod'];
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
+    this.contactForm3.get('quotestat').setValue(result['quotestatus']);
     console.log(result['remarks']);
     this.contactForm3.get('remarks').setValue(result['remarks']);
     this.driverservice.driver(this.driverdata);
@@ -988,7 +999,7 @@ if(result){
         }
         else{
           this.openduplicateDialog(res);
-          this.isduplicate = !this.isduplicate;
+          this.isduplicater = !this.isduplicater;
           this.isduplicatecs = !this.isduplicatecs;
         }
     }, error => {
@@ -1474,6 +1485,10 @@ addremarkstest() {
       else if(actionvalue == "Savedcs"){
         quotestatus = "Not Issued"
       }
+      else if(actionvalue == "complete"){
+        quotestatus = "Active"
+        reviewstatus = ""
+      }
       var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
@@ -1524,7 +1539,7 @@ addremarkstest() {
       console.log(countri);
       console.log(zip);
       console.log(city);
-      if(actionvalue == "Save" || actionvalue == "Savedcs"){
+      if(actionvalue == "Save" || actionvalue == "Savedcs" || actionvalue == "complete"){
         return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
