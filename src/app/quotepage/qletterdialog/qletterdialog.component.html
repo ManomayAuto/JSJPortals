@@ -1,5 +1,6 @@
 <div class="container" style="text-align:center">
     <button mat-raised-button color="primary" kendo-button (click)="pdf.saveAs('quoteletter.pdf')">Download as PDF</button>
+    <button style="margin-left: 5px;" mat-raised-button color="primary" mat-dialog-close>Close</button>
 </div>
 <kendo-pdf-export #pdf paperSize="A3" margin="1cm" [scale]="0.8">
     <style>
@@ -65,6 +66,9 @@
     .col-xl-1.col-lg-1.col-md-1.col-sm-1.col-12.py-3 {
     background-color: #12919d;
     }
+    p{
+        font-size: 16px;
+    }
     </style>
     <div class="row" id="content" #content>
         <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-12 py-3" style="background-color: #12919d;"></div>
@@ -78,21 +82,119 @@
                 <p id="iwdwg" style="font-size: 16px;text-align: center;"><b>34 Collins Avenue, P.O.Box N-8337, Nassau, Bahamas • Telephone (242) 397-2100 • Telefax (242) – 323-3720</b></p>
                <h5 class="text-center text-uppercase" style="text-decoration: underline;font-weight:600">M O T O R   Q U O T A T I O N</h5>
             </div>
-            <p id="i60j8" style="font-size: 16px;">Name of Insured : <a>{{first}} {{last}}</a></p>
-            <p id="i42ot" style="font-size: 16px;">Product :  <a>{{prod}}</a></p>
-            <p id="ixm7r" style="font-size: 16px;">Vehicle : <a>{{vehicle}}</a></p>
-            <p id="ivhmh" style="font-size: 16px;">Loss Payee Name : <a>{{lospay}}</a></p>
-            <p id="ixhky" style="font-size: 16px;">Type of Cover : <a>{{type}}</a></p>
-            <p id="icr73" style="font-size: 16px;">Value : {{vehval}}</p>
-            <p id="iwisw" style="font-size: 16px;">Deductible : <a>{{deduct}}</a></p>
-            <p id="i4fve" style="font-size: 16px;">Driver Warranty : <a>{{drivewar}}</a></p>
-            <p id="idody" style="font-size: 16px;">Annual Premium : {{anp}}</p>
-            <p id="itsc6" style="font-size: 16px;">Discounted Premium((12 for 11 promotion discount)) : {{discp}}</p>
-            <p id="i8g14" style="font-size: 16px;">Quote Issued By, Date : {{user}}, {{myFormattedDate}}</p>
-            <p id="izf08" style="font-size: 16px;">• Subject to completion and acceptance of a satisfactory Proposal form</p>
-            <p id="iv6aq" style="font-size: 16px;">• This quotation form is supplied for information purposes only and is not to be as evidence that insurance coverage has been arranged</p>
-            <p id="i2ksm" class="text-center" style="font-size: 16px;">QUOTATION IS VALID FOR 30 DAYS ONLY</p>
-            <p id="i93gl" class="text-center" style="font-size: 16px;">THOMPSON BOULEVARD • MARSH HARBOUR • FREEPORT • SOLDIER ROAD NORTH • EXUMA</p>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Name of Insured</b></p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{first}} {{last}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Product</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{prod}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Vehicle</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{vehicle}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Loss Payee Name</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{lospay}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Type of Cover</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{type}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Value(in $BS)</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{vehval}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Deductible</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{deduct}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Driver Warranty</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{drivewar}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Annual Premium(in $BS)</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{anp}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Discounted Premium(in $BS)</b>
+                  </p>((12 for 11 promotion discount))
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{discp}}</b>
+                  </p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                    <p><b>Quote Issued By, Date</b>
+                  </p>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                  <p><b>:&nbsp; &nbsp;{{user}},  {{myFormattedDate}}</b>
+                  </p>
+                </div>
+              </div>
+            <p id="izf08" style="font-size: 16px;"><b>• Subject to completion and acceptance of a satisfactory Proposal form</b></p>
+            <p id="iv6aq" style="font-size: 16px;"><b>• This quotation form is supplied for information purposes only and is not to be as evidence that insurance coverage has been arranged</b></p>
+            <p id="i2ksm" class="text-center" style="font-size: 16px;"><b>QUOTATION IS VALID FOR 30 DAYS ONLY</b></p>
+            <p id="i93gl" class="text-center" style="font-size: 16px;"><b>THOMPSON BOULEVARD • MARSH HARBOUR • FREEPORT • SOLDIER ROAD NORTH • EXUMA</b></p>
         </div>
     </div>
 </kendo-pdf-export>
