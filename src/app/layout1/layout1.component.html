@@ -48,7 +48,7 @@
       
       <mat-nav-list>
         <div class="nav-link-group">
-          <button [routerLink]="['/home']" style="margin-left:5px;text-align: left;margin-right:5px;color:#ffffff;height:50px;width:250px;background: rgb(137,218,245);
+          <button (click)="hi()" style="margin-left:5px;text-align: left;margin-right:5px;color:#ffffff;height:50px;width:250px;background: rgb(137,218,245);
           background: linear-gradient(180deg, rgb(0, 184, 255) 0%, rgba(0, 191, 255, 0.62) 100%);" mat-raised-button color="accent" [routerLinkActive]="['active']"><mat-icon>dashboard</mat-icon><b style="margin-left: 30px;">Home</b></button>
           
         </div>
@@ -60,7 +60,7 @@
 
         <div class="nav-link-group" style="margin-top: 13px;">
 
-          <button   routerLink="/quotepage" style="margin-left:5px;text-align: left;margin-right:5px;color:#ffffff;height:50px;width:250px;background: rgb(137,218,245);
+          <button (click)="his()" style="margin-left:5px;text-align: left;margin-right:5px;color:#ffffff;height:50px;width:250px;background: rgb(137,218,245);
 
           background: linear-gradient(180deg, rgb(0, 184, 255) 0%, rgba(0, 191, 255, 0.62) 100%);" mat-raised-button color="accent" 
           [routerLinkActive]="['active']"><mat-icon>description</mat-icon> <b style="margin-left: 27px;">Quote</b></button>

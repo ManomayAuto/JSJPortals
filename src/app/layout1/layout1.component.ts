@@ -66,6 +66,26 @@ open(r){
     this.authenticationService.logout();
  
   }
+  hi(){
+    if (this.per.includes('QI') || this.per.includes('QRU')||this.per.includes('QRM')) { 
+      this._router.navigate(['/home']);
+    }
+    else{
+      this.snackBar.open("You don't have valid permissions","close", {
+        duration: 1000,
+      });
+    }
+  }
+  his(){
+    if (this.per.includes('QI') || this.per.includes('QRU')||this.per.includes('QRM')) { 
+      this._router.navigate(['/quotepage']);
+    }
+    else{
+      this.snackBar.open("You don't have valid permissions","close", {
+        duration: 1000,
+      });
+    }
+  }
   clickMe() {
     console.log("sssng",this.per.includes('DR') && this.per.includes('DF'));
    console.log("nsssg",this.per);
