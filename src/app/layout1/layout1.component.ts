@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { Router,RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 import { AuthGuard } from "../_guards/auth.guard";
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-layout1',
   templateUrl: './layout1.component.html',
@@ -25,7 +26,7 @@ export class Layout1Component implements OnInit {
   role: string;  
   Branch: string;
 
-  
+  per: string;
 
   public ngOnInit(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -40,8 +41,9 @@ export class Layout1Component implements OnInit {
 open(r){
   console.log("opened")
 }
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router, 
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,private snackBar: MatSnackBar,
      private  authenticationService : AuthenticationService,private route:ActivatedRoute) {
+      this.per = localStorage.getItem("permission");
       this.name=localStorage.getItem('name');
       this.Branch=localStorage.getItem('Branch');
       this.role=localStorage.getItem('Role');
@@ -64,6 +66,25 @@ open(r){
     this.authenticationService.logout();
  
   }
+  clickMe() {
+    console.log("sssng",this.per.includes('DR') && this.per.includes('DF'));
+   console.log("nsssg",this.per);
+   if (this.per.includes('DR') && this.per.includes('DF')) { 
+    this._router.navigate(['/ae']);
+  }
+  else if (this.per.includes('DF')){
+   this._router.navigate(['/call']);
+}
+
+else if (this.per.includes('DR')){
+   this._router.navigate(['/reduced']);
+}
+else{
+  this.snackBar.open("You don't have valid permissions","close", {
+    duration: 1000,
+  });
+}
+}
 }
 
 
