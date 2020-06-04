@@ -80,7 +80,8 @@ ngOnInit() {
   getRed(QuoteID){ 
     this.router.navigate(['/quotepage/new',{view:QuoteID}]);
   }
-  getRecord(QuoteID){ 
+  
+  getRecord(QuoteID,QuoteStatus){ 
     this.router.navigate(['/quotepage/new',{title:QuoteID}]);
   }
 }
