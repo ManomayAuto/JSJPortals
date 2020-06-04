@@ -41,11 +41,12 @@ export class SearchtableComponent implements OnInit {
   SearchForm: any;
   days: string;
   sta: boolean;
+  userrole: string;
  
  
   constructor(private http:HttpClient,public datepipe: DatePipe,private router : Router) { }
 ngOnInit() {
- 
+  this.userrole = localStorage.getItem('Role');
 }
 
   onSearch1(){
