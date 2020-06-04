@@ -9,10 +9,10 @@
     <mat-tab label="Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)">
 
    <mat-tab label="Basic Details">    
-    <form fxLayout="column" (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
-    <mat-card>Personal Details</mat-card><mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
+    <form (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
+    <mat-card>Personal Details</mat-card><mat-grid-list style="margin-top:-20px" cols="2" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
 
-  <mat-grid-tile style="right: unset !important">
+  <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
         <input matInput type="text" placeholder="First Name" [(ngModel)]="firstName" formControlName="firstName" required>
@@ -104,12 +104,17 @@
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
-    <div class="text-inside" style="height:50px">
+    <div class="text-inside" style="height: 50px;">
       <a mat-raised-button color="primary" style="color:white" (click)="existing()">Search For Existing Client</a>
-     Existing client? <mat-checkbox class="example-margin" formControlName="clienttype" [(ngModel)] = "disabled" [checked]="false"></mat-checkbox>
+     
       <!-- <button mat-stroked-button style="margin-top:-40px"></button> -->
     </div>
   </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="text-inside">
+      Existing client? <mat-checkbox class="example-margin" formControlName="clienttype" [(ngModel)] = "disabled" [checked]="false"></mat-checkbox>
+      </div>
+      </mat-grid-tile>
 </mat-grid-list>
 
 <mat-card>Product Details</mat-card><mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
@@ -218,7 +223,7 @@
 </mat-grid-list>
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
 <button mat-raised-button color="primary" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
-<button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">UWNext</button>
+<button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">Next</button>
 </div></form>   </mat-tab>
 <mat-tab label="Coverage /Driver Details" [disabled]="true">
    
@@ -228,7 +233,7 @@
  
  
       <mat-grid-tile style="right: unset !important">
-        <div class="text-inside" style="margin-left:15px;">
+        <div class="text-inside">
         Is your Vehicle Financed?
           <mat-checkbox class="example-margin" formControlName="financed" binary="true" (click)="toggle3()"></mat-checkbox>
         </div>
@@ -279,7 +284,7 @@
       <mat-radio-group  formControlName="options1" required>
         <mat-grid-list style="margin-top:-60px" cols="3" [cols]="breakpoint" rowHeight="125px" (window:resize)="onResize($event)">
    
-          <mat-grid-tile style="right: unset !important;margin-top: 50px;margin-left:15px;">
+          <mat-grid-tile style="margin-top: 50px;">
             <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: red;">Type of cover *:</label> 
   
             <label id="example-radio-group-label" *ngIf="!contactForm2.get('options1').hasError('required')">Type of Cover *:</label>
@@ -292,14 +297,14 @@
        
        
         </mat-grid-tile>
-        <mat-grid-tile style="right: unset !important;margin-top: 50px;margin-left:15px;">
+        <mat-grid-tile style="margin-top: 50px;">
          
             <mat-radio-button name="TPFT" (click)="toggle1()" value="TPFT" [disabled]="selectDisabled">
               Third Party,Fire & Theft
             </mat-radio-button>  
      
          </mat-grid-tile>
-        <mat-grid-tile style="right: unset !important;margin-top: 50px;margin-left:15px;">
+        <mat-grid-tile style="margin-top: 50px;">
          
             <mat-radio-button name="TP" (click)="toggle()" value="TP" [disabled]="selectDisabled">
               Third Party
@@ -413,7 +418,7 @@
         </div>
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ix943">Taxes (in $BS)</label></div>
-            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="tax" class="form-control" /></div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="tax" class="form-control" readonly/></div>
         </div>
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="iefu3">Annual Net Premium (in $BS)</label></div>
@@ -435,10 +440,14 @@
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><textarea rows="5" placeholder="Remarks" formControlName="remarks" class="form-control" readonly></textarea></div>
     </div>
-        <div *ngIf="isduplicate || this.userrole != 'cs'" class="row">
-            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote ID</label></div>
-            <div  *ngIf="isduplicate || this.userrole != 'cs'" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="quoted" class="form-control" readonly/></div>
+        <div *ngIf="isduplicate" class="row">
+            <div  *ngIf="isduplicate" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote ID</label></div>
+            <div  *ngIf="isduplicate" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="quoted" class="form-control" readonly/></div>
         </div>
+        <div *ngIf="isduplicate" class="row">
+          <div  *ngIf="isduplicate" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote Status</label></div>
+          <div  *ngIf="isduplicate" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="quotestat" class="form-control" readonly/></div>
+      </div>
         <button mat-raised-button color="primary" (click)="onSubmit()" style="float: right;margin-bottom: 20px;">Generate Premium</button>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
@@ -452,9 +461,10 @@
       <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
       <button mat-raised-button color="primary" #Saved (click)="onSave('Saved')" [disabled] = "btnDisableduw" id="Saved" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
-     
-        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole == 'cs' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
-        <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="isduplicate" style="margin-left:5px">Requote</button>
+      <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
+      <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [disabled] = "!btnDisabled" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
+        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
+        <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicater" style="margin-left:5px">Requote</button>
      
    
         <button mat-raised-button color="primary" style="margin-left:5px" [disabled] = "btnDisablednext" *ngIf="isaddfinal" (click)='moveToSelectedTab2("Additional Details")' >Next</button>

@@ -7,18 +7,27 @@
     color: black !important;
 }
 mat-form-field {
-    width: 300px;
-    right: initial !important;
-    margin-left: 15px;
+    width: 100%;
+    /* right: initial !important;
+    margin-left: 15px; */
     
   }
-  @media (max-width: 590px) {
+  /* .mat-grid-tile .mat-figure {
+      width: 100%;
+  } */
+  /* figure{
+      width: 100%;
+  }
+  mat-figure {
+    width: 100% !important;
+} */
+  /* @media (max-width: 590px) {
     mat-form-field {
 
         margin-left: 0px !important;
         
       }
-}
+} */
   ::ng-deep.mat-form-field-disabled .mat-form-field-underline {
     background-image: linear-gradient(
     to right,
@@ -33,8 +42,14 @@ mat-form-field {
       display: none !important;
   }
   ::ng-deep mat-grid-tile.mat-grid-tile .mat-figure {
-      right: auto;
+    width: 100%;
+    padding-right: 5px;
+    padding-left: 5px;
   }
+  .text-inside{
+    margin-top: 80px;
+    width: 100%;
+}
   .mat-card{
     margin-top:25px;
     background-color: rgb(131, 230, 255);
@@ -42,9 +57,7 @@ mat-form-field {
     font-size: 18px;
 }
 
-.text-inside{
-	margin-top: 80px;
-}
+
 .mat-focused .mat-form-field-label {
     /*change color of label*/
     color: rgb(18, 18, 19) !important;
