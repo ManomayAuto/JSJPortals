@@ -83,6 +83,9 @@ ngOnInit() {
   }
   
   getRecord(QuoteID,QuoteStatus){ 
+    if(QuoteStatus == 'Active'){
+      this.router.navigate(['/quotepage/new',{title:QuoteID,edit:'Active'}]);
+    }
     this.router.navigate(['/quotepage/new',{title:QuoteID}]);
   }
 }

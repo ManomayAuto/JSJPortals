@@ -10,6 +10,7 @@ import { DriverdialogComponent } from '../driverdialog/driverdialog.component';
 import { anl } from 'src/app/models/user.model';
 import {driverservice} from '../quotepage.component';
 import {dataformservice} from '../quotepage.component';
+import { ActivatedRoute } from '@angular/router';
 
 export interface driverdata {
 
@@ -43,7 +44,9 @@ export class DrivertableComponent implements OnInit {
   message: string = 'More than 5 drivers cant be added';
   action :string='close';
   user: any;
+  view: boolean;
   constructor(private driverservice: driverservice,private dataformservice:dataformservice,public dialog: MatDialog,
+    private route: ActivatedRoute,
     public snackBar: MatSnackBar,private asp : dataformservice,) { }
 
  
@@ -54,6 +57,17 @@ export class DrivertableComponent implements OnInit {
   }
   ngAfterViewInit() {
     this.driverservice.$data.subscribe((data)=>{
+      let quoteid =  this.route.snapshot.paramMap.get('view');
+      console.log("view driver",quoteid);
+      let act =  this.route.snapshot.paramMap.get('edit');
+      if(quoteid != null||quoteid != undefined){
+        console.log("vi111",quoteid);
+        this.view=true;
+      }
+      if(act != null||act != undefined){
+       
+        this.view=true;
+      }
       this.driverdata = data
       console.log("in driver table now ng after view");
       console.log(this.driverdata);
