@@ -27,7 +27,8 @@ const routes: Routes = [
 
   { path:'menu', component: MenuComponent},
   { path: 'layout1', component: Layout1Component },
-  { path: 'reports', component: ReportsComponent },
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard],
+   data:{roles : [Role.two,Role.three,Role.four,Role.five,Role.six,Role.lo,Role.ok]}  },
   { path: 'quotepage', component: QuotepageComponent, canActivate: [AuthGuard], 
   data:{roles : [Role.one,Role.two,Role.three,Role.four,Role.five,Role.six,Role.hi,Role.ho,Role.jo,Role.lo,Role.ok]},
   },

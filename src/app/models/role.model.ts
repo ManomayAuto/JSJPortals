@@ -1,6 +1,6 @@
 export enum Role {
     one='QI,DR',//cs
-    two='QI,QRU,QRP,DF,DR,ARRP',//ud 
+    two='QI,QRU,QRP,DF,DR,ARRP',//ud qrp-reports
     three='QI,QRU,QRP,DF,DR',//ud
     four='QI,QRU,QRM,QRP,DF,DR',//udm
     five='QI,QRU,QRM,QRP,DF,DR,ARRP',//udm

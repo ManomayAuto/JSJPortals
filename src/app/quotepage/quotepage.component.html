@@ -16,6 +16,9 @@
     <div class="text-inside">
       <mat-form-field>
         <input matInput type="text" placeholder="First Name" [(ngModel)]="firstName" formControlName="firstName" required>
+        <mat-error *ngIf="contactForm1.get('firstName').hasError('required')">
+          Please enter the details
+        </mat-error>
       </mat-form-field>
     </div>  
   </mat-grid-tile>

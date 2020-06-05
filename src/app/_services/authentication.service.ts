@@ -100,6 +100,7 @@ export class AuthenticationService{
     localStorage.removeItem('AE');
     localStorage.removeItem('name');
     localStorage.removeItem('Role');
+    localStorage.removeItem('Branch');
     this.router.navigate(['login']);
     
 }
