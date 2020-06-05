@@ -64,7 +64,7 @@ else if(this.drivewar == "G"){
 this.user = this.data['quotedata']['username'];
 this.anp = this.data['quotedata']['anp'];
 this.discp = this.data['quotedata']['discp'];
-this.myFormattedDate = this.datepipe.transform(this.today, 'M-d-yyyy');
+this.myFormattedDate = this.datepipe.transform(this.today, 'MMMM-d-yyyy');
 this.vehval = this.data['quotedata']['vehval'];
   }
   public onResize(event: any): void {

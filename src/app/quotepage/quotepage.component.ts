@@ -1558,51 +1558,82 @@ addremarkstest() {
       else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
         console.log(actionvalue);
         let quoteid = this.contactForm3.get('quoted').value;
-        return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
-          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
-          losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
-          manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-          driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
-console.log(res);
-          console.log("in on save-Approve or Decline");
-          if(res['quotestaus'] == "Active")
-          { 
-            this.openSnackBar("This Quote has been approved", "Dismiss");
-            setTimeout(() => {
-              this.router.navigateByUrl('/home');
-              }, 3000);
+        if(actionvalue == "Declined" || actionvalue == "Saved"){
+          console.log()
+          if(this.contactForm3.get('addremarks').value == "" || this.contactForm3.get('addremarks').value == null || this.contactForm3.get('addremarks').value == undefined){
+            // console.log("valiateew22222222e");
+            // this.contactForm3.get('addremarks').setValidators([Validators.required]);
+            // this.contactForm3.get('addremarks').markAsDirty();
+            this.openSnackBar("Please add remarks", "Dismiss");
+            
           }
-          // else if(res['quotestatus'] == "Active" && res['quotestatus'] == "Saved")
-          // { 
-          //   this.openSnackBar("This Quote has been approved", "Dismiss");
-          //   setTimeout(() => {
-          //     this.router.navigateByUrl('/home');
-          //     }, 3000);
-          // }
-          else if(res['quotestaus'] == "Declined"){
-            this.openSnackBar("This quote has been declined", "Dismiss");
-            setTimeout(() => {
-              this.router.navigateByUrl('/home');
-              }, 3000);
-          }
-          // else if(res['quotestatus'] == "Declined" && res['quotestatus'] == "Saved"){
-          //   this.openSnackBar("This quote has been declined", "Dismiss");
-          //   setTimeout(() => {
-          //     this.router.navigateByUrl('/home');
-          //     }, 3000);
-          // }
-          else if(res['reviewstatus'] == "Pending"){
-            this.openSnackBar("This Quote has been Saved", "Dismiss");
-            setTimeout(() => {
-              this.router.navigateByUrl('/home');
-              }, 3000);
+          else{
+            this.addremarkstest();
+            return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
+              emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+              losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
+              manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
+              driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
+    console.log(res);
+              console.log("in on save-Approve or Decline");
+              if(res['quotestaus'] == "Active")
+              { 
+                this.openSnackBar("This Quote has been approved", "Dismiss");
+                setTimeout(() => {
+                  this.router.navigateByUrl('/home');
+                  }, 3000);
+              }
+              else if(res['quotestaus'] == "Declined"){
+                this.openSnackBar("This quote has been declined", "Dismiss");
+                setTimeout(() => {
+                  this.router.navigateByUrl('/home');
+                  }, 3000);
+              }
+              else if(res['reviewstatus'] == "Pending"){
+                this.openSnackBar("This Quote has been Saved", "Dismiss");
+                setTimeout(() => {
+                  this.router.navigateByUrl('/home');
+                  }, 3000);
+              }
+          }, error => {
+            console.error("Error", error);
+          });
           }
           
-         
+          
+        }
+        else{
+          return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
+            emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+            losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
+            manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
+            driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
+  console.log(res);
+            console.log("in on save-Approve or Decline");
+            if(res['quotestaus'] == "Active")
+            { 
+              this.openSnackBar("This Quote has been approved", "Dismiss");
+              setTimeout(() => {
+                this.router.navigateByUrl('/home');
+                }, 3000);
+            }
+            else if(res['quotestaus'] == "Declined"){
+              this.openSnackBar("This quote has been declined", "Dismiss");
+              setTimeout(() => {
+                this.router.navigateByUrl('/home');
+                }, 3000);
+            }
+            else if(res['reviewstatus'] == "Pending"){
+              this.openSnackBar("This Quote has been Saved", "Dismiss");
+              setTimeout(() => {
+                this.router.navigateByUrl('/home');
+                }, 3000);
+            }
+        }, error => {
+          console.error("Error", error);
+        });
+        }
       
-      }, error => {
-        console.error("Error", error);
-      });
       }
        
       else if(actionvalue == "Final"){

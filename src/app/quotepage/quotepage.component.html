@@ -109,15 +109,15 @@
   <mat-grid-tile>
     <div class="text-inside" style="height: 50px;">
       <a mat-raised-button color="primary" style="color:white" (click)="existing()">Search For Existing Client</a>
-     
+      <mat-checkbox class="example-margin" formControlName="clienttype" [(ngModel)] = "disabled" [checked]="false"></mat-checkbox>
       <!-- <button mat-stroked-button style="margin-top:-40px"></button> -->
     </div>
   </mat-grid-tile>
-  <mat-grid-tile>
+  <!-- <mat-grid-tile>
     <div class="text-inside">
-      Existing client? <mat-checkbox class="example-margin" formControlName="clienttype" [(ngModel)] = "disabled" [checked]="false"></mat-checkbox>
+      Existing client? 
       </div>
-      </mat-grid-tile>
+      </mat-grid-tile> -->
 </mat-grid-list>
 
 <mat-card>Product Details</mat-card><mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
@@ -238,7 +238,8 @@
       <mat-grid-tile style="right: unset !important">
         <div class="text-inside">
         Is your Vehicle Financed?
-          <mat-checkbox class="example-margin" formControlName="financed" binary="true" (click)="toggle3()"></mat-checkbox>
+          <mat-checkbox class="example-margin" formControlName="financed" binary="true" *ngIf="!isduplicater" (click)="toggle3()"></mat-checkbox>
+          <mat-checkbox class="example-margin" formControlName="financed" binary="true" *ngIf="isduplicater"></mat-checkbox>
         </div>
       </mat-grid-tile>
         <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
