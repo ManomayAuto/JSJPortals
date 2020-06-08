@@ -1476,6 +1476,7 @@ addremarkstest() {
       else{
         var quotestatus = String(actionvalue);
       }
+      
       if(actionvalue == "Active" || actionvalue =="Declined"){
         var reviewstatus = "Completed"
       }
@@ -1539,6 +1540,11 @@ addremarkstest() {
       console.log(countri);
       console.log(zip);
       console.log(city);
+      if(userrole == "uw" && actionvalue == "Save"){
+        var reviewstatus = "For Review"
+        var quotestatus = "For Review"
+        var typeofaction = ""
+      }
       if(actionvalue == "Save" || actionvalue == "Savedcs" || actionvalue == "complete"){
         return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
@@ -1546,10 +1552,14 @@ addremarkstest() {
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
           driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,
           adtype:adtype,street:street,countri:countri,zipc:zip,citi:city},httpOptions ).subscribe((res: any) => { // not callback
-          console.log(res.result);
+          console.log("========================");
+            console.log(res);
+            console.log(res.result);
+            console.log(res.quotestatus);
           let qd = res.result;
+          let qs = res.quotestatus;
           console.log("in on save");
-          this.openquoteDialog(qd);
+          this.openquoteDialog(qd,qs);
       }, error => {
         console.error("Error", error);
       });
@@ -1568,7 +1578,7 @@ addremarkstest() {
             
           }
           else{
-            this.addremarkstest();
+            // this.addremarkstest();
             return this.http.post<any>(environment.URL + '/appdecline', {quoteid:quoteid,first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
               emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
               losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
@@ -1672,12 +1682,13 @@ addremarkstest() {
       });
       }
   }
-  openquoteDialog(quoteid) {
+  openquoteDialog(quoteid, quotestatus) {
     const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
       width: '450px',
       height: '250px',
       data:{
         quoteid: quoteid,
+        quotestatus:quotestatus,
       },
     });
     dialogRef1.afterClosed().subscribe(() => {
