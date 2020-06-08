@@ -86,6 +86,27 @@ open(r){
       });
     }
   }
+  rep(){
+    if (this.per.includes('ARRP')) { 
+      this._router.navigate(['/reports']);
+    }
+    else{
+      this.snackBar.open("You don't have valid permissions","close", {
+        duration: 1000,
+      });
+    }
+  }
+
+reps(){
+  if (this.per.includes('QRP')) { 
+    this._router.navigate(['/QuoteReports']);
+  }
+  else{
+    this.snackBar.open("You don't have valid permissions","close", {
+      duration: 1000,
+    });
+  }
+}
   clickMe() {
     console.log("sssng",this.per.includes('DR') && this.per.includes('DF'));
    console.log("nsssg",this.per);
