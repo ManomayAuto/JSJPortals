@@ -42,7 +42,7 @@ export class SearchtableComponent implements OnInit {
   days: string;
   sta: boolean;
   userrole: string;
- 
+  //nameFilter : string;
  
   constructor(private http:HttpClient,public datepipe: DatePipe,private router : Router) { }
 ngOnInit() {
@@ -77,6 +77,10 @@ ngOnInit() {
     });  
     console.log("searchdone!!!!");
   }
+  // reset(){
+  //   console.log("searchdone!!!!");
+  //   this.nameFilter = '';
+  // }
 
   getRed(QuoteID){ 
     this.router.navigate(['/quotepage/new',{view:QuoteID}]);
