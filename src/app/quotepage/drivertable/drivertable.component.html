@@ -4,8 +4,9 @@
         <div data-type="default" class="row">
           <mat-toolbar style=" background: rgb(131, 230, 255);
           color: #fff;border-radius: 5px;white-space: normal;
-          font-weight: 600;">Driver Details <span class="example-spacer"></span><div *ngIf="!view" class="ad" style="text-align: center;" >
-          <a mat-raised-button  (click)="openDialog()" style="color:rgb(6, 149, 206)">Add Driver</a></div></mat-toolbar>
+          font-weight: 600;">Driver Details <span class="example-spacer"></span>
+          <div *ngIf="!view" class="ad" style="text-align: center;" >
+          <a mat-raised-button (click)="openDialog(dataSource)" style="color:rgb(6, 149, 206)">Add Driver</a></div></mat-toolbar>
             <div data-type="default" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 py-3">
        
               <div class="example-header" fxLayout="row">

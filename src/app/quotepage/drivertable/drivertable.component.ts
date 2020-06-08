@@ -45,6 +45,9 @@ export class DrivertableComponent implements OnInit {
   action :string='close';
   user: any;
   view: boolean;
+  length: any;
+  and: any;
+  trail: any;
   constructor(private driverservice: driverservice,private dataformservice:dataformservice,public dialog: MatDialog,
     private route: ActivatedRoute,
     public snackBar: MatSnackBar,private asp : dataformservice,) { }
@@ -73,6 +76,9 @@ export class DrivertableComponent implements OnInit {
       console.log(this.driverdata);
      
       this.dataSource = new MatTableDataSource(this.driverdata.filter(value => Object.keys(value).length !== 0));
+      // this.length=this.dataSource;
+      // this.and=this.length.length;
+      console.log("length of data source",this.and);
           });
           
   }
@@ -84,18 +90,14 @@ export class DrivertableComponent implements OnInit {
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-  openDialog(): void {
+  openDialog(dataSource): void {
     console.log("s",this.driverdata.length);
+    console.log("trick",dataSource);
+    this.trail=dataSource.filteredData;
     this.driverdata=this.driverdata.filter(value => Object.keys(value).length !== 0)
-    console.log(this.driverdata);
-    //   {console.log(projet)
-    //   let entries = Object.entries(projet);
-    //   entries = entries.filter(([key, value]) => value !== ""); 
-    //   //return Object.fromEntries(entries);
-    // }
-    
-    // );
-    if(this.driverdata.length<=4){
+    console.log(this.trail.length);
+
+    if(this.trail.length<=4){
       console.log("traol",this.driverdata );
    
     const dialogRef = this.dialog.open(DriverdialogComponent, {
@@ -113,24 +115,26 @@ export class DrivertableComponent implements OnInit {
       console.log("testtable2",result);
       if(result){
       this.driverdata.push(result);
-      if(this.driverdata.length<=5){
+      console.log("if",this.driverdata.length);
+      // if(this.driverdata.length<=5){
       this.dataSource = new MatTableDataSource(this.driverdata); 
       console.log("test3l",this.driverdata.length );
       this.asp.dataforms = this.driverdata;
-      }
-    else{
-      console.log("one");
-      this.snackBar.open(this.message,this.action, {
-        duration: 1000,
-      });
-    }}
+      // }
+    // else{
+    //   console.log("one");
+    //   this.snackBar.open(this.message,this.action, {
+    //     duration: 1000,
+    //   });
+    // }
+  }
     })
    
     // this.data.emit(this.driverdata);
-    console.log("test4",this.driverdata);
+    console.log("if",this.driverdata);
   } 
   else{
-    console.log("two");
+    console.log("else");
     this.snackBar.open(this.message,this.action, {
       duration: 1000,
     });
@@ -145,6 +149,10 @@ removeAt(i: number,element):void {
   data.splice(i,1);
 
   this.dataSource.data = data;
+  console.log("delete",this.dataSource.data)
+  this.dataSource = new MatTableDataSource(this.dataSource.data);//new
+  console.log("deleteafter",this.dataSource)//new
+  this.driverdata=this.dataSource.data;//new
   
 }
 editUser(user) {

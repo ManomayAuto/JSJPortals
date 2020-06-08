@@ -49,6 +49,7 @@ import { QtableService } from './_services/qtable.service';
 
 import { QletterdialogComponent } from './quotepage/qletterdialog/qletterdialog.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { QreportsComponent } from './qreports/qreports.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +75,8 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
     DuplicatedialogComponent,
     NewquotedialogComponent,
     DialogOverviewExampleDialog,
-    QletterdialogComponent
+    QletterdialogComponent,
+    QreportsComponent
   ],
   imports: [
     BrowserModule,

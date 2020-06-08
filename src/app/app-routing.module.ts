@@ -11,6 +11,7 @@ import { Role } from './models/role.model';
 import { ReportsComponent } from './reports/reports.component';
 import { QuotepageComponent } from './quotepage/quotepage.component'; 
 import { HomeComponent } from './home/home.component';
+import { QreportsComponent } from './qreports/qreports.component';
 
 
 
@@ -28,7 +29,9 @@ const routes: Routes = [
   { path:'menu', component: MenuComponent},
   { path: 'layout1', component: Layout1Component },
   { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard],
-   data:{roles : [Role.two,Role.three,Role.four,Role.five,Role.six,Role.lo,Role.ok]}  },
+   data:{roles : [Role.two,Role.five,Role.eight,Role.ao,Role.so]}  },
+  { path: 'QuoteReports', component: QreportsComponent, canActivate: [AuthGuard],
+  data:{roles : [Role.two,Role.three,Role.four,Role.five,Role.six,Role.lo,Role.ok]}  },
   { path: 'quotepage', component: QuotepageComponent, canActivate: [AuthGuard], 
   data:{roles : [Role.one,Role.two,Role.three,Role.four,Role.five,Role.six,Role.hi,Role.ho,Role.jo,Role.lo,Role.ok]},
   },
