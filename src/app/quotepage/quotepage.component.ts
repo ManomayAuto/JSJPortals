@@ -574,9 +574,9 @@ this.Selectedtown = this.towns[0];
       this.contactForm2.clearAsyncValidators();
       // this.contactForm2.markAllAsTouched();
       // this.contactForm3.markAllAsTouched();
-     this.contactForm1.disable();
-     this.contactForm2.disable();
-     this.contactForm3.disable();
+    //  this.contactForm1.disable();
+    //  this.contactForm2.disable();
+    //  this.contactForm3.disable();
     //  this.dupnext = true;
     this.btnDisabledcs = true;
     //  this.isduplicatecs = !this.isduplicatecs;
@@ -719,10 +719,10 @@ this.toggle3();
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
     if(this.userrole == 'cs'){
-    if(status=='Not issued'||status=='Expired'){
+    if(status=='Not Issued'||status=='Expired'){
       this.contactForm1.disable();
     }
-    if(status=='Active'){
+    else if(status=='Active'){
       this.contactForm1.disable();
       this.contactForm2.disable();
       this.contactForm3.disable();

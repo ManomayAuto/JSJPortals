@@ -84,10 +84,14 @@ ngOnInit() {
   
   getRecord(QuoteID,QuoteStatus){ 
     console.log(QuoteStatus);
+    if(this.userrole=="cs"){
     if(QuoteStatus == 'Active'){
-    this.router.navigate(['/quotepage/new',{titles:QuoteID,edit:'Active'}]);
+    this.router.navigate(['/quotepage/new',{title:QuoteID,edit:'Active'}]);
     }else{
     this.router.navigate(['/quotepage/new',{title:QuoteID}]);
     }
+  }else{
+    this.router.navigate(['/quotepage/new',{title:QuoteID}]);
+  }
   }
 }
