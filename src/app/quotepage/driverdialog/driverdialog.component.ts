@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import {dataformservice} from '../quotepage.component';
 import {driverservice} from '../quotepage.component';
+import { elementAt } from 'rxjs/operators';
 
 @Component({
   selector: 'app-driverdialog',
@@ -46,7 +47,9 @@ export class DriverdialogComponent implements OnInit {
   ngOnInit() {
     this.abcd=this.dataformservice.dataforms;
     console.log("table",this.abcd);
+   // console.log("table-length",this.abcd.length);
     if(this.abcd){
+      if(this.abcd[0] != undefined){
      if(this.abcd[0].Driverclient==false){//1
       this.authenticate = true;
       console.log("afs[0]",this.abcd[0].Driverclient);
@@ -84,6 +87,9 @@ export class DriverdialogComponent implements OnInit {
         }
      }else{
       this.authenticate = false;
+     }}
+     else{
+      this.authenticate = true;
      }
     }
     else{
