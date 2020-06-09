@@ -82,6 +82,7 @@ ngOnInit() {
     this.nameFilter.reset();
     this.dobFilter.reset();
     this.quoteidFilter.reset();
+    this.dataSource='';
   }
 
   getRed(QuoteID){ 
