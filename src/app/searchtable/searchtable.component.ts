@@ -77,10 +77,12 @@ ngOnInit() {
     });  
     console.log("searchdone!!!!");
   }
-  // reset(){
-  //   console.log("searchdone!!!!");
-  //   this.nameFilter = '';
-  // }
+  reset(){
+    console.log("searchdone!!!!");
+    this.nameFilter.reset();
+    this.dobFilter.reset();
+    this.quoteidFilter.reset();
+  }
 
   getRed(QuoteID){ 
     this.router.navigate(['/quotepage/new',{view:QuoteID}]);
