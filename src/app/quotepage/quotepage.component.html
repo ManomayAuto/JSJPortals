@@ -289,7 +289,7 @@
         <mat-grid-list style="margin-top:-60px" cols="3" [cols]="breakpoint" rowHeight="125px" (window:resize)="onResize($event)">
    
           <mat-grid-tile style="margin-top: 50px;">
-            <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: black;">Type of cover* :</label> 
+            <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: black;">Type of cover *:</label> 
   
             <label id="example-radio-group-label" *ngIf="!contactForm2.get('options1').hasError('required')">Type of Cover *:</label>
            <mat-radio-button class="example-radio-button" name="COMP" value="COMP" (click)="toggle1()" style="margin-left: 20px;">
