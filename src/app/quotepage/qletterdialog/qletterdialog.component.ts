@@ -34,10 +34,23 @@ export class QletterdialogComponent implements OnInit {
   this.first = this.data['quotedata']['first'];
   this.last = this.data['quotedata']['last'];
   this.prod = this.data['quotedata']['prod'];
+  if(this.data['quotedata']['make']){
+    this.vehicle = this.data['quotedata']['make'];
+  }
+ else{
   this.vehicle = this.data['quotedata']['make']['MakeModelCC'];
+ }
+  console.log(this.vehicle);
   this.lospay= this.data['quotedata']['losspayee']['Description'];
+  if(this.lospay == null || this.lospay == undefined || this.lospay == ""){
+    this.lospay = "Not Applicable/Not Available"
+  }
 this.type=this.data['quotedata']['cover'];
 this.deduct = this.data['quotedata']['deduct'];
+
+if(this.deduct == null || this.deduct == undefined || this.deduct == ""){
+  this.deduct = "0"
+}
 this.drivewar = this.data['quotedata']['driverwar'];
 
 if(this.drivewar == "A"){
@@ -66,6 +79,12 @@ this.anp = this.data['quotedata']['anp'];
 this.discp = this.data['quotedata']['discp'];
 this.myFormattedDate = this.datepipe.transform(this.today, 'MMMM-d-yyyy');
 this.vehval = this.data['quotedata']['vehval'];
+if(this.type == "Third Party"){
+  this.vehval = "Not Applicable"
+}
+else if(this.vehval == null || this.vehval == undefined || this.vehval == ""){
+  this.vehval = "0"
+}
   }
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 2

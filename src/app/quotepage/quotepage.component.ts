@@ -542,7 +542,7 @@ this.toggle3();
   //  this.contactForm4.get('zipCode').setValue(result['zip']);
   //  this.contactForm4.get('cityTown').setValue(result['city']);
 
-if(countri != null || countri != undefined)
+if(!countri)
  {
   this.displayFncountry(countri);
   this.contactForm4.get('country').setValue(result['countri']);
@@ -554,10 +554,15 @@ if(countri != null || countri != undefined)
 //   this.contactForm4.get('zipCode').setValue(result['zip']);
 //  console.log(typeof(result['zip']));
 // this.summaries = Array.of(result['zip']);
-this.summaries = [{Zipcode: result['zipc']}];
-this.towns = [{Town: result['citi']}];
-this.Selectedzip = this.summaries[0];
-this.Selectedtown = this.towns[0];
+if(!result['zipc']){
+  this.summaries = [{Zipcode: result['zipc']}];
+  this.Selectedzip = this.summaries[0];
+}
+if(!result['citi']){
+  this.towns = [{Town: result['citi']}];
+  this.Selectedtown = this.towns[0];
+}
+
     });  
     
   }
@@ -696,22 +701,48 @@ this.toggle3();
     //  this.contactForm4.get('zipCode').setValue(result['zip']);
     //  this.contactForm4.get('cityTown').setValue(result['city']);
  
-  if(countri != null || countri != undefined)
-   {
-    this.displayFncountry(countri);
-    this.contactForm4.get('country').setValue(result['countri']);
+    if(!countri)
+    {
+     this.displayFncountry(countri);
+     this.contactForm4.get('country').setValue(result['countri']);
+    }
+    else{
+      console.log("not in countri");
+    }
+   
+   //   this.contactForm4.get('zipCode').setValue(result['zip']);
+   //  console.log(typeof(result['zip']));
+   // this.summaries = Array.of(result['zip']);
+   if(!result['zipc']){
+     this.summaries = [{Zipcode: result['zipc']}];
+     this.Selectedzip = this.summaries[0];
    }
-   else{
-     console.log("not in countri");
+   if(!result['citi']){
+     this.towns = [{Town: result['citi']}];
+     this.Selectedtown = this.towns[0];
    }
-  
+
+
+
+  // if(countri != null || countri != undefined)
+  //  {
+  //   this.displayFncountry(countri);
+  //   this.contactForm4.get('country').setValue(result['countri']);
+  //  }
+  //  else{
+  //    console.log("not in countri");
+  //  }
+  //  this.summaries = [{Zipcode: result['zipc']}];
+  // this.towns = [{Town: result['citi']}];
+  // this.Selectedzip = this.summaries[0];
+  // this.Selectedtown = this.towns[0];
+
+
+
 //   this.contactForm4.get('zipCode').setValue(result['zip']);
 //  console.log(typeof(result['zip']));
   // this.summaries = Array.of(result['zip']);
-  this.summaries = [{Zipcode: result['zipc']}];
-  this.towns = [{Town: result['citi']}];
-  this.Selectedzip = this.summaries[0];
-  this.Selectedtown = this.towns[0];
+ 
 //   this.contactForm4.get('zipCode').setValue(this.summaries[0]);
 //  console.log(this.summaries);
   
@@ -961,7 +992,9 @@ if(result){
       // else{
       //   console.log("not in layn");
       // }
+      // let make1 = this.contactForm1.get('userInput')['MakeModelCC'];
       console.log("indupiccccc"+ make);
+
       let yr = this.contactForm1.get('Year').value;
       let cc = this.contactForm1.get('EngineCC').value;
       let use = this.contactForm1.get('Use').value;
@@ -1247,6 +1280,7 @@ addremarkstest() {
 
 }
   uwnext(tabName: string){
+    console.log("in uw next")
     this.contactForm1.enable();
     if(this.contactForm1.valid){
       if(this.userrole == 'cs'){
@@ -1702,7 +1736,15 @@ addremarkstest() {
       let last = this.contactForm1.get('lastName').value;
       let prod = this.contactForm1.get('Product').value;
       let make = this.contactForm1.get('userInput').value;
-      let losspayee = this.contactForm2.get('losspay').value;
+      console.log(make);
+      let financed =  this.contactForm2.get('financed').value;
+      console.log(financed);
+      if(financed){
+        var losspayee = this.contactForm2.get('losspay').value;
+      }
+      else{
+        losspayee = ''
+      }
       let netpre = this.contactForm3.get('netprem').value;
       let deduct = this.contactForm3.get('deductibles').value;
       let cover = this.contactForm3.get('coverageinfo').value;
