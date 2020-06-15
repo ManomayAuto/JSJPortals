@@ -37,6 +37,7 @@ export class ReviewtableComponent implements OnInit {
   role: string;
   name: string;
   message: string;
+  // today: number;
   today: Date = new Date();
   allSource: MatTableDataSource<import("c:/Users/consultants1/git us/JSJPortals/src/app/models/user.model").User>;
 
@@ -76,8 +77,9 @@ getRecord(quoteid,reviewerusername){
   var reviewstatus = "In Progress"
   var userrole = localStorage.getItem('Role');
   var name = localStorage.getItem('name');
-  this.datepipe = new DatePipe('en-Us');
-  var lastupdated = this.datepipe.transform(this.today, 'yyyy-MM-dd');
+  // this.datepipe = new DatePipe('en-Us');
+  // var lastupdated = this.dp.transform(this.today, 'yy-MM-dd HH:mm','es-ES');
+  var lastupdated = this.datepipe.transform(this.today, 'yyyy-MM-dd','es-ES');
   console.log("last updatedddddddddddddddddddddddd");
   console.log(lastupdated);
   const httpOptions = {
