@@ -17,5 +17,8 @@ export class NewquotedialogComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  yes(data){
+    console.log(data);
+    this.dialogRef.close(data);
+    }
 }

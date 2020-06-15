@@ -109,7 +109,7 @@ export class QuotepageComponent implements OnInit {
   btnDisabled = true;
   btnDisableduw = true;
   btnDisabledcs = false;
-  btnDisablednext = true;
+  btnDisablednext = false;
   selectedIndex: any;
   countryoption = [];
   username: string;
@@ -121,6 +121,8 @@ export class QuotepageComponent implements OnInit {
   public isduplicate: boolean = false;
   public isduplicater: boolean = false;
   public isduplicatecs: boolean = false;
+  public isduplicatecsonly: boolean = true;
+  public btnDisabledci: boolean = true;
   // today: Date = new Date();
   today: number;
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
@@ -404,8 +406,10 @@ degreeTitleList = [];
     this.isduplicate = true;
       this.selectedIndex =  1;
       this.btnDisabled = false;
+      this.btnDisabledci = false;
       this.btnDisableduw = false;
-      this.isduplicatecs = !this.isduplicatecs;
+      // this.isduplicatecs = true;
+      // this.isduplicatecs = !this.isduplicatecs;
     console.log("view")
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
@@ -524,10 +528,17 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
-      this.btnDisablednext = false;
+      this.btnDisablednext = true;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
+    }
+    if(result['quotestatus'] == "Not Issued"){
+      this.isduplicatecsonly = false
+      this.isduplicatecs = true;
+    }
+    else{
+      this.isduplicatecs = false
     }
     this.contactForm3.disable();
     // this.contactForm1.markAllAsTouched;
@@ -571,8 +582,9 @@ if(!result['citi']){
     this.isduplicate = true;
     this.selectedIndex =  1;
     this.btnDisabled = false;
+    this.btnDisabledci = false;
       this.btnDisableduw = false;
-      this.isduplicatecs = !this.isduplicatecs;
+      // this.isduplicatecs = !this.isduplicatecs;
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
       this.contactForm2.clearValidators();
@@ -595,6 +607,14 @@ if(!result['citi']){
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
     var status= result['quotestatus'];
+    // if(this.userrole == "cs" && status == "Not Issued"){
+    //   console.log("in subbbbbbbbbbbbbbbbbbbbbbbb")
+    //   this.isduplicatecs = false;
+    // }
+    // if(status == "Active"){
+    //   console.log("inactivvvvvvvvvvvvvvvvvvvvvvvvv")
+    //   this.btnDisabled = false;
+    // }
       console.log("stat",status);
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
@@ -686,12 +706,18 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
-      this.btnDisablednext = false;
+      this.btnDisablednext = true;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
     }
-   
+    if(result['quotestatus'] == "Not Issued"){
+      this.isduplicatecsonly = false
+      this.isduplicatecs = false;
+    }
+    else{
+      this.isduplicatecs = false
+    }
     this.contactForm4.get('addressType').setValue(result['adtype']);
       this.contactForm4.get('streetName').setValue(result['street']);
       console.log(result['countri'])
@@ -1523,6 +1549,7 @@ addremarkstest() {
       else if(actionvalue == "complete"){
         quotestatus = "Active"
         reviewstatus = ""
+        typeofaction = ""
       }
       var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
@@ -1579,6 +1606,11 @@ addremarkstest() {
         var quotestatus = "For Review"
         var typeofaction = ""
       }
+      if(actionvalue == "Submitreview"){
+        var reviewstatus = "For Review"
+        var quotestatus = "For Review"
+        var typeofaction = ""
+      }
       if(actionvalue == "Save" || actionvalue == "Savedcs" || actionvalue == "complete"){
         return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
           emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
@@ -1592,14 +1624,22 @@ addremarkstest() {
             console.log(res.quotestatus);
           let qd = res.result;
           let qs = res.quotestatus;
-          console.log("in on save");
-          this.openquoteDialog(qd,qs);
+          console.log("in on saverrrrr");
+          console.log(qs);
+  if(qs == "Active"){
+    this.openquoteDialogactive(qd,qs);
+  }
+  else{
+    this.openquoteDialog(qd,qs);
+  }
+            
+      
       }, error => {
         console.error("Error", error);
       });
       }
       
-      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
+      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved" || actionvalue == "Submitreview"){
         console.log(actionvalue);
         let quoteid = this.contactForm3.get('quoted').value;
         if(actionvalue == "Declined" || actionvalue == "Saved"){
@@ -1639,6 +1679,12 @@ addremarkstest() {
                   this.router.navigateByUrl('/home');
                   }, 3000);
               }
+              else if(res['quotestaus'] == "For Review"){
+                console.log("in testttttttttttttttttttttt")
+                  let qd = res['quoteid']
+                  let qs = res['quotestaus']
+                this.openquoteDialog(qd,qs);
+              }
           }, error => {
             console.error("Error", error);
           });
@@ -1673,6 +1719,12 @@ addremarkstest() {
                 this.router.navigateByUrl('/home');
                 }, 3000);
             }
+            else if(res['quotestaus'] == "For Review"){
+                console.log("in testttttttttttttttttttttt")
+                  let qd = res['quoteid']
+                  let qs = res['quotestaus']
+                this.openquoteDialog(qd,qs);
+              }
         }, error => {
           console.error("Error", error);
         });
@@ -1729,6 +1781,31 @@ addremarkstest() {
       this.router.navigateByUrl('/home');
       // window.location.reload();
        })
+  }
+  openquoteDialogactive(quoteid, quotestatus) {
+    const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
+      disableClose: true,
+      width: '450px',
+      height: '250px',
+      data:{
+        quoteid: quoteid,
+        quotestatus:quotestatus,
+      },
+    });
+    
+    
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result =="yes") {
+        console.log(result);
+        this.btnDisablednext = true;
+        this.isaddfinal = true;
+        this.moveToSelectedTab2("Additional Details");
+      }
+      else{
+        this.router.navigateByUrl('/home');
+      }
+  });
   }
   onquoteletter(){
     console.log("in qlet");
