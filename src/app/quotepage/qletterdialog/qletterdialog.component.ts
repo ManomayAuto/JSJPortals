@@ -45,7 +45,7 @@ export class QletterdialogComponent implements OnInit {
   console.log(this.vehicle);
   this.lospay= this.data['quotedata']['losspayee']['Description'];
   if(this.lospay == null || this.lospay == undefined || this.lospay == ""){
-    this.lospay = "Not Applicable/Not Available"
+    this.lospay = "Not Applicable"
   }
 this.type=this.data['quotedata']['cover'];
 this.deduct = this.data['quotedata']['deduct'];

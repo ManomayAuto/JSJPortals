@@ -110,6 +110,7 @@ export class QuotepageComponent implements OnInit {
   btnDisableduw = true;
   btnDisabledcs = false;
   btnDisablednext = false;
+  printDisabled = true;
   selectedIndex: any;
   countryoption = [];
   username: string;
@@ -120,6 +121,7 @@ export class QuotepageComponent implements OnInit {
   public lossaddress: any[];
   public isduplicate: boolean = false;
   public isduplicater: boolean = false;
+  public isduplicatereq: boolean = false;
   public isduplicatecs: boolean = false;
   public isduplicatecsonly: boolean = true;
   public btnDisabledci: boolean = true;
@@ -404,6 +406,7 @@ degreeTitleList = [];
   }
   }
   getSomethings(){
+    this.isduplicater = true;
     this.dupnext = true;
     this.isduplicate = true;
       this.selectedIndex =  1;
@@ -429,7 +432,7 @@ degreeTitleList = [];
     }
     let quoteid =  this.route.snapshot.paramMap.get('view');
     console.log("getSomething not null");
-    this.isaddfinal = true;
+    // this.isaddfinal = true;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -530,9 +533,11 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
 
     if(result['quotestatus'] == "Active"){
+      this.printDisabled = false
       this.btnDisabled = true;
       // this.btnDisablednext = true;
       this.isduplicatecs = true;
+      this.isaddfinal = false;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
@@ -621,7 +626,7 @@ if(!result['citi']){
     }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
-    this.isaddfinal = true;
+    // this.isaddfinal = true;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -727,10 +732,15 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
+      this.isaddfinal = true;
+      this.printDisabled = false;
       // this.btnDisablednext = true;
       this.isduplicatecs = true;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
+      }
+      else if(this.userrole == "cs"){
+        this.isduplicater = true;
       }
     }
     else if(result['quotestatus'] == "Not Issued"){
@@ -754,6 +764,7 @@ this.toggle3();
       this.btnDisableduw = true
       this.isaddfinal = false
     }
+ 
     // else{
     //   this.isduplicatecs = false
     // }
@@ -1100,7 +1111,7 @@ if(result){
         }
         else{
           this.openduplicateDialog(res);
-          this.isduplicater = !this.isduplicater;
+          this.isduplicatereq = !this.isduplicatereq;
           this.isduplicatecs = !this.isduplicatecs;
         }
     }, error => {
@@ -1151,6 +1162,7 @@ if(result){
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
    this.dupnext = true;
+   this.btnDisabledcs = true;
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
    this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
    this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
@@ -1284,20 +1296,24 @@ if(result){
     this.contactForm2.enable();
     this.isSubmittedradio = true;
    if(this.child.driverdata.length !=0){
+    console.log("check1111111111111111111");
     if(!this.contactForm2.valid) {
+      console.log("check1111111111111111111");
       return false;
     } 
     if(this.contactForm2.valid){
-      
+      console.log("check1111111111111111111");
       this.tabGroup._tabs['_results'][2].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        console.log("check1111111111111111111");
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
-          console.log("drivertable values",this.child.driverdata);
+          console.log("check1111111111111111111");
         }
       }
       this.onSubmit();
-      console.log("drivertable values",this.child.driverdata);
+      // console.log("drivertable values",this.child.driverdata);
+      console.log("check1111111111111111111");
     }
     else{
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
@@ -1600,7 +1616,15 @@ addremarkstest() {
         reviewstatus = ""
         typeofaction = ""
       }
-      var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
+      if(this.userrole != "cs"){
+        if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
+          var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
+        }
+        
+      }
+      else{
+        lastupdated = ''
+      }
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
       console.log(lastupdated)
@@ -1849,6 +1873,8 @@ addremarkstest() {
         console.log(result);
         this.btnDisablednext = true;
         this.isaddfinal = true;
+        this.btnDisabledci = false;
+        this.isduplicatecs = true;
         this.moveToSelectedTab2("Additional Details");
       }
       else{

@@ -1,12 +1,15 @@
 <div class="container" style="text-align:center">
     <button mat-raised-button color="primary" kendo-button (click)="pdf.saveAs('quoteletter.pdf')">Download as PDF</button>
-    <button style="margin-left: 5px;" mat-raised-button color="primary" mat-dialog-close>Close</button>
+    <button mat-raised-button style="margin-left: 5px;"  color="primary" mat-dialog-close>Close</button>
 </div>
 <kendo-pdf-export #pdf paperSize="A3" margin="1cm" [scale]="0.8">
     <style>
         p {
     font-size: 16px;
     }
+    .mat-raised-button.mat-primary {
+    background-color: #6cc6f0;
+}
     .mat-dialog-container {
     padding:5px !important;
     }
@@ -72,8 +75,8 @@
     </style>
     <div class="row" id="content" #content>
         <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-12 py-3" style="background-color: #12919d;"></div>
-        <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-12 py-3 border-bottom">
-            <div id="iokym"> 
+        <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-12 py-3">
+            <div id="iokym" style="padding-bottom: 30px;"> 
                 <h1 id="iq3nt" class="text-center" style="color:gray">J.S. JOHNSON &amp; COMPANY, LIMITED
   </h1>
                  
@@ -178,10 +181,13 @@
                    <b>Discounted Premium(in $BS)</b>
                     <br/>
             <span style="font-size: 13px;">
-              12 for 11 promotion discount
+              (12 for 11 promotion discount)
             </span>
     </span>
                 </div>
+                <br>
+                <br>
+                <br>
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <p><b>:&nbsp; &nbsp;${{discp}}</b>
                   </p>
@@ -197,6 +203,8 @@
                   </p>
                 </div>
               </div>
+              <br>
+                <br>
             <p id="izf08" style="font-size: 16px;"><b>• Subject to completion and acceptance of a satisfactory Proposal form</b></p>
             <p id="iv6aq" style="font-size: 16px;"><b>• This quotation form is supplied for information purposes only and is not to be as evidence that insurance coverage has been arranged</b></p>
             <p id="i2ksm" class="text-center" style="font-size: 16px;"><b>QUOTATION IS VALID FOR 30 DAYS ONLY</b></p>
