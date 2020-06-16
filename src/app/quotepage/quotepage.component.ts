@@ -167,6 +167,7 @@ degreeTitleList = [];
   Selectedtown: any;
   Selectedloss: any;
   Selectedlosspay: any;
+  view: boolean;
  
   
   educationLevelChangeAction(education) {
@@ -819,6 +820,7 @@ this.toggle3();
     else if(status=='Active'){
       this.contactForm1.disable();
       this.contactForm2.disable();
+      this.view=true;
       this.contactForm3.disable();
     }}
     });  

@@ -240,6 +240,7 @@
         Is your Vehicle Financed?
           <mat-checkbox class="example-margin" formControlName="financed" binary="true" *ngIf="!isduplicater" (click)="toggle3()"></mat-checkbox>
           <mat-checkbox class="example-margin" formControlName="financed" binary="true" *ngIf="isduplicater"></mat-checkbox>
+          <mat-checkbox class="example-margin" formControlName="financed" binary="true" *ngIf="view"></mat-checkbox>
         </div>
       </mat-grid-tile>
         <mat-grid-tile style="right: unset !important" *ngIf="(sho)">
