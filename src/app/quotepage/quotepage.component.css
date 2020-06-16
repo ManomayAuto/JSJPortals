@@ -227,3 +227,9 @@ li {
  /* .mat-raised-button[disabled][disabled]{
      display: none;
  } */
+ .mat-form-field-invalid .mat-radio-label-content{
+    color:#f44336;
+}
+.mat-form-field-invalid .mat-radio-outer-circle{
+    border-color:#f44336!important;
+}

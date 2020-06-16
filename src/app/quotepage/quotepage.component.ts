@@ -199,6 +199,7 @@ degreeTitleList = [];
   searchdata : any;
   selectedvehtype :any;
   actionvalue: string;
+  isSubmittedradio = false;
   test(a) {
     if(a.index == 2){
       this.onSubmit();
@@ -899,9 +900,11 @@ return value;
   }
   toggle() {
     this.hide = this.show
+    this.isSubmittedradio = false;
     }
     toggle1() {
       this.hide = !this.show
+      this.isSubmittedradio = false;
       }
       toggle3() {
         this.sho = !this.sho;
@@ -1276,10 +1279,16 @@ if(result){
   //   this.moveToSelectedTab1('Premium Summary')
   //   console.log("in pre")
   // }
+
   moveToSelectedTab1(tabName: string) {
     this.contactForm2.enable();
+    this.isSubmittedradio = true;
    if(this.child.driverdata.length !=0){
+    if(!this.contactForm2.valid) {
+      return false;
+    } 
     if(this.contactForm2.valid){
+      
       this.tabGroup._tabs['_results'][2].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
@@ -1292,6 +1301,7 @@ if(result){
     }
     else{
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+      
     }
  }
  else{
