@@ -526,20 +526,39 @@ this.toggle3();
     this.contactForm3.get('remarks').setValue(result['remarks']);
     
     this.driverservice.driver(this.driverdata);
+
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
-      this.btnDisablednext = true;
+      // this.btnDisablednext = true;
+      this.isduplicatecs = true;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
     }
-    if(result['quotestatus'] == "Not Issued"){
-      this.isduplicatecsonly = false
-      this.isduplicatecs = true;
+    else if(result['quotestatus'] == "Not Issued"){
+      if(this.userrole == "cs"){
+        this.isduplicatecsonly = false
+        this.isduplicatecs =  true
+        this.isaddfinal = false
+      }
+      else{
+        this.isduplicatecs = false;
+      }
+ 
     }
-    else{
-      this.isduplicatecs = false
+    else if(result['quotestatus'] == "Declined"){
+      this.btnDisabled = true
+      this.btnDisableduw = true
+      this.isduplicatecs = true
+      this.isaddfinal = false
     }
+    else if(result['quotestatus'] == "Saved"){
+      this.btnDisableduw = true
+      this.isaddfinal = false
+    }
+    // else{
+    //   this.isduplicatecs = false
+    // }
     this.contactForm3.disable();
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
@@ -706,18 +725,36 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
-      this.btnDisablednext = true;
+      // this.btnDisablednext = true;
+      this.isduplicatecs = true;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
     }
-    if(result['quotestatus'] == "Not Issued"){
-      this.isduplicatecsonly = false
-      this.isduplicatecs = false;
+    else if(result['quotestatus'] == "Not Issued"){
+      if(this.userrole == "cs"){
+        this.isduplicatecsonly = false
+        this.isduplicatecs =  true
+        this.isaddfinal = false
+      }
+      else{
+        this.isduplicatecs = false;
+      }
+ 
     }
-    else{
-      this.isduplicatecs = false
+    else if(result['quotestatus'] == "Declined"){
+      this.btnDisabled = true
+      this.btnDisableduw = true
+      this.isduplicatecs = true
+      this.isaddfinal = false
     }
+    else if(result['quotestatus'] == "Saved"){
+      this.btnDisableduw = true
+      this.isaddfinal = false
+    }
+    // else{
+    //   this.isduplicatecs = false
+    // }
     this.contactForm4.get('addressType').setValue(result['adtype']);
       this.contactForm4.get('streetName').setValue(result['street']);
       console.log(result['countri'])
@@ -1108,7 +1145,7 @@ if(result){
     });
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
-   
+   this.dupnext = true;
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
    this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
    this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
@@ -1560,11 +1597,11 @@ addremarkstest() {
       };
       console.log(losspayee);
       console.log(typeof(losspayee));
-      if(losslocation == null || losslocation == undefined || losslocation === ""){
+      if(losslocation){
         console.log("in loc");
         losslocation = ''
       }
-      if(losspayee == null || losspayee == undefined || losspayee === ""){
+      if(losspayee){
         console.log("in pay");
         losspayee = ''
       }
@@ -1604,7 +1641,7 @@ addremarkstest() {
       if(userrole == "uw" && actionvalue == "Save"){
         var reviewstatus = "For Review"
         var quotestatus = "For Review"
-        var typeofaction = ""
+        var typeofaction = "Referral Review"
       }
       if(actionvalue == "Submitreview"){
         var reviewstatus = "For Review"
