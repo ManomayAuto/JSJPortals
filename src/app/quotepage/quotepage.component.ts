@@ -216,7 +216,7 @@ degreeTitleList = [];
         this.today = Date.now();
       }, 1);
   }
-
+  maxDate:Date = new Date();
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
     this.userrole = localStorage.getItem('Role');
