@@ -9,7 +9,7 @@
     <mat-tab label="Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)">
 
    <mat-tab label="Basic Details">    
-    <form (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
+    <form (ngSubmit)='moveToSelectedTab("Coverage/Driver Details")' [formGroup]="contactForm1">
     <mat-card>Personal Details</mat-card><mat-grid-list style="margin-top:-20px" cols="2" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
 
   <mat-grid-tile>
@@ -152,7 +152,7 @@
         </ng-container>
       </mat-autocomplete> -->
       <mat-form-field class="example-full-width">
-        <input type="text" matInput placeholder="Make-Model-CC" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
+        <input type="text" matInput placeholder="Make-Model-CC*" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let option of filteredOption | async" [value]="option" style="line-height:normal;white-space: normal;">
             {{option.MakeModelCC}}
@@ -224,11 +224,11 @@
     </div>
   </mat-grid-tile>
 </mat-grid-list>
-<div class="text-inside" style="text-align: right;padding-bottom: 20px;">
+<div class="text-inside" *ngIf="!this.dupnext" style="text-align: right;padding-bottom: 20px;">
 <button mat-raised-button color="primary" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
-<button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">Next</button>
-</div></form>   </mat-tab>
-<mat-tab label="Coverage /Driver Details" [disabled]="true">
+
+</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" style="margin-left:50px">Next</button></div>   </mat-tab>
+<mat-tab label="Coverage/Driver Details" [disabled]="true">
    
   <form fxLayout="column" (ngSubmit)='moveToSelectedTab1("Premium Summary")' [formGroup]="contactForm2">
 
@@ -517,7 +517,7 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field class="example-full-width">
-        <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
+        <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country*" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
         <mat-autocomplete #countryauto="matAutocomplete" [displayWith]="displayFncountry">
           <mat-option (click)="OncountrySelected(Selectedcountry)" *ngFor="let countryoption of countryfilteredOption | async" [value]="countryoption" style="line-height:normal;white-space: normal;">
             {{countryoption.Country}}

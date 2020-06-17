@@ -338,7 +338,7 @@ degreeTitleList = [];
       streetName:  ['',Validators.required],
       cityTown:  ['',Validators.required],
       zipCode:  ['',Validators.required],
-      country: [''],
+      country: ['',Validators.required],
       policystartDate:  ['',Validators.required],
       policyendDate:  ['',Validators.required],
       policyType:  ['',Validators.required],
@@ -1103,6 +1103,7 @@ if(result){
         {
  this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        console.log("in newwwwwwwwwwwwwwwwwwwwwww")
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
          
@@ -1311,8 +1312,9 @@ if(result){
           console.log("check1111111111111111111");
         }
       }
+      
       this.onSubmit();
-      // console.log("drivertable values",this.child.driverdata);
+       console.log("drivertable values",this.child.driverdata);
       console.log("check1111111111111111111");
     }
     else{
@@ -1385,7 +1387,7 @@ addremarkstest() {
           var con=this.contactForm1;
           this.dataformservice.driver1(con);
           this.as.dataform = con;
-
+          console.log("yeyyyyyyyyyy")
         }
       }
     }
