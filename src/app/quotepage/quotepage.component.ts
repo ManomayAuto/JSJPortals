@@ -204,8 +204,10 @@ degreeTitleList = [];
   isSubmittedradio = false;
   test(a) {
     if(a.index == 2){
+      
       this.onSubmit();
     }else{
+      this.isSubmittedradio = false;
       console.log('Tab2 is not selected!');
     }
   }
