@@ -153,11 +153,15 @@
       </mat-autocomplete> -->
       <mat-form-field class="example-full-width">
         <input type="text" matInput placeholder="Make-Model-CC*" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
+        <mat-error *ngIf="contactForm1.get('userInput').hasError('incorrect')">
+          Please select a valid Make-Model-CC
+      </mat-error>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let option of filteredOption | async" [value]="option" style="line-height:normal;white-space: normal;">
             {{option.MakeModelCC}}
           </mat-option>
         </mat-autocomplete>
+       
       </mat-form-field>
     </div>
   </mat-grid-tile>
@@ -214,6 +218,9 @@
             {{option}}
           </mat-option>
         </mat-autocomplete>
+        <mat-error *ngIf="contactForm1.get('Year').hasError('incorrect')">
+          Please select a valid Year from the list
+      </mat-error>
       </mat-form-field>
     </div>
 
@@ -251,6 +258,9 @@
                 {{lossoption.Description}}
               </mat-option>
             </mat-autocomplete>
+            <mat-error *ngIf="contactForm2.get('losspay').hasError('incorrect')">
+              Please select a valid Loss Payee Name
+          </mat-error>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -289,7 +299,7 @@
         <mat-grid-list style="margin-top:-60px" cols="3" [cols]="breakpoint" rowHeight="125px" (window:resize)="onResize($event)">
    
           <mat-grid-tile style="margin-top: 50px;">
-            <label id="example-radio-group-label" *ngIf="isSubmittedradio && contactForm2.get('options1').hasError('required')" style="color: red;">Type of cover is mandatory *:</label> 
+            <label id="example-radio-group-label" *ngIf="isSubmittedradio && contactForm2.get('options1').hasError('required')" style="color: red;">Type of Cover *:</label> 
             <label id="example-radio-group-label" *ngIf="!isSubmittedradio">Type of Cover *:</label>
            <mat-radio-button class="example-radio-button" *ngIf="!isduplicater" name="COMP" value="COMP" (click)="toggle1()" style="margin-left: 20px;">
               Comprehensive
@@ -463,7 +473,7 @@
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
  
-  <a mat-raised-button color="primary" [disabled] = "printDisabled" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</a>
+  <button mat-raised-button color="primary" [disabled] = "printDisabled" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</button>
  
  
     <button mat-raised-button color="primary" #Active (click)="onSave('Active')" [disabled] = "btnDisabled" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
@@ -475,7 +485,7 @@
       <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
       <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [disabled] = "!btnDisabledci" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
         <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
-        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review1</button><!--For saved quotes from cs users-->
+        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review</button><!--For saved quotes from cs users-->
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicatereq" style="margin-left:5px">Requote</button>
      
    
@@ -523,6 +533,9 @@
             {{countryoption.Country}}
           </mat-option>
         </mat-autocomplete>
+        <mat-error *ngIf="contactForm4.get('country').hasError('incorrect')">
+          Please select a valid Country from the list
+      </mat-error>
       </mat-form-field>
     </div>
   </mat-grid-tile>

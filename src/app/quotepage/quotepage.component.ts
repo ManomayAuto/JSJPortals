@@ -10,7 +10,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import {MatSnackBar} from '@angular/material';
 import { DatePipe } from "@angular/common";
 import { Quote } from '@angular/compiler';
-
+import { AbstractControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {SearchclientdialogComponent} from './searchclientdialog/searchclientdialog.component';
 import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
@@ -302,7 +302,7 @@ degreeTitleList = [];
       occupation: [''],
       employement:[''],
       Product: ['',Validators.required],
-      userInput: ['',Validators.required],
+      userInput: ['',[Validators.required, RequireMatch]],
     });
     this.contactForm1.get('clienttype').disable();
       this.contactForm2 = this.f2.group({
@@ -549,9 +549,11 @@ this.toggle3();
         this.isduplicatecsonly = false
         this.isduplicatecs =  true
         this.isaddfinal = false
+        this.btnDisabledcs = true
       }
       else{
         this.isduplicatecs = false;
+        this.btnDisableduw = true; 
       }
  
     }
@@ -750,9 +752,11 @@ this.toggle3();
         this.isduplicatecsonly = false
         this.isduplicatecs =  true
         this.isaddfinal = false
+        this.btnDisabledcs = true;
       }
       else{
         this.isduplicatecs = false;
+        this.btnDisableduw = true;
       }
  
     }
@@ -1114,8 +1118,7 @@ if(result){
         }
         else{
           this.openduplicateDialog(res);
-          this.isduplicatereq = !this.isduplicatereq;
-          this.isduplicatecs = !this.isduplicatecs;
+          
         }
     }, error => {
       console.error("Error", error);
@@ -1166,6 +1169,9 @@ if(result){
    console.log("after closed ", result);
    this.dupnext = true;
    this.btnDisabledcs = true;
+   this.isduplicater = true;
+   this.isduplicatereq = !this.isduplicatereq;
+   this.isduplicatecs = !this.isduplicatecs;
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
    this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
    this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
@@ -1927,6 +1933,7 @@ addremarkstest() {
     });
     
   }
+  
   OncountrySelected(Selectedcountry) {
     
     console.log('### Trigger');
@@ -1987,3 +1994,11 @@ console.log(Selectedzip);
 
 }
 
+ 
+export function RequireMatch(control: AbstractControl) {
+    const selection: any = control.value;
+    if (typeof selection === 'string') {
+        return { incorrect: true };
+    }
+    return null;
+}

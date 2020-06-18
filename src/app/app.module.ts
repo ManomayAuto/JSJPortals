@@ -46,7 +46,7 @@ import {driverservice} from './quotepage/quotepage.component';
 import {dataformservice} from './quotepage/quotepage.component';
 import { from } from 'rxjs';
 import { QtableService } from './_services/qtable.service';
-
+import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material'; 
 import { QletterdialogComponent } from './quotepage/qletterdialog/qletterdialog.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { QreportsComponent } from './qreports/qreports.component';
@@ -126,6 +126,7 @@ import { QreportsComponent } from './qreports/qreports.component';
     SecureLocalStorageService,driverservice,dataformservice,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
   ],
   bootstrap: [AppComponent],
   entryComponents:[NewquotedialogComponent,QletterdialogComponent,DialogContentExampleComponent,DialogRedComponent,DialogCallComponent,DriverdialogComponent,SearchclientdialogComponent,DuplicatedialogComponent,DialogOverviewExampleDialog]

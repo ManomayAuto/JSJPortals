@@ -224,7 +224,10 @@ li {
     font-size: 13px;
  }
  
- /* .mat-raised-button[disabled][disabled]{
+.mat-raised-button[disabled][disabled]{
      display: none;
- } */
- 
+ }
+
+ ::ng-deep .mat-form-field-wrapper  {
+    margin-top: -10px !important;
+}
