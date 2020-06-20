@@ -22,12 +22,14 @@ export class DriverdialogComponent implements OnInit {
   ngModelChecked = false;
   abcd: any;
   authenticate: boolean;
+  tomorrow = new Date();
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
     private formBuilder: FormBuilder,
     private dataformservice:dataformservice,
     private driverservice: driverservice,
     public dialogRef :MatDialogRef<DriverdialogComponent>,) {
+    this.tomorrow.setDate(this.tomorrow.getDate() );
 
     this.driverForm = new FormGroup({
       DriverName:  new FormControl(),

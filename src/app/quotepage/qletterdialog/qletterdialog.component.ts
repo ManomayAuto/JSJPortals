@@ -34,16 +34,18 @@ export class QletterdialogComponent implements OnInit {
   this.first = this.data['quotedata']['first'];
   this.last = this.data['quotedata']['last'];
   this.prod = this.data['quotedata']['prod'];
+  console.log(this.data['quotedata']['make']);
+  console.log(this.data['quotedata']['make']['MakeModelCC']);
   if(this.data['quotedata']['make']){
     this.vehicle = this.data['quotedata']['make'];
   }
- else{
+ if(this.data['quotedata']['make']['MakeModelCC']){
   this.vehicle = this.data['quotedata']['make']['MakeModelCC'];
  }
   console.log(this.vehicle);
   this.lospay= this.data['quotedata']['losspayee']['Description'];
   if(this.lospay == null || this.lospay == undefined || this.lospay == ""){
-    this.lospay = "Not Applicable/Not Available"
+    this.lospay = "Not Applicable"
   }
 this.type=this.data['quotedata']['cover'];
 this.deduct = this.data['quotedata']['deduct'];

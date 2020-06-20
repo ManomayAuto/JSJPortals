@@ -27,13 +27,13 @@
                   <!-- Progress Column -->
                   <ng-container matColumnDef="DOB">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Date Of Birth </mat-header-cell>
-                    <mat-cell data-label="DOB" *matCellDef="let element"> {{element.DOB}}  </mat-cell>
+                    <mat-cell data-label="DOB" *matCellDef="let element"> {{element.DOB | date: 'dd/MM/yyyy'}}  </mat-cell>
                   </ng-container>
               
                   <!-- Name Column -->
                   <ng-container matColumnDef="LicenseIssueDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> License Issue Date </mat-header-cell>
-                    <mat-cell data-label="LicenseIssueDate" *matCellDef="let element">{{element.LicenseIssueDate}}</mat-cell>
+                    <mat-cell data-label="LicenseIssueDate" *matCellDef="let element">{{element.LicenseIssueDate | date: 'dd/MM/yyyy'}}</mat-cell>
                   </ng-container>
                   
                   <ng-container matColumnDef="LicenseNumber">

@@ -79,8 +79,8 @@ getRecord(quoteid,reviewerusername){
   var name = localStorage.getItem('name');
   // this.datepipe = new DatePipe('en-Us');
   // var lastupdated = this.dp.transform(this.today, 'yy-MM-dd HH:mm','es-ES');
-  var lastupdated = this.datepipe.transform(this.today, 'yyyy-MM-dd','es-ES');
-  console.log("last updatedddddddddddddddddddddddd");
+  var lastupdated = this.datepipe.transform(this.today, 'yyyy-MM-dd HH:mm ','es-ES');
+  console.log("last updatedddddddddddddddddddddddd",lastupdated);
   console.log(lastupdated);
   const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

@@ -48,9 +48,12 @@ export class DrivertableComponent implements OnInit {
   length: any;
   and: any;
   trail: any;
+  date: Date;
   constructor(private driverservice: driverservice,private dataformservice:dataformservice,public dialog: MatDialog,
     private route: ActivatedRoute,
-    public snackBar: MatSnackBar,private asp : dataformservice,) { }
+    public snackBar: MatSnackBar,private asp : dataformservice,) {
+      this.date = new Date();
+     }
 
  
 
@@ -190,9 +193,12 @@ editUser(user) {
 })
 export class DialogOverviewExampleDialog {
   public breakpoint: number;
+  date: Date;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: anl) {}
+    @Inject(MAT_DIALOG_DATA) public data: anl) {
+      this.date = new Date();
+    }
 
   onNoClick(): void {
     this.dialogRef.close();

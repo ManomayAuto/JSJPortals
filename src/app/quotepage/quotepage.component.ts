@@ -109,7 +109,8 @@ export class QuotepageComponent implements OnInit {
   btnDisabled = true;
   btnDisableduw = true;
   btnDisabledcs = false;
-  btnDisablednext = true;
+  btnDisablednext = false;
+  printDisabled = true;
   selectedIndex: any;
   countryoption = [];
   username: string;
@@ -120,7 +121,10 @@ export class QuotepageComponent implements OnInit {
   public lossaddress: any[];
   public isduplicate: boolean = false;
   public isduplicater: boolean = false;
+  public isduplicatereq: boolean = false;
   public isduplicatecs: boolean = false;
+  public isduplicatecsonly: boolean = true;
+  public btnDisabledci: boolean = true;
   // today: Date = new Date();
   today: number;
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
@@ -197,26 +201,29 @@ degreeTitleList = [];
   searchdata : any;
   selectedvehtype :any;
   actionvalue: string;
+  isSubmittedradio = false;
   test(a) {
     if(a.index == 2){
+      
       this.onSubmit();
     }else{
+      this.isSubmittedradio = false;
       console.log('Tab2 is not selected!');
     }
   }
-
+  tomorrow = new Date();
   constructor(private  authenticationService : AuthenticationService,private driverservice: driverservice,private dataformservice:dataformservice,private service: Service,private router: Router,public dialog: MatDialog,private dp: DatePipe,
     private route: ActivatedRoute,private as : dataformservice,
 
     private http: HttpClient, private f1 : FormBuilder, 
     private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
-   
+      this.tomorrow.setDate(this.tomorrow.getDate() );
 
       setInterval(() => {
         this.today = Date.now();
       }, 1);
   }
-  maxDate:Date = new Date();
+  //minDate:Date = new Date();
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
     this.userrole = localStorage.getItem('Role');
@@ -333,7 +340,7 @@ degreeTitleList = [];
       streetName:  ['',Validators.required],
       cityTown:  ['',Validators.required],
       zipCode:  ['',Validators.required],
-      country: [''],
+      country: ['',Validators.required],
       policystartDate:  ['',Validators.required],
       policyendDate:  ['',Validators.required],
       policyType:  ['',Validators.required],
@@ -401,12 +408,15 @@ degreeTitleList = [];
   }
   }
   getSomethings(){
+    this.isduplicater = true;
     this.dupnext = true;
     this.isduplicate = true;
       this.selectedIndex =  1;
       this.btnDisabled = false;
+      this.btnDisabledci = false;
       this.btnDisableduw = false;
-      this.isduplicatecs = !this.isduplicatecs;
+      // this.isduplicatecs = true;
+      // this.isduplicatecs = !this.isduplicatecs;
     console.log("view")
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
@@ -424,7 +434,7 @@ degreeTitleList = [];
     }
     let quoteid =  this.route.snapshot.paramMap.get('view');
     console.log("getSomething not null");
-    this.isaddfinal = true;
+    // this.isaddfinal = true;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -523,13 +533,41 @@ this.toggle3();
     this.contactForm3.get('remarks').setValue(result['remarks']);
     
     this.driverservice.driver(this.driverdata);
+
     if(result['quotestatus'] == "Active"){
+      this.printDisabled = false
       this.btnDisabled = true;
-      this.btnDisablednext = false;
+      // this.btnDisablednext = true;
+      this.isduplicatecs = true;
+      this.isaddfinal = false;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
     }
+    else if(result['quotestatus'] == "Not Issued"){
+      if(this.userrole == "cs"){
+        this.isduplicatecsonly = false
+        this.isduplicatecs =  true
+        this.isaddfinal = false
+      }
+      else{
+        this.isduplicatecs = false;
+      }
+ 
+    }
+    else if(result['quotestatus'] == "Declined"){
+      this.btnDisabled = true
+      this.btnDisableduw = true
+      this.isduplicatecs = true
+      this.isaddfinal = false
+    }
+    else if(result['quotestatus'] == "Saved"){
+      this.btnDisableduw = true
+      this.isaddfinal = false
+    }
+    // else{
+    //   this.isduplicatecs = false
+    // }
     this.contactForm3.disable();
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
@@ -572,8 +610,9 @@ if(!result['citi']){
     this.isduplicate = true;
     this.selectedIndex =  1;
     this.btnDisabled = false;
+    this.btnDisabledci = false;
       this.btnDisableduw = false;
-      this.isduplicatecs = !this.isduplicatecs;
+      // this.isduplicatecs = !this.isduplicatecs;
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
       this.contactForm2.clearValidators();
@@ -589,13 +628,21 @@ if(!result['citi']){
     }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
-    this.isaddfinal = true;
+    // this.isaddfinal = true;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
     var status= result['quotestatus'];
+    // if(this.userrole == "cs" && status == "Not Issued"){
+    //   console.log("in subbbbbbbbbbbbbbbbbbbbbbbb")
+    //   this.isduplicatecs = false;
+    // }
+    // if(status == "Active"){
+    //   console.log("inactivvvvvvvvvvvvvvvvvvvvvvvvv")
+    //   this.btnDisabled = false;
+    // }
       console.log("stat",status);
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
@@ -687,12 +734,42 @@ this.toggle3();
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
       this.btnDisabled = true;
-      this.btnDisablednext = false;
+      this.isaddfinal = true;
+      this.printDisabled = false;
+      // this.btnDisablednext = true;
+      this.isduplicatecs = true;
       if(this.userrole == "uw"){
         this.btnDisableduw = true;
       }
+      else if(this.userrole == "cs"){
+        this.isduplicater = true;
+      }
     }
-   
+    else if(result['quotestatus'] == "Not Issued"){
+      if(this.userrole == "cs"){
+        this.isduplicatecsonly = false
+        this.isduplicatecs =  true
+        this.isaddfinal = false
+      }
+      else{
+        this.isduplicatecs = false;
+      }
+ 
+    }
+    else if(result['quotestatus'] == "Declined"){
+      this.btnDisabled = true
+      this.btnDisableduw = true
+      this.isduplicatecs = true
+      this.isaddfinal = false
+    }
+    else if(result['quotestatus'] == "Saved"){
+      this.btnDisableduw = true
+      this.isaddfinal = false
+    }
+ 
+    // else{
+    //   this.isduplicatecs = false
+    // }
     this.contactForm4.get('addressType').setValue(result['adtype']);
       this.contactForm4.get('streetName').setValue(result['street']);
       console.log(result['countri'])
@@ -836,9 +913,11 @@ return value;
   }
   toggle() {
     this.hide = this.show
+    this.isSubmittedradio = false;
     }
     toggle1() {
       this.hide = !this.show
+      this.isSubmittedradio = false;
       }
       toggle3() {
         this.sho = !this.sho;
@@ -1020,12 +1099,14 @@ if(result){
       var con=this.contactForm1;
       this.dataformservice.driver1(con);
       this.as.dataform = con;
+      console.log("line-1101")
       return this.http.post<any>(environment.URL + '/duplicate', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,emp:emp,sale:sale,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,prod:prod},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
         if(res.result == "NoQuote")
         {
  this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        console.log("in newwwwwwwwwwwwwwwwwwwwwww")
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
          
@@ -1034,7 +1115,7 @@ if(result){
         }
         else{
           this.openduplicateDialog(res);
-          this.isduplicater = !this.isduplicater;
+          this.isduplicatereq = !this.isduplicatereq;
           this.isduplicatecs = !this.isduplicatecs;
         }
     }, error => {
@@ -1084,7 +1165,8 @@ if(result){
     });
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
-   
+   this.dupnext = true;
+   this.btnDisabledcs = true;
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
    this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
    this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
@@ -1213,22 +1295,34 @@ if(result){
   //   this.moveToSelectedTab1('Premium Summary')
   //   console.log("in pre")
   // }
+
   moveToSelectedTab1(tabName: string) {
     this.contactForm2.enable();
+    this.isSubmittedradio = true;
    if(this.child.driverdata.length !=0){
+    console.log("check1111111111111111111");
+    if(!this.contactForm2.valid) {
+      console.log("check1111111111111111111");
+      return false;
+    } 
     if(this.contactForm2.valid){
+      console.log("check1111111111111111111");
       this.tabGroup._tabs['_results'][2].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        console.log("check1111111111111111111");
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
-          console.log("drivertable values",this.child.driverdata);
+          console.log("check1111111111111111111");
         }
       }
+      
       this.onSubmit();
-      console.log("drivertable values",this.child.driverdata);
+       console.log("drivertable values",this.child.driverdata);
+      console.log("check1111111111111111111");
     }
     else{
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+      
     }
  }
  else{
@@ -1296,7 +1390,7 @@ addremarkstest() {
           var con=this.contactForm1;
           this.dataformservice.driver1(con);
           this.as.dataform = con;
-
+          console.log("line-1391")
         }
       }
     }
@@ -1525,8 +1619,17 @@ addremarkstest() {
       else if(actionvalue == "complete"){
         quotestatus = "Active"
         reviewstatus = ""
+        typeofaction = ""
       }
-      var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
+      if(this.userrole != "cs"){
+        if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
+          var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
+        }
+        
+      }
+      else{
+        lastupdated = ''
+      }
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
       console.log(lastupdated)
@@ -1535,11 +1638,11 @@ addremarkstest() {
       };
       console.log(losspayee);
       console.log(typeof(losspayee));
-      if(losslocation == null || losslocation == undefined || losslocation === ""){
+      if(losslocation){
         console.log("in loc");
         losslocation = ''
       }
-      if(losspayee == null || losspayee == undefined || losspayee === ""){
+      if(losspayee){
         console.log("in pay");
         losspayee = ''
       }
@@ -1579,6 +1682,11 @@ addremarkstest() {
       if(userrole == "uw" && actionvalue == "Save"){
         var reviewstatus = "For Review"
         var quotestatus = "For Review"
+        var typeofaction = "Referral Review"
+      }
+      if(actionvalue == "Submitreview"){
+        var reviewstatus = "For Review"
+        var quotestatus = "For Review"
         var typeofaction = ""
       }
       if(actionvalue == "Save" || actionvalue == "Savedcs" || actionvalue == "complete"){
@@ -1594,14 +1702,22 @@ addremarkstest() {
             console.log(res.quotestatus);
           let qd = res.result;
           let qs = res.quotestatus;
-          console.log("in on save");
-          this.openquoteDialog(qd,qs);
+          console.log("in on saverrrrr");
+          console.log(qs);
+  if(qs == "Active"){
+    this.openquoteDialogactive(qd,qs);
+  }
+  else{
+    this.openquoteDialog(qd,qs);
+  }
+            
+      
       }, error => {
         console.error("Error", error);
       });
       }
       
-      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
+      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved" || actionvalue == "Submitreview"){
         console.log(actionvalue);
         let quoteid = this.contactForm3.get('quoted').value;
         if(actionvalue == "Declined" || actionvalue == "Saved"){
@@ -1641,6 +1757,12 @@ addremarkstest() {
                   this.router.navigateByUrl('/home');
                   }, 3000);
               }
+              else if(res['quotestaus'] == "For Review"){
+                console.log("in testttttttttttttttttttttt")
+                  let qd = res['quoteid']
+                  let qs = res['quotestaus']
+                this.openquoteDialog(qd,qs);
+              }
           }, error => {
             console.error("Error", error);
           });
@@ -1675,6 +1797,12 @@ addremarkstest() {
                 this.router.navigateByUrl('/home');
                 }, 3000);
             }
+            else if(res['quotestaus'] == "For Review"){
+                console.log("in testttttttttttttttttttttt")
+                  let qd = res['quoteid']
+                  let qs = res['quotestaus']
+                this.openquoteDialog(qd,qs);
+              }
         }, error => {
           console.error("Error", error);
         });
@@ -1731,6 +1859,33 @@ addremarkstest() {
       this.router.navigateByUrl('/home');
       // window.location.reload();
        })
+  }
+  openquoteDialogactive(quoteid, quotestatus) {
+    const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
+      disableClose: true,
+      width: '450px',
+      height: '250px',
+      data:{
+        quoteid: quoteid,
+        quotestatus:quotestatus,
+      },
+    });
+    
+    
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result =="yes") {
+        console.log(result);
+        this.btnDisablednext = true;
+        this.isaddfinal = true;
+        this.btnDisabledci = false;
+        this.isduplicatecs = true;
+        this.moveToSelectedTab2("Additional Details");
+      }
+      else{
+        this.router.navigateByUrl('/home');
+      }
+  });
   }
   onquoteletter(){
     console.log("in qlet");

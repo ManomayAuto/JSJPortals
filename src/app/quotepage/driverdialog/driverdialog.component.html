@@ -30,7 +30,7 @@
     <div class="text-inside">
 
       <mat-form-field>
-        <input matInput [matDatepicker]="picker5" placeholder="Date of Birth" formControlName="DOB" required>
+        <input matInput [matDatepicker]="picker5" [max]="tomorrow" placeholder="Date of Birth" formControlName="DOB" required>
         <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
         <mat-datepicker #picker5></mat-datepicker>
       </mat-form-field>
@@ -42,7 +42,7 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="License Issue Date" formControlName="LicenseIssueDate" required>
+        <input matInput [matDatepicker]="picker" [max]="tomorrow" placeholder="License Issue Date" formControlName="LicenseIssueDate" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
