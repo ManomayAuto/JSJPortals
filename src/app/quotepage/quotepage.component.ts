@@ -430,11 +430,16 @@ degreeTitleList = [];
     // this.dupnext = true;
      
     this.btnDisabledcs = true;
+    this.isduplicatecs = true;
     // this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('view');
     console.log("getSomething not null");
     // this.isaddfinal = true;
+    this.contactForm1.get('userInput').clearValidators();
+    this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('userInput').setValidators([Validators.required])
+    this.contactForm1.get('userInput').updateValueAndValidity();
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -628,6 +633,14 @@ if(!result['citi']){
     this.btnDisabledcs = true;
     //  this.isduplicatecs = !this.isduplicatecs;
     }
+    this.contactForm1.get('userInput').clearValidators();
+    this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('userInput').setValidators([Validators.required])
+    this.contactForm1.get('userInput').updateValueAndValidity();
+    // if(this.contactForm1.get('userInput').value == ''){
+    //   this.contactForm1.get('userInput').setValidators([Validators.required,RequireMatch])
+    //   this.contactForm1.get('userInput').updateValueAndValidity();
+    // }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
     // this.isaddfinal = true;
@@ -1628,12 +1641,15 @@ addremarkstest() {
         typeofaction = ""
       }
       if(this.userrole != "cs"){
+        console.log("in updated date")
         if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
+          console.log("in updated date")
           var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
         }
         
       }
       else{
+        console.log("not in updated date")
         lastupdated = ''
       }
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
