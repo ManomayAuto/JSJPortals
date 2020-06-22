@@ -170,6 +170,7 @@ degreeTitleList = [];
   Selectedloss: any;
   Selectedlosspay: any;
   view: boolean;
+  searchbutton: boolean;
  
   
   educationLevelChangeAction(education) {
@@ -455,6 +456,7 @@ degreeTitleList = [];
     this.contactForm1.get('idNumber').setValue(result['idno']);
     this.contactForm1.get('dob').setValue(result['mob']);
     var makey = result['make'];
+    this.searchbutton= true;
     // console.log(result['make']);
     this.displayFn(makey);
     this.contactForm1.get('userInput').setValue(makey);

@@ -99,7 +99,10 @@ getRecord(quoteid,reviewerusername){
 
 }
 
-
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.allSource.filter = filterValue.trim().toLowerCase();
+}
 
 }
 
