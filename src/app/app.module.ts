@@ -50,6 +50,7 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
 import { QletterdialogComponent } from './quotepage/qletterdialog/qletterdialog.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { QreportsComponent } from './qreports/qreports.component';
+import { AtableService } from './_services/atable.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -122,7 +123,7 @@ import { QreportsComponent } from './qreports/qreports.component';
     //   InMemDataService, { dataEncapsulation: false, passThruUnknownUrl: true,delay: 1000 }
     //   ),
   ],
-  providers: [UserService,RedService, NonService,DatePipe, AuthenticationService,QtableService,
+  providers: [UserService,RedService, NonService,DatePipe, AuthenticationService,QtableService,AtableService,
     SecureLocalStorageService,driverservice,dataformservice,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

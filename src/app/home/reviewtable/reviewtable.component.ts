@@ -57,7 +57,7 @@ ngOnInit(){
     const result0 = results.filter(user => {
       return user.reviewstatus != filterred;
     }); 
-   console.log("trial",result0)
+   console.log("trial",result0[1])
     this.allSource = new MatTableDataSource(result0);
     this.allSource.paginator = this.paginator;
     this.allSource.sort = this.sort;
