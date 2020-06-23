@@ -133,7 +133,9 @@ li {
 .mat-raised-button.mat-primary {
     background-color: #6cc6f0;
 }
-
+.mat-button.mat-primary {
+    background-color: #6cc6f0;
+}
 
 
 ::ng-deep .mat-form-field .mat-input-element {
