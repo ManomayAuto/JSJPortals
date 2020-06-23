@@ -233,9 +233,9 @@
   </mat-grid-tile>
 </mat-grid-list>
 <div class="text-inside" *ngIf="!this.dupnext" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
+<button mat-raised-button color="primary" [autofocus]="false" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
 
-</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" style="margin-left:50px">Next</button></div>   </mat-tab>
+</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" [autofocus]="false" style="margin-left:50px">Next</button></div>   </mat-tab>
 <mat-tab label="Coverage/Driver Details" [disabled]="true">
    
   <form fxLayout="column" (ngSubmit)='moveToSelectedTab1("Premium Summary")' [formGroup]="contactForm2">
@@ -347,7 +347,7 @@
     <mat-grid-tile style="right: unset !important">
       <div class="text-inside" *ngIf="(hide)">
         <mat-form-field>
-          <input matInput type="text" placeholder="Vehicle Value" formControlName="vehicleValue">
+          <input matInput type="number" min="0" oninput="validity.valid||(value='');" placeholder="Vehicle Value" formControlName="vehicleValue">
         </mat-form-field>
  
       </div>
@@ -362,7 +362,7 @@
   
 <app-drivertable></app-drivertable>
   <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-    <button mat-raised-button color="primary" style="margin-left:50px" type="submit">Next</button>
+    <button mat-raised-button color="primary" [autofocus]="false" style="margin-left:50px" type="submit">Next</button>
     </div>
 </form>
 </mat-tab>
@@ -473,27 +473,27 @@
           <div  *ngIf="isduplicate" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote Status</label></div>
           <div  *ngIf="isduplicate" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="quotestat" class="form-control" readonly/></div>
       </div>
-        <button mat-raised-button color="primary" (click)="onSubmit()" style="float: right;margin-bottom: 20px;">Generate Premium</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [autofocus]="false" style="float: right;margin-bottom: 20px;">Generate Premium</button>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
  
-  <button mat-raised-button color="primary" [disabled] = "printDisabled" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</button>
+  <button mat-raised-button color="primary" [autofocus]="false" [disabled] = "printDisabled" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</button>
  
  
-    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" [disabled] = "btnDisabled" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
+    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" [autofocus]="false" [disabled] = "btnDisabled" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
    
    
-      <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
+      <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [autofocus]="false" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
-      <button mat-raised-button color="primary" #Saved (click)="onSave('Saved')" [disabled] = "btnDisableduw" id="Saved" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
-      <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
-      <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [disabled] = "!btnDisabledci" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
-        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
-        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review</button><!--For saved quotes from cs users-->
-        <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicatereq" style="margin-left:5px">Requote</button>
+      <button mat-raised-button color="primary" #Saved (click)="onSave('Saved')" [autofocus]="false" [disabled] = "btnDisableduw" id="Saved" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
+      <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [autofocus]="false" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
+      <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [autofocus]="false" [disabled] = "!btnDisabledci" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
+        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" [autofocus]="false" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
+        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" [autofocus]="false" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review</button><!--For saved quotes from cs users-->
+        <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicatereq" [autofocus]="false" style="margin-left:5px">Requote</button>
      
    
-        <button mat-raised-button color="primary" style="margin-left:5px" [disabled] = "btnDisablednext" *ngIf="isaddfinal" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
+        <button mat-raised-button color="primary" style="margin-left:5px" [disabled] = "btnDisablednext" *ngIf="isaddfinal" [autofocus]="false" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
         </div>
     </div>
 
@@ -532,7 +532,7 @@
     <div class="text-inside">
       <mat-form-field class="example-full-width">
         <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country*" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
-        <mat-error *ngIf="contactForm4.get('country').hasError('incorrect')">
+        <mat-error *ngIf="contactForm4.get('country').hasError('incorrecta')">
           Please select a valid Country from the list
       </mat-error>
         <mat-autocomplete #countryauto="matAutocomplete" [displayWith]="displayFncountry">
@@ -671,7 +671,7 @@
 </mat-grid-list>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" style="margin-left:50px">Submit</button>
+<button mat-raised-button color="primary" [autofocus]="false" style="margin-left:50px">Submit</button>
 </div> </form> </mat-tab>
 </mat-tab-group></mat-tab></mat-tab-group>
 
