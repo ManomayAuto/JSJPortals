@@ -40,6 +40,7 @@ export class ReviewtableComponent implements OnInit {
   // today: number;
   today: Date = new Date();
   allSource: MatTableDataSource<import("c:/Users/consultants1/git us/JSJPortals/src/app/models/user.model").User>;
+  names: string;
 
   constructor( private userService : QtableService,
     @Inject(DOCUMENT) private _document: Document,
@@ -72,9 +73,17 @@ getRecord(quoteid,reviewerusername){
   var userrole = localStorage.getItem('Role');
 
   this.message="Quote is already picked up by " +reviewerusername;
-  console.log(reviewerusername);
-  console.log(this.name);
-  if(reviewerusername == null || reviewerusername ==this.name|| reviewerusername == userrole||reviewerusername == userrole){
+  console.log(reviewerusername,userrole);//Underwriter 
+  // UW Manager uw Manager
+if(userrole=='uw'){
+this.names='Underwriter'
+}
+else if(userrole=='uw Manager'){
+  this.names='UW Manager'
+}
+
+  console.log(reviewerusername == this.names,this.names);
+  if(reviewerusername == null || reviewerusername ==this.name|| reviewerusername == this.names){
   console.log("rev quoteid",quoteid);
   var reviewstatus = "In Progress"
   var userrole = localStorage.getItem('Role');
