@@ -348,7 +348,7 @@ degreeTitleList = [];
       streetName:  ['',Validators.required],
       cityTown:  ['',Validators.required],
       zipCode:  ['',Validators.required],
-      country: ['',[Validators.required, RequireMatch]],
+      country: ['',[Validators.required, RequireMatch3]],
       policystartDate:  ['',Validators.required],
       policyendDate:  ['',Validators.required],
       policyType:  ['',Validators.required],
@@ -824,7 +824,10 @@ this.toggle3();
       this.btnDisableduw = true
       this.isaddfinal = false
     }
- 
+ else if(result['quotestatus'] == "Expired" && this.userrole == 'cs'){
+this.isduplicatecs = true;
+this.isduplicatereq = true;
+ }
     // else{
     //   this.isduplicatecs = false
     // }
@@ -1372,6 +1375,14 @@ if(result){
       this.contactForm2.get('losspay').clearValidators();
       this.contactForm2.get('losspay').updateValueAndValidity();
   }
+  let quoteid =  this.route.snapshot.paramMap.get('title');
+  console.log("edit",quoteid);  
+    if(quoteid != null){
+      console.log("not null");
+      this.contactForm2.get('losspay').clearValidators();
+      this.contactForm2.get('losspay').updateValueAndValidity();
+    
+  }
     
     if(!this.contactForm2.valid) {
       this.openSnackBar("Please fill the mandatory fields", "Dismiss")
@@ -1727,11 +1738,11 @@ addremarkstest() {
       console.log(typeof(losspayee));
       if(losslocation == null || losslocation == undefined || losslocation == ""){
         console.log("in loc");
-        losslocation = ''
+        losslocation = null
       }
       if(losspayee == null || losspayee == undefined || losspayee == ""){
         console.log("in pay");
-        losspayee = ''
+        losspayee = null
       }
       let adtype = this.contactForm4.get('addressType').value;
       if(adtype == null || adtype == undefined){
@@ -1981,6 +1992,7 @@ addremarkstest() {
       let last = this.contactForm1.get('lastName').value;
       let prod = this.contactForm1.get('Product').value;
       let make = this.contactForm1.get('userInput').value;
+      let quoteid = this.contactForm3.get('quoted').value;
       console.log(make);
       let financed =  this.contactForm2.get('financed').value;
       console.log(financed);
@@ -2001,7 +2013,7 @@ addremarkstest() {
       let vehval = this.contactForm2.get('vehicleValue').value;
       let discp = this.discp;
       let anp = this.anp;
-      var quotedata ={vehval:vehval,cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar,discp:discp,anp:anp};
+      var quotedata ={vehval:vehval,cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar,discp:discp,anp:anp,quoteid:quoteid};
     // this.quoteletterservice.quoteletter(quotedata);
     
     this.openquotelet(quotedata);
@@ -2102,6 +2114,16 @@ export function RequireMatch2(control: AbstractControl) {
   if (typeof selection === 'string') {
     console.log(selection)
       return { incorrect2: true };
+  }
+  console.log("yass")
+  return null;
+}
+export function RequireMatch3(control2: AbstractControl) {
+  const selection1: any = control2.value;
+  if (typeof selection1 === 'string') {
+    console.log(selection1)
+      return { 
+        incorrecta: true };
   }
   console.log("yass")
   return null;
