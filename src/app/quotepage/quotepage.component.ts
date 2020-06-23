@@ -209,6 +209,13 @@ degreeTitleList = [];
       this.onSubmit();
     }else{
       this.isSubmittedradio = false;
+      let quotei =  this.route.snapshot.paramMap.get('view');
+      console.log("view",quotei);  
+        if(quotei != null){
+          console.log("not null");
+          this.contactForm2.disable();
+          this.contactForm1.disable();
+      }
       console.log('Tab2 is not selected!');
     }
   }
@@ -290,7 +297,7 @@ degreeTitleList = [];
       vehicleType: ['',Validators.required],
       softtop: [false],
       clienttype: [false],
-      Year: ['',Validators.required],
+      Year: ['',[Validators.required, RequireMatch1]],
       Use: ['',Validators.required],
       firstName: ['',Validators.required],
       lastName: ['',Validators.required],
@@ -341,7 +348,7 @@ degreeTitleList = [];
       streetName:  ['',Validators.required],
       cityTown:  ['',Validators.required],
       zipCode:  ['',Validators.required],
-      country: ['',Validators.required],
+      country: ['',[Validators.required, RequireMatch]],
       policystartDate:  ['',Validators.required],
       policyendDate:  ['',Validators.required],
       policyType:  ['',Validators.required],
@@ -413,9 +420,11 @@ degreeTitleList = [];
     this.dupnext = true;
     this.isduplicate = true;
       this.selectedIndex =  1;
-      this.btnDisabled = false;
+      this.btnDisabled = true;
       this.btnDisabledci = false;
-      this.btnDisableduw = false;
+      this.btnDisableduw = true;
+      this.printDisabled = true;
+      this.isduplicatecs = true;
       // this.isduplicatecs = true;
       // this.isduplicatecs = !this.isduplicatecs;
     console.log("view")
@@ -439,8 +448,21 @@ degreeTitleList = [];
     // this.isaddfinal = true;
     this.contactForm1.get('userInput').clearValidators();
     this.contactForm1.get('userInput').updateValueAndValidity();
-    this.contactForm1.get('userInput').setValidators([Validators.required])
+    this.contactForm1.get('userInput').setValidators([Validators.required]);
     this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('Year').clearValidators();
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm1.get('Year').setValidators([Validators.required]);
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm2.get('losspay').clearValidators();
+    this.contactForm2.get('losspay').updateValueAndValidity();
+    this.contactForm2.get('losspay').setValidators([Validators.required]);
+    this.contactForm2.get('losspay').updateValueAndValidity();
+    this.contactForm4.get('country').clearValidators();
+    this.contactForm4.get('country').updateValueAndValidity();
+    this.contactForm4.get('country').setValidators([Validators.required]);
+    this.contactForm4.get('country').updateValueAndValidity();
+
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -541,39 +563,44 @@ this.toggle3();
     
     this.driverservice.driver(this.driverdata);
 
-    if(result['quotestatus'] == "Active"){
-      this.printDisabled = false
-      this.btnDisabled = true;
-      // this.btnDisablednext = true;
-      this.isduplicatecs = true;
-      this.isaddfinal = false;
-      if(this.userrole == "uw"){
-        this.btnDisableduw = true;
-      }
-    }
-    else if(result['quotestatus'] == "Not Issued"){
-      if(this.userrole == "cs"){
-        this.isduplicatecsonly = false
-        this.isduplicatecs =  true
-        this.isaddfinal = false
-        this.btnDisabledcs = true
-      }
-      else{
-        this.isduplicatecs = false;
-        this.btnDisableduw = true; 
-      }
+    // if(result['quotestatus'] == "Active"){
+    //   this.printDisabled = false
+    //   this.btnDisabled = true;
+      
+    //   this.isduplicatecs = true;
+    //   this.isaddfinal = false;
+    //   if(this.userrole != "cs"){
+    //     this.btnDisableduw = true;
+    //   }
+    // }
+    // else if(result['quotestatus'] == "Not Issued"){
+    //   if(this.userrole == "cs"){
+    //     this.isduplicatecsonly = false
+    //     this.isduplicatecs =  true
+    //     this.isaddfinal = false
+    //     this.btnDisabledcs = true
+    //   }
+    //   else{
+    //     this.isduplicatecs = false;
+    //     this.btnDisableduw = true; 
+    //   }
  
-    }
-    else if(result['quotestatus'] == "Declined"){
-      this.btnDisabled = true
-      this.btnDisableduw = true
-      this.isduplicatecs = true
-      this.isaddfinal = false
-    }
-    else if(result['quotestatus'] == "Saved"){
-      this.btnDisableduw = true
-      this.isaddfinal = false
-    }
+    // }
+    // else if(result['quotestatus'] == "Declined"){
+    //   this.btnDisabled = true
+    //   this.btnDisableduw = true
+    //   this.isduplicatecs = true
+    //   this.isaddfinal = false
+    // }
+    // else if(result['quotestatus'] == "Saved"){
+    //   this.btnDisableduw = true
+    //   this.isaddfinal = false
+    // }
+
+
+
+
+    
     // else{
     //   this.isduplicatecs = false
     // }
@@ -637,8 +664,20 @@ if(!result['citi']){
     }
     this.contactForm1.get('userInput').clearValidators();
     this.contactForm1.get('userInput').updateValueAndValidity();
-    this.contactForm1.get('userInput').setValidators([Validators.required])
+    this.contactForm1.get('userInput').setValidators([Validators.required]);
     this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('Year').clearValidators();
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm1.get('Year').setValidators([Validators.required]);
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm2.get('losspay').clearValidators();
+    this.contactForm2.get('losspay').updateValueAndValidity();
+    this.contactForm2.get('losspay').setValidators([Validators.required]);
+    this.contactForm2.get('losspay').updateValueAndValidity();
+    this.contactForm4.get('country').clearValidators();
+    this.contactForm4.get('country').updateValueAndValidity();
+    this.contactForm4.get('country').setValidators([Validators.required]);
+    this.contactForm4.get('country').updateValueAndValidity();
     // if(this.contactForm1.get('userInput').value == ''){
     //   this.contactForm1.get('userInput').setValidators([Validators.required,RequireMatch])
     //   this.contactForm1.get('userInput').updateValueAndValidity();
@@ -755,7 +794,7 @@ this.toggle3();
       this.printDisabled = false;
       // this.btnDisablednext = true;
       this.isduplicatecs = true;
-      if(this.userrole == "uw"){
+      if(this.userrole != "cs"){
         this.btnDisableduw = true;
       }
       else if(this.userrole == "cs"){
@@ -884,7 +923,7 @@ this.toggle3();
       )
   }
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value;
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
@@ -943,7 +982,7 @@ return value;
         this.contactForm2.get('losspay').clearValidators();
           this.contactForm2.get('losspay').updateValueAndValidity();
         if(this.contactForm2.get('financed').value == false){
-          this.contactForm2.get('losspay').setValidators([Validators.required])
+          this.contactForm2.get('losspay').setValidators([Validators.required,RequireMatch2])
           this.contactForm2.get('losspay').updateValueAndValidity();
         }
         else{
@@ -1004,7 +1043,8 @@ sd(abcd):void{
 
     height: '800px',
     
-    data:{abcd:this.abcd}
+    data:{abcd:this.abcd},
+    autoFocus: false,
   });
   console.log("sa",this.abcd);
 
@@ -1180,6 +1220,7 @@ if(result){
       data:{
         quotedata: quotedata,
       },
+      autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
@@ -1322,7 +1363,25 @@ if(result){
     this.isSubmittedradio = true;
    if(this.child.driverdata.length !=0){
     console.log("check1111111111111111111");
+    let quotei =  this.route.snapshot.paramMap.get('view');
+  console.log("view",quotei);  
+    if(quotei != null){
+      console.log("not null");
+      this.contactForm2.get('losspay').clearValidators();
+      this.contactForm2.get('losspay').updateValueAndValidity();
+  }
+    
     if(!this.contactForm2.valid) {
+      this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+      console.log(this.contactForm2.get('options1').value)
+      if(this.contactForm2.get('options1').value){
+console.log("sss")
+this.isSubmittedradio = false
+      }
+      else{
+        this.isSubmittedradio = true
+      }
+      
       console.log("check1111111111111111111");
       return false;
     } 
@@ -1342,12 +1401,13 @@ if(result){
       console.log("check1111111111111111111");
     }
     else{
-      this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+      this.openSnackBar("Please fill the mandatory fields2", "Dismiss")
       
     }
  }
  else{
   this.openSnackBar("Atleast one driver should be added", "Dismiss")
+  this.isSubmittedradio = false
 }
 }
   moveToSelectedTab2(tabName: string) {
@@ -1597,6 +1657,7 @@ addremarkstest() {
       console.log(losspayee);
       
       let losslocation = this.contactForm2.get('lossloc').value;
+      console.log(losslocation)
       let vehiclevalue = this.contactForm2.get('vehicleValue').value;
       let alam = this.contactForm2.get('alarm').value;
       let coverinfo = this.contactForm3.get('coverageinfo').value;
@@ -1662,11 +1723,11 @@ addremarkstest() {
       };
       console.log(losspayee);
       console.log(typeof(losspayee));
-      if(losslocation){
+      if(losslocation == null || losslocation == undefined || losslocation == ""){
         console.log("in loc");
         losslocation = ''
       }
-      if(losspayee){
+      if(losspayee == null || losspayee == undefined || losspayee == ""){
         console.log("in pay");
         losspayee = ''
       }
@@ -1878,6 +1939,7 @@ addremarkstest() {
         quoteid: quoteid,
         quotestatus:quotestatus,
       },
+      autoFocus: false,
     });
     dialogRef1.afterClosed().subscribe(() => {
       this.router.navigateByUrl('/home');
@@ -1949,6 +2011,7 @@ addremarkstest() {
       height: '800px',
       
       data:{quotedata:quotedata,},
+      autoFocus: false,
     });
     
   }
@@ -2017,7 +2080,27 @@ console.log(Selectedzip);
 export function RequireMatch(control: AbstractControl) {
     const selection: any = control.value;
     if (typeof selection === 'string') {
+      console.log(selection)
         return { incorrect: true };
     }
+    console.log("yass")
     return null;
+}
+export function RequireMatch1(control: AbstractControl) {
+  const selection: any = control.value;
+    if (typeof selection === 'number') {
+      console.log(selection)
+        return { incorrect1: true };
+    }
+    console.log("yass")
+    return null;
+}
+export function RequireMatch2(control: AbstractControl) {
+  const selection: any = control.value;
+  if (typeof selection === 'string') {
+    console.log(selection)
+      return { incorrect2: true };
+  }
+  console.log("yass")
+  return null;
 }

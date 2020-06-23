@@ -212,15 +212,15 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input type="text" placeholder="Manufacturer Year" aria-label="Number" matInput formControlName="Year" [matAutocomplete]="auto1" required>
+        <input type="number" placeholder="Manufacturer Year" aria-label="Number" matInput formControlName="Year" [matAutocomplete]="auto1" required>
+        <mat-error *ngIf="contactForm1.get('Year').hasError('incorrect1')">
+          Please select a valid Year from the list
+      </mat-error>
         <mat-autocomplete #auto1="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{option}}
           </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="contactForm1.get('Year').hasError('incorrect')">
-          Please select a valid Year from the list
-      </mat-error>
+        </mat-autocomplete> 
       </mat-form-field>
     </div>
 
@@ -253,6 +253,9 @@
         <div class="text-inside" *ngIf="(sho)">
           <mat-form-field class="example-full-width" *ngIf="(sho)">
             <input type="text" [(ngModel)]="Selectedlosspay" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
+            <mat-error *ngIf="contactForm2.get('losspay').hasError('incorrect2')">
+              Please select a valid Loss Payee Name
+          </mat-error>
             <mat-autocomplete #lossauto="matAutocomplete" [displayWith]="displayFnloss">
               <mat-option (click)="OnlossSelected(Selectedlosspay)" *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
                 {{lossoption.Description}}
@@ -528,14 +531,14 @@
     <div class="text-inside">
       <mat-form-field class="example-full-width">
         <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country*" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
+        <mat-error *ngIf="contactForm4.get('country').hasError('incorrect')">
+          Please select a valid Country from the list
+      </mat-error>
         <mat-autocomplete #countryauto="matAutocomplete" [displayWith]="displayFncountry">
           <mat-option (click)="OncountrySelected(Selectedcountry)" *ngFor="let countryoption of countryfilteredOption | async" [value]="countryoption" style="line-height:normal;white-space: normal;">
             {{countryoption.Country}}
           </mat-option>
         </mat-autocomplete>
-        <mat-error *ngIf="contactForm4.get('country').hasError('incorrect')">
-          Please select a valid Country from the list
-      </mat-error>
       </mat-form-field>
     </div>
   </mat-grid-tile>
