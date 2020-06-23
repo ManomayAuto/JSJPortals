@@ -7,11 +7,11 @@
          ">Approved Quotes</mat-toolbar>
             <div data-type="default" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 py-3">
        
-              <!-- <div class="example-header" fxLayout="row">
+              <div class="example-header" fxLayout="row">
                 <mat-form-field>
-                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  <input matInput (keyup)="applyFilter($event)" placeholder="Filter">
                 </mat-form-field>
-              </div> -->
+              </div>
               <div class="example-container mat-elevation-z8">
       
                 <mat-table #MatSort="matSort" [dataSource]="this.allSource" matSort>

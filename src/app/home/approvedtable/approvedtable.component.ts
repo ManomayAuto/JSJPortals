@@ -23,6 +23,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class ApprovedtableComponent implements OnInit {
   allSource: MatTableDataSource<import("c:/Users/consultants1/git us/JSJPortals/src/app/models/user.model").User>;
+  userrole: string;
 
   constructor(private userService : AtableService,
     @Inject(DOCUMENT) private _document: Document,
@@ -37,6 +38,7 @@ export class ApprovedtableComponent implements OnInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   ngOnInit(){
+    this.userrole = localStorage.getItem('Role');
     console.log("approved");
     this.userService.getUser().subscribe(results => {
      //console.log("Qtable",results);
@@ -54,6 +56,15 @@ export class ApprovedtableComponent implements OnInit {
     })
   }
   getRecord(quoteid){ 
+    if(this.userrole=='cs'){
+      this.router.navigate(['/quotepage/new',{title:quoteid,edit:'Active'}]);
+    }
+    else{
     this.router.navigate(['/quotepage',{title:quoteid}]);
+  }
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.allSource.filter = filterValue.trim().toLowerCase();
   }
 }

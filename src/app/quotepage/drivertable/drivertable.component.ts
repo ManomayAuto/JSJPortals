@@ -66,11 +66,17 @@ export class DrivertableComponent implements OnInit {
       let quoteid =  this.route.snapshot.paramMap.get('view');
       console.log("view driver",quoteid);
       let act =  this.route.snapshot.paramMap.get('edit');
+      let dup =  this.route.snapshot.paramMap.get('dup');
+      console.log("dup driver",dup);
       if(quoteid != null||quoteid != undefined){
         console.log("vi111",quoteid);
         this.view=true;
       }
       if(act != null||act != undefined){
+       
+        this.view=true;
+      }
+      if(dup == null){
        
         this.view=true;
       }
