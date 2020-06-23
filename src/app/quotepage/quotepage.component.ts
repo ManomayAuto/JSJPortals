@@ -978,6 +978,14 @@ return value;
     }
     toggle1() {
       this.hide = !this.show
+      if(this.contactForm2.get('options1').value != "COMP"){
+        this.vehvalmand();
+      }
+      else{
+        
+        this.contactForm2.get('vehicleValue').clearValidators();
+        this.contactForm2.get('vehicleValue').updateValueAndValidity();
+      }
       this.isSubmittedradio = false;
       }
       toggle3() {
@@ -992,6 +1000,15 @@ return value;
           this.contactForm2.get('losspay').clearValidators();
           this.contactForm2.get('losspay').updateValueAndValidity();
         }
+        }
+        vehvalmand(){
+        
+            
+            this.contactForm2.get('vehicleValue').setValidators(Validators.required);
+            this.contactForm2.get('vehicleValue').updateValueAndValidity();
+         
+        
+        
         }
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 3

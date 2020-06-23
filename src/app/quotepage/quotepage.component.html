@@ -347,7 +347,7 @@
     <mat-grid-tile style="right: unset !important">
       <div class="text-inside" *ngIf="(hide)">
         <mat-form-field>
-          <input matInput type="text" placeholder="Vehicle Value" formControlName="vehicleValue">
+          <input matInput type="number" min="0" oninput="validity.valid||(value='');" placeholder="Vehicle Value" formControlName="vehicleValue">
         </mat-form-field>
  
       </div>
@@ -499,7 +499,7 @@
 
 </form>
 </mat-tab>
-<mat-tab label="Additional Details">
+<mat-tab label="Additional Details" [disabled]="true">
 <!-- <mat-tab label="Additional Details"> -->
   <form fxLayout="column" (ngSubmit)='addsubmit()' [formGroup]="contactForm4">
   <mat-card>Personal Details</mat-card> <mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
