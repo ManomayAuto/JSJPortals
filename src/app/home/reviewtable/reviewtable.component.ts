@@ -69,10 +69,12 @@ ngOnInit(){
 
 getRecord(quoteid,reviewerusername){ 
   this.name = localStorage.getItem('name');
+  var userrole = localStorage.getItem('Role');
+
   this.message="Quote is already picked up by " +reviewerusername;
   console.log(reviewerusername);
   console.log(this.name);
-  if(reviewerusername == null || reviewerusername ==this.name|| reviewerusername == "Underwriter"||reviewerusername == "UW Manager"){
+  if(reviewerusername == null || reviewerusername ==this.name|| reviewerusername == userrole||reviewerusername == userrole){
   console.log("rev quoteid",quoteid);
   var reviewstatus = "In Progress"
   var userrole = localStorage.getItem('Role');

@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSnackBar } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import {MatSort} from '@angular/material/sort';
+
 
 export interface PeriodicElement {
   name: string;
@@ -25,6 +27,7 @@ export interface PeriodicElement {
 })
 export class SearchtableComponent implements OnInit {
   @ViewChild(MatPaginator, {static:true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns: string[] = ['ClientName', 'QuoteIssuanceDate', 'QuoteStatus', 'QuoteID', 'edit'];
   dataSource;
 
@@ -44,7 +47,7 @@ export class SearchtableComponent implements OnInit {
   userrole: string;
   //nameFilter : string;
  
-  constructor(private http:HttpClient,public datepipe: DatePipe,private router : Router) { }
+  constructor(private http:HttpClient,public datepipe: DatePipe,private router : Router,public snackBar: MatSnackBar,) { }
 ngOnInit() {
   this.userrole = localStorage.getItem('Role');
 }
@@ -68,6 +71,7 @@ ngOnInit() {
       this.dataSource = new MatTableDataSource(result);
       console.log("searchdone!!!!",this.dataSource);
       this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       // if(result.QuoteStatus=="For Review"){
       //   console.log("rev")
       //   this.sta = true;
@@ -91,6 +95,7 @@ ngOnInit() {
   
   getRecord(QuoteID,QuoteStatus){ 
     console.log(QuoteStatus);
+    if(QuoteStatus != 'Declined'){
     if(this.userrole=="cs"){
     if(QuoteStatus == 'Active'){
     this.router.navigate(['/quotepage/new',{title:QuoteID,edit:'Active'}]);
@@ -100,5 +105,10 @@ ngOnInit() {
   }else{
     this.router.navigate(['/quotepage/new',{title:QuoteID}]);
   }
+}
+else{
+   this.snackBar.open("Cannot edit a Declined quote", "Dismiss", {
+    duration: 1000,
+  }); }
   }
 }
