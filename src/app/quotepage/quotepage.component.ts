@@ -224,7 +224,7 @@ degreeTitleList = [];
         this.today = Date.now();
       }, 1);
   }
-  //minDate:Date = new Date();
+  minDate:Date = new Date();
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
     this.userrole = localStorage.getItem('Role');
@@ -1183,6 +1183,8 @@ if(result){
     });
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
+   //hell bent 
+   this.router.navigate(['/quotepage',{dup:"null"}]);
    this.dupnext = true;
    this.btnDisabledcs = true;
    this.isduplicater = true;
@@ -2019,5 +2021,6 @@ export function RequireMatch(control: AbstractControl) {
     if (typeof selection === 'string') {
         return { incorrect: true };
     }
+    //else if()
     return null;
 }
