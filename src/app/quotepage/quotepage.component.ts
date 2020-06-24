@@ -617,7 +617,7 @@ this.toggle3();
   //  this.contactForm4.get('zipCode').setValue(result['zip']);
   //  this.contactForm4.get('cityTown').setValue(result['city']);
 
-if(!countri)
+if(countri !=null || countri != undefined || countri == "")
  {
   this.displayFncountry(countri);
   this.contactForm4.get('country').setValue(result['countri']);
@@ -629,14 +629,22 @@ if(!countri)
 //   this.contactForm4.get('zipCode').setValue(result['zip']);
 //  console.log(typeof(result['zip']));
 // this.summaries = Array.of(result['zip']);
-if(!result['zipc']){
+if(result['zipc'] !=null || result['zipc'] != undefined || result['zipc'] == ""){
   this.summaries = [{Zipcode: result['zipc']}];
   this.Selectedzip = this.summaries[0];
 }
-if(!result['citi']){
+if(result['citi'] !=null || result['citi'] != undefined || result['citi'] == ""){
   this.towns = [{Town: result['citi']}];
   this.Selectedtown = this.towns[0];
 }
+this.contactForm4.get('policystartDate').setValue(result['polstdate']);
+this.contactForm4.get('policyendDate').setValue(result['polendate']);
+this.contactForm4.get('policyType').setValue(result['policytype']);
+this.contactForm4.get('currency').setValue(result['curency']);
+this.contactForm4.get('businessClass').setValue(result['bisclas']);
+this.contactForm4.get('branch').setValue(result['branch']);
+this.contactForm4.get('EngineNumber').setValue(result['engineno']);
+
 
     });  
     
@@ -650,11 +658,11 @@ if(!result['citi']){
       this.btnDisableduw = false;
       // this.isduplicatecs = !this.isduplicatecs;
     if(this.userrole == 'cs'){
-      // this.contactForm1.markAllAsTouched();
+    // this.contactForm1.markAllAsTouched();
       this.contactForm2.clearValidators();
       this.contactForm2.clearAsyncValidators();
-      // this.contactForm2.markAllAsTouched();
-      // this.contactForm3.markAllAsTouched();
+    // this.contactForm2.markAllAsTouched();
+    // this.contactForm3.markAllAsTouched();
     //  this.contactForm1.disable();
     //  this.contactForm2.disable();
     //  this.contactForm3.disable();
@@ -674,10 +682,7 @@ if(!result['citi']){
     this.contactForm2.get('losspay').updateValueAndValidity();
     this.contactForm2.get('losspay').setValidators([Validators.required]);
     this.contactForm2.get('losspay').updateValueAndValidity();
-    this.contactForm4.get('country').clearValidators();
-    this.contactForm4.get('country').updateValueAndValidity();
-    this.contactForm4.get('country').setValidators([Validators.required]);
-    this.contactForm4.get('country').updateValueAndValidity();
+   
     // if(this.contactForm1.get('userInput').value == ''){
     //   this.contactForm1.get('userInput').setValidators([Validators.required,RequireMatch])
     //   this.contactForm1.get('userInput').updateValueAndValidity();
@@ -789,6 +794,7 @@ this.toggle3();
     this.contactForm3.get('remarks').setValue(result['remarks']);
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
+
       this.btnDisabled = true;
       this.isaddfinal = true;
       this.printDisabled = false;
@@ -840,27 +846,33 @@ this.isduplicatereq = true;
     //  this.contactForm4.get('zipCode').setValue(result['zip']);
     //  this.contactForm4.get('cityTown').setValue(result['city']);
  
-    if(!countri)
-    {
-     this.displayFncountry(countri);
-     this.contactForm4.get('country').setValue(result['countri']);
-    }
-    else{
-      console.log("not in countri");
-    }
-   
-   //   this.contactForm4.get('zipCode').setValue(result['zip']);
-   //  console.log(typeof(result['zip']));
-   // this.summaries = Array.of(result['zip']);
-   if(!result['zipc']){
-     this.summaries = [{Zipcode: result['zipc']}];
-     this.Selectedzip = this.summaries[0];
-   }
-   if(!result['citi']){
-     this.towns = [{Town: result['citi']}];
-     this.Selectedtown = this.towns[0];
-   }
+    if(countri !=null || countri != undefined || countri == "")
+ {
+  this.displayFncountry(countri);
+  this.contactForm4.get('country').setValue(result['countri']);
+ }
+ else{
+   console.log("not in countri");
+ }
 
+//   this.contactForm4.get('zipCode').setValue(result['zip']);
+//  console.log(typeof(result['zip']));
+// this.summaries = Array.of(result['zip']);
+if(result['zipc'] !=null || result['zipc'] != undefined || result['zipc'] == ""){
+  this.summaries = [{Zipcode: result['zipc']}];
+  this.Selectedzip = this.summaries[0];
+}
+if(result['citi'] !=null || result['citi'] != undefined || result['citi'] == ""){
+  this.towns = [{Town: result['citi']}];
+  this.Selectedtown = this.towns[0];
+}
+this.contactForm4.get('policystartDate').setValue(result['polstdate']);
+this.contactForm4.get('policyendDate').setValue(result['polendate']);
+this.contactForm4.get('policyType').setValue(result['policytype']);
+this.contactForm4.get('currency').setValue(result['curency']);
+this.contactForm4.get('businessClass').setValue(result['bisclas']);
+this.contactForm4.get('branch').setValue(result['branch']);
+this.contactForm4.get('EngineNumber').setValue(result['engineno']);
 
 
   // if(countri != null || countri != undefined)
@@ -1250,7 +1262,10 @@ if(result){
    this.btnDisabledcs = true;
    this.isduplicater = true;
    this.isduplicatereq = !this.isduplicatereq;
-   this.isduplicatecs = !this.isduplicatecs;
+   if(this.userrole == "cs"){
+    this.isduplicatecs = !this.isduplicatecs;
+   }
+   
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
    this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
    this.contactForm1.get('lastName').setValue(result['quotedata']['last']);
@@ -1962,6 +1977,7 @@ addremarkstest() {
       }
   }
   openquoteDialog(quoteid, quotestatus) {
+    console.log(quotestatus);
     const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
       width: '450px',
       height: '250px',
