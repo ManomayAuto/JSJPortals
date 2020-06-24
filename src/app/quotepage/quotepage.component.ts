@@ -470,6 +470,7 @@ degreeTitleList = [];
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
       console.log(result);
+      console.log(result['use']);
       // this.dupnext = true;
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
@@ -490,6 +491,7 @@ degreeTitleList = [];
     console.log(result['prod']);
     this.contactForm1.get('Year').setValue(result['yr']); 
     this.contactForm1.get('EngineCC').setValue(result['cc']);
+    console.log(result['use']);
     this.contactForm1.get('Use').setValue(result['use']);
     this.contactForm1.controls.vehicleType.setValue(result['vehtype']);
     this.educationLevelChangeAction(result['prod']);
@@ -697,6 +699,7 @@ this.contactForm4.get('EngineNumber').setValue(result['engineno']);
     };
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
+      console.log(result['use']);
     var status= result['quotestatus'];
     // if(this.userrole == "cs" && status == "Not Issued"){
     //   console.log("in subbbbbbbbbbbbbbbbbbbbbbbb")
@@ -836,6 +839,22 @@ this.toggle3();
 this.isduplicatecs = true;
 this.isduplicatereq = true;
  }
+ else if(result['quotestatus'] == "Expired" && this.userrole != 'cs'){
+   this.btnDisabled = true;
+   this.btnDisableduw = true;
+   this.btnDisabledci = true;
+   this.isduplicatecs = true;
+ }
+else if(result['quotestatus'] == "For Review" && this.userrole != 'cs'){
+this.btnDisabled = true;
+this.btnDisableduw = true;
+this.isduplicatecs = true;
+this.btnDisabledci = true;
+}
+else if(result['typeofaction'] == "Requote Requested"){
+  console.log("testttttttttttttttttttttttttttsrrrrrrrrrrr")
+  this.btnDisabledci = false;
+}
     // else{
     //   this.isduplicatecs = false
     // }
@@ -1224,6 +1243,7 @@ if(result){
 
   }
   onrequote(){
+    console.log("in requoteee")
     let quoteid = this.contactForm3.get('quoted').value;
     console.log(quoteid);
     var username = localStorage.getItem('name');
@@ -1234,6 +1254,14 @@ if(result){
         var status = "For Review"
         var typeofaction = "Requote Request"
       }
+      var quotetsatus = this.contactForm3.get('quotestat').value;
+      if(quotetsatus){
+        if(quotetsatus == "Expired"){
+          // This is for expired quotes and duplicate quotes differentation
+          var typeofaction = "Requote Requested"
+        }
+      }
+      
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
@@ -1266,6 +1294,10 @@ if(result){
    this.btnDisabledcs = true;
    this.isduplicater = true;
    this.isduplicatereq = !this.isduplicatereq;
+   this.btnDisabled = false;
+   this.btnDisableduw = false;
+   this.isduplicatecs = false;
+   this.btnDisabledci = false;
    if(this.userrole == "cs"){
     this.isduplicatecs = !this.isduplicatecs;
    }
@@ -1749,8 +1781,8 @@ addremarkstest() {
       }
       else if(actionvalue == "complete"){
         quotestatus = "Active"
-        reviewstatus = ""
-        typeofaction = ""
+        reviewstatus = "Completed"
+        typeofaction = null
       }
       if(this.userrole != "cs"){
         console.log("in updated date")
@@ -1762,7 +1794,7 @@ addremarkstest() {
       }
       else{
         console.log("not in updated date")
-        lastupdated = ''
+        lastupdated = null
       }
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
@@ -1782,19 +1814,19 @@ addremarkstest() {
       }
       let adtype = this.contactForm4.get('addressType').value;
       if(adtype == null || adtype == undefined){
-        adtype = ''
+        adtype = null
       }
       let street = this.contactForm4.get('streetName').value;
       if(street == null || street == undefined){
-        street = ''
+        street = null
       }
       let countri = this.contactForm4.get('country').value;
       if(countri == null || countri == undefined){
-        countri = ''
+        countri = null
       }
       let zip = this.contactForm4.get('zipCode').value;
       if(zip == null || zip == undefined){
-        zip = ''
+        zip = null
       }
       else{
         zip= zip['Zipcode'];
@@ -1824,11 +1856,14 @@ addremarkstest() {
         var typeofaction = ""
       }
       if(actionvalue == "Save" || actionvalue == "Savedcs" || actionvalue == "complete"){
-        return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
-          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+        return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,
+          occp:occp,
+          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,
+          losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-          driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,
+          driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,
+          reviewstatus:reviewstatus,quotestatus:quotestatus,
           adtype:adtype,street:street,countri:countri,zipc:zip,citi:city},httpOptions ).subscribe((res: any) => { // not callback
           console.log("========================");
             console.log(res);
