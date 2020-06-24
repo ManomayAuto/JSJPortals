@@ -66,8 +66,9 @@ export class DrivertableComponent implements OnInit {
       let quoteid =  this.route.snapshot.paramMap.get('view');
       console.log("view driver",quoteid);
       let act =  this.route.snapshot.paramMap.get('edit');
-      let dup =  this.route.snapshot.paramMap.get('dup');
-      console.log("dup driver",dup);
+      let dupc =  this.route.snapshot.paramMap.get('dup');
+      console.log("button try")
+      console.log("dup driver",dupc);
       if(quoteid != null||quoteid != undefined){
         console.log("vi111",quoteid);
         this.view=true;
@@ -76,9 +77,9 @@ export class DrivertableComponent implements OnInit {
        
         this.view=true;
       }
-      if(dup == null){
+      if(dupc != null){
        
-        this.view=true;
+       this.view=true;
       }
       this.driverdata = data
       console.log("in driver table now ng after view");
