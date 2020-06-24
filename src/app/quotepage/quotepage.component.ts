@@ -103,6 +103,7 @@ export class QuotepageComponent implements OnInit {
   anp = '';
   selectDisabled = false;
   isReadonly = true;
+  isReadOnlymake: boolean;
   option = [];
   dupnext = false;
   isaddfinal = false;
@@ -656,6 +657,7 @@ this.contactForm4.get('EngineNumber').setValue(result['engineno']);
     this.btnDisabled = false;
     this.btnDisabledci = false;
       this.btnDisableduw = false;
+      this.isReadOnlymake = true;
       // this.isduplicatecs = !this.isduplicatecs;
     if(this.userrole == 'cs'){
     // this.contactForm1.markAllAsTouched();

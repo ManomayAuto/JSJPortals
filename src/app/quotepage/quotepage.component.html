@@ -153,7 +153,7 @@
         </ng-container>
       </mat-autocomplete> -->
       <mat-form-field class="example-full-width">
-        <input type="text" matInput placeholder="Make-Model-CC*" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
+        <input type="text" matInput [readonly]= "isReadOnlymake" placeholder="Make-Model-CC*" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
         <mat-error *ngIf="contactForm1.get('userInput').hasError('incorrect')">
           Please select a valid Make-Model-CC
       </mat-error>
