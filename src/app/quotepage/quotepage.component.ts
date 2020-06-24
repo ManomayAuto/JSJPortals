@@ -1252,12 +1252,14 @@ if(result){
       data:{
         quotedata: quotedata,
       },
+      
       autoFocus: false,
     });
+    this.router.navigate(['/quotepage',{dup:"123"}]);
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
    //hell bent 
-   this.router.navigate(['/quotepage',{dup:"null"}]);
+  //  this.router.navigate(['/quotepage',{dup:"123"}]);
    this.dupnext = true;
    this.btnDisabledcs = true;
    this.isduplicater = true;
