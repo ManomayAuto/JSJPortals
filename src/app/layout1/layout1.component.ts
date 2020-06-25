@@ -27,6 +27,7 @@ export class Layout1Component implements OnInit {
   Branch: string;
 
   per: string;
+  display: string;
 
   public ngOnInit(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -44,6 +45,19 @@ open(r){
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private _router: Router,private snackBar: MatSnackBar,
      private  authenticationService : AuthenticationService,private route:ActivatedRoute) {
       this.per = localStorage.getItem("permission");
+      if(this.per=='QI,QRU,QRP,DF,DR' || this.per=='QI,QRU,QRP,DF,DR,ARRP')
+      {this.display="UW/AE"}
+      else if(this.per=='QI,QRU,QRM,QRP,DF,DR,ARRP'||this.per=='QI,QRU,QRM,QRP,DF,DR')
+      {this.display="UW Manager/AE"}
+      else if(this.per=='QI,DR'){this.display="CS/NonAE"}
+      else if(this.per=='QI,QRU,QRP,DR'){this.display="UW/Non AE"}
+      else if(this.per=='DF'||this.per=='DF,ARRP'){this.display="Non AE"}
+      else if(this.per=='DF,DR'||this.per=='DF,DR,ARRP'){this.display="AE"}
+      else if(this.per=='DR'||this.per=='DR,ARRP'){this.display="Non AE"}
+      else if(this.per=='QI'){this.display="CS"}
+      else if(this.per=='QI,QRU'||this.per=='QI,QRU,QRP'){this.display="UW"}
+      else if(this.per=='QI,QRU,QRM'||this.per=='QI,QRU,QRM,QRP'){this.display="UW Manager"}
+
       this.name=localStorage.getItem('name');
       this.Branch=localStorage.getItem('Branch');
       this.role=localStorage.getItem('Role');
@@ -126,6 +140,7 @@ else{
   });
 }
 }
+
 }
 
 
