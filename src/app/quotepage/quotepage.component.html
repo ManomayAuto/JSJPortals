@@ -235,7 +235,7 @@
 <div class="text-inside" *ngIf="!this.dupnext" style="text-align: right;padding-bottom: 20px;">
 <button mat-raised-button color="primary" [autofocus]="false" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
 
-</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" [autofocus]="false" style="margin-left:50px">Next</button></div>   </mat-tab>
+</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" [autofocus]="false" style="margin-left:50px">uwNext</button></div>   </mat-tab>
 <mat-tab label="Coverage/Driver Details" [disabled]="true">
    
   <form fxLayout="column" (ngSubmit)='moveToSelectedTab1("Premium Summary")' [formGroup]="contactForm2">
@@ -473,6 +473,10 @@
           <div  *ngIf="isduplicate" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote Status</label></div>
           <div  *ngIf="isduplicate" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="quotestat" class="form-control" readonly/></div>
       </div>
+      <div *ngIf="isduplicate" class="row">
+        <div  *ngIf="isduplicate" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Type of Action</label></div>
+        <div  *ngIf="isduplicate" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="typeofaction" class="form-control" readonly/></div>
+    </div>
         <button mat-raised-button color="primary" (click)="onSubmit()" [autofocus]="false" style="float: right;margin-bottom: 20px;">Generate Premium</button>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
@@ -673,7 +677,7 @@
 </mat-grid-list>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" [autofocus]="false" style="margin-left:50px">Submit</button>
+<button mat-raised-button color="primary" [disabled] = "finalsubmitDisabled" [autofocus]="false" style="margin-left:50px">Submit</button>
 </div> </form> </mat-tab>
 </mat-tab-group></mat-tab></mat-tab-group>
 

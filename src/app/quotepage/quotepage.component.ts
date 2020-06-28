@@ -111,6 +111,7 @@ export class QuotepageComponent implements OnInit {
   btnDisableduw = true;
   btnDisabledcs = false;
   btnDisablednext = false;
+  finalsubmitDisabled = false;
   printDisabled = true;
   selectedIndex: any;
   countryoption = [];
@@ -243,15 +244,20 @@ degreeTitleList = [];
     }
     if(quoteid != null){
       let quotestatus = this.contactForm3.get('quotestat').value;
+      let typeofaction = this.contactForm3.get('typeofaction').value;
             if(check > 10 && covr != "TP" && this.userrole == 'uw'){
               console.log("vehice yearsss conditionn")
       this.btnDisabledci = false;
       this.isduplicatecs = false;
+      this.btnDisabled = true;
+      this.btnDisableduw = true;
             }
             else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
               console.log("financedddddddd conditionnnnnnn")
               this.btnDisabledci = false;
               this.isduplicatecs = false;
+              this.btnDisabled = true;
+      this.btnDisableduw = true;
             }
             else{
               if(this.userrole != 'cs'){
@@ -262,6 +268,21 @@ degreeTitleList = [];
                 if(quotestatus == "Active"){
                   this.btnDisabledci = false;
                 }
+                
+                else if(quotestatus == "For Review" && this.userrole != 'cs' && typeofaction == "Referral Review"){
+                  this.btnDisabled = false;
+                  this.btnDisableduw = false;
+                  this.isduplicatecs = true;
+                  this.btnDisabledci = false;
+                  console.log("11111111111111111111111111")
+                  }
+                  else if(quotestatus == "For Review" && this.userrole != 'cs' && typeofaction == "Requote Request"){
+                    console.log("11111111111111111111111111")
+                    this.btnDisabled = true;
+                    this.btnDisableduw = true;
+                    this.isduplicatecs = true;
+                    this.btnDisabledci = true;
+                    }
               }
               else{
                 console.log("in cs not falseeeeeeeeeeeeeeeeeee");
@@ -298,6 +319,11 @@ degreeTitleList = [];
           this.contactForm1.disable();
       }
       console.log('Tab2 is not selected!');
+    }
+    let dup =  this.route.snapshot.paramMap.get('dup');
+    if(dup != null){
+      console.log("in duppppppppppppppppppppppp")
+      this.isduplicatecs = true;
     }
   }
   tomorrow = new Date();
@@ -421,6 +447,7 @@ degreeTitleList = [];
     addremarks: [''],
     quoted: [''],
     quotestat: [''],
+    typeofaction: [''],
     deductibles:  [''],
      });
 
@@ -641,11 +668,15 @@ this.toggle3();
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
     this.contactForm3.get('quotestat').setValue(result['quotestatus']);
+    this.contactForm3.get('typeofaction').setValue(result['typeofaction']);
     console.log(result['remarks']);
     this.contactForm3.get('remarks').setValue(result['remarks']);
     
     this.driverservice.driver(this.driverdata);
-
+    if(result['quotestatus'] == "Submitted to InBroker"){
+this.isaddfinal = true;
+this.finalsubmitDisabled = true;
+    }
     // if(result['quotestatus'] == "Active"){
     //   this.printDisabled = false
     //   this.btnDisabled = true;
@@ -875,6 +906,7 @@ this.toggle3();
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
     this.contactForm3.get('quotestat').setValue(result['quotestatus']);
+    this.contactForm3.get('typeofaction').setValue(result['typeofaction']);
     console.log(result['remarks']);
     this.contactForm3.get('remarks').setValue(result['remarks']);
     this.driverservice.driver(this.driverdata);
@@ -973,7 +1005,7 @@ console.log("11111111111111111111111111")
 else if(result['quotestatus'] == "For Review" && this.userrole != 'cs' && result['typeofaction'] == "Referral Review"){
 this.btnDisabled = false;
 this.btnDisableduw = false;
-this.isduplicatecs = false;
+this.isduplicatecs = true;
 this.btnDisabledci = false;
 console.log("11111111111111111111111111")
 }
@@ -1435,7 +1467,7 @@ if(result){
    this.isduplicatecs = true;
    this.btnDisabledci = true;
    if(this.userrole == "cs"){
-    this.isduplicatecs = this.isduplicatecs;
+    this.isduplicatecs = !this.isduplicatecs;
    }
    
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
@@ -1637,9 +1669,8 @@ this.isduplicatecs = false;
           this.isduplicatecs = false;
         }
       }
-  }
-  
-     
+  } 
+ 
       this.tabGroup._tabs['_results'][2].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         console.log("check1111111111111111111");
@@ -1713,9 +1744,16 @@ addremarkstest() {
     console.log("in uw next")
     this.contactForm1.enable();
     if(this.contactForm1.valid){
-      if(this.userrole == 'cs'){
-        this.contactForm1.disable();
+      let quotestat = this.contactForm3.get('quotestat').value;
+      if(quotestat == "Not Issued"){
+        this.contactForm1.enable();
       }
+      else{
+        if(this.userrole == 'cs'){
+          this.contactForm1.disable();
+        }
+      }
+      
       // this.contactForm1.disable();
       this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
