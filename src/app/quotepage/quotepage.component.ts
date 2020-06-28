@@ -172,6 +172,7 @@ degreeTitleList = [];
   Selectedlosspay: any;
   view: boolean;
   searchbutton: boolean;
+  currentdate: any;
  
   
   educationLevelChangeAction(education) {
@@ -205,10 +206,89 @@ degreeTitleList = [];
   actionvalue: string;
   isSubmittedradio = false;
   test(a) {
+    console.log(a);
+ 
     if(a.index == 2){
       
       this.onSubmit();
-    }else{
+      let yr= this.contactForm1.get('Year').value;
+      let covr = this.contactForm2.get('options1').value;
+      let fin = this.contactForm2.get('financed').value;
+      this.currentdate = this.dp.transform(this.today, 'yyyy','es-ES');
+      let check = this.currentdate - yr
+      let quoteid =  this.route.snapshot.paramMap.get('title');
+      console.log("edit",quoteid);  
+        if(quoteid == null){
+          
+          if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+            console.log("vehice yearsss conditionn")
+    this.btnDisabledci = false;
+    this.isduplicatecs = false;
+          }
+          else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+            console.log("financedddddddd conditionnnnnnn")
+            this.btnDisabledci = false;
+            this.isduplicatecs = false;
+          }
+          else{
+            if(this.userrole != 'cs'){
+              this.btnDisabledci = true;
+              this.isduplicatecs = true;
+            }
+            else{
+              console.log("in cs not falseeeeeeeeeeeeeeeeeee")
+              this.isduplicatecs = false;
+            }
+          }
+    }
+    if(quoteid != null){
+      let quotestatus = this.contactForm3.get('quotestat').value;
+            if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+              console.log("vehice yearsss conditionn")
+      this.btnDisabledci = false;
+      this.isduplicatecs = false;
+            }
+            else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+              console.log("financedddddddd conditionnnnnnn")
+              this.btnDisabledci = false;
+              this.isduplicatecs = false;
+            }
+            else{
+              if(this.userrole != 'cs'){
+                this.btnDisabledci = true;
+                this.isduplicatecs = true;
+                this.btnDisabled = true;
+                this.btnDisableduw = true;
+                if(quotestatus == "Active"){
+                  this.btnDisabledci = false;
+                }
+              }
+              else{
+                console.log("in cs not falseeeeeeeeeeeeeeeeeee");
+                this.isduplicatecs = false;
+               
+
+                if(quotestatus == "Not Issued"){
+                  this.isduplicatecs = true;
+                  this.isduplicatecsonly = false;
+                }
+                else if(quotestatus == "Active"){
+                  this.isduplicatecs = true;
+                 
+                }
+                
+              }
+            }
+      }
+      let quoteiv=  this.route.snapshot.paramMap.get('view');
+      console.log("view",quoteiv);  
+        if(quoteiv != null){
+          this.isduplicatecs = true;
+          this.btnDisabledci = false;
+      }
+
+  }
+    else{
       this.isSubmittedradio = false;
       let quotei =  this.route.snapshot.paramMap.get('view');
       console.log("view",quotei);  
@@ -799,7 +879,7 @@ this.toggle3();
     this.contactForm3.get('remarks').setValue(result['remarks']);
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
-
+      console.log("11111111111111111111111111")
       this.btnDisabled = true;
       this.isaddfinal = true;
       this.printDisabled = false;
@@ -807,10 +887,12 @@ this.toggle3();
       this.isduplicatecs = true;
       if(this.userrole != "cs"){
         this.btnDisableduw = true;
+        this.btnDisabledci = false;
       }
       else if(this.userrole == "cs"){
         this.isduplicater = true;
       }
+      
     }
     else if(result['quotestatus'] == "Not Issued"){
       if(this.userrole == "cs"){
@@ -820,9 +902,42 @@ this.toggle3();
         this.btnDisabledcs = true;
       }
       else{
-        this.isduplicatecs = false;
-        this.btnDisableduw = true;
+        // this.isduplicatecs = false;
+        // this.btnDisableduw = true;
+        let yr= this.contactForm1.get('Year').value;
+        let covr = this.contactForm2.get('options1').value;
+        let fin = this.contactForm2.get('financed').value;
+        this.currentdate = this.dp.transform(this.today, 'yyyy','es-ES');
+        let check = this.currentdate - yr
+        let quoteid =  this.route.snapshot.paramMap.get('title');
+        console.log("edit",quoteid);  
+          if(quoteid != null){
+            
+            if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+              console.log("vehice yearsss conditionn")
+      this.btnDisabledci = false;
+      this.isduplicatecs = false;
+            }
+            else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+              console.log("financedddddddd conditionnnnnnn")
+              this.btnDisabledci = false;
+              this.isduplicatecs = false;
+            }
+            else{
+              if(this.userrole != 'cs'){
+                this.btnDisabledci = true;
+                this.isduplicatecs = true;
+                this.btnDisabled = true;
+                this.btnDisableduw = true;
+              }
+              else{
+                console.log("in cs not falseeeeeeeeeeeeeeeeeee")
+                this.isduplicatecs = false;
+              }
+            }
       }
+      }
+      
  
     }
     else if(result['quotestatus'] == "Declined"){
@@ -834,27 +949,42 @@ this.toggle3();
     else if(result['quotestatus'] == "Saved"){
       this.btnDisableduw = true
       this.isaddfinal = false
+      this.isduplicatecs = true;
     }
  else if(result['quotestatus'] == "Expired" && this.userrole == 'cs'){
 this.isduplicatecs = true;
 this.isduplicatereq = true;
+console.log("11111111111111111111111111")
  }
+//  else if(result['typeofaction'] == "Requote Request" && this.userrole != 'cs'){
+//   console.log("testttttttttttttttttttttttttttsrrrrrrrrrrr")
+//   this.btnDisabledci = true;
+//   this.btnDisabled = true;
+//   this.btnDisableduw = true;
+//   this.isduplicatecs = true;
+// }
  else if(result['quotestatus'] == "Expired" && this.userrole != 'cs'){
    this.btnDisabled = true;
    this.btnDisableduw = true;
    this.btnDisabledci = true;
    this.isduplicatecs = true;
+   console.log("11111111111111111111111111")
  }
-else if(result['quotestatus'] == "For Review" && this.userrole != 'cs'){
-this.btnDisabled = true;
-this.btnDisableduw = true;
-this.isduplicatecs = true;
-this.btnDisabledci = true;
+else if(result['quotestatus'] == "For Review" && this.userrole != 'cs' && result['typeofaction'] == "Referral Review"){
+this.btnDisabled = false;
+this.btnDisableduw = false;
+this.isduplicatecs = false;
+this.btnDisabledci = false;
+console.log("11111111111111111111111111")
 }
-else if(result['typeofaction'] == "Requote Requested"){
-  console.log("testttttttttttttttttttttttttttsrrrrrrrrrrr")
-  this.btnDisabledci = false;
-}
+else if(result['quotestatus'] == "For Review" && this.userrole != 'cs' && result['typeofaction'] == "Requote Request"){
+  console.log("11111111111111111111111111")
+  this.btnDisabled = true;
+  this.btnDisableduw = true;
+  this.isduplicatecs = true;
+  this.btnDisabledci = true;
+  }
+
     // else{
     //   this.isduplicatecs = false
     // }
@@ -922,8 +1052,13 @@ this.contactForm4.get('EngineNumber').setValue(result['engineno']);
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
     if(this.userrole == 'cs'){
-    if(status=='Not Issued'||status=='Expired'){
+    if(status=='Not Issued'){
+      this.contactForm1.enable();
+    }
+    else if(status=='Expired'){
       this.contactForm1.disable();
+      this.contactForm2.disable();
+      this.contactForm3.disable();
     }
     else if(status=='Active'){
       this.contactForm1.disable();
@@ -1010,15 +1145,7 @@ return value;
     this.isSubmittedradio = false;
     }
     toggle1() {
-      this.hide = !this.show
-      if(this.contactForm2.get('options1').value != "COMP"){
-        this.vehvalmand();
-      }
-      else{
-        
-        this.contactForm2.get('vehicleValue').clearValidators();
-        this.contactForm2.get('vehicleValue').updateValueAndValidity();
-      }
+      this.hide = !this.show;
       this.isSubmittedradio = false;
       }
       toggle3() {
@@ -1043,6 +1170,15 @@ return value;
         
         
         }
+        vehvalnotmand(){
+        
+            
+          this.contactForm2.get('vehicleValue').clearValidators();
+          this.contactForm2.get('vehicleValue').updateValueAndValidity();
+       
+      
+      
+      }
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 3
   }
@@ -1254,13 +1390,13 @@ if(result){
         var status = "For Review"
         var typeofaction = "Requote Request"
       }
-      var quotetsatus = this.contactForm3.get('quotestat').value;
-      if(quotetsatus){
-        if(quotetsatus == "Expired"){
-          // This is for expired quotes and duplicate quotes differentation
-          var typeofaction = "Requote Requested"
-        }
-      }
+      // var quotetsatus = this.contactForm3.get('quotestat').value;
+      // if(quotetsatus){
+      //   if(quotetsatus == "Expired"){
+      //     // This is for expired quotes and duplicate quotes differentation
+      //     var typeofaction = "Requote Requested"
+      //   }
+      // }
       
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -1294,12 +1430,12 @@ if(result){
    this.btnDisabledcs = true;
    this.isduplicater = true;
    this.isduplicatereq = !this.isduplicatereq;
-   this.btnDisabled = false;
-   this.btnDisableduw = false;
-   this.isduplicatecs = false;
-   this.btnDisabledci = false;
+   this.btnDisabled = true;
+   this.btnDisableduw = true;
+   this.isduplicatecs = true;
+   this.btnDisabledci = true;
    if(this.userrole == "cs"){
-    this.isduplicatecs = !this.isduplicatecs;
+    this.isduplicatecs = this.isduplicatecs;
    }
    
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
@@ -1402,9 +1538,13 @@ if(result){
  
   //  this.contactForm4.get('cityTown').setValue(result['town']);
   //  this.towns = result['town'];
-   this.contactForm1.disable();
+  if(this.userrole == 'cs'){
+    this.contactForm3.disable();
+    this.contactForm1.disable();
    this.contactForm2.disable();
-   this.contactForm3.disable();
+  }
+   
+   
    this.contactForm1.markAllAsTouched;
    this.contactForm2.markAllAsTouched;
    this.contactForm3.markAllAsTouched;
@@ -1468,6 +1608,38 @@ this.isSubmittedradio = false
     } 
     if(this.contactForm2.valid){
       console.log("check1111111111111111111");
+     let yr= this.contactForm1.get('Year').value;
+      let covr = this.contactForm2.get('options1').value;
+      let fin = this.contactForm2.get('financed').value;
+      this.currentdate = this.dp.transform(this.today, 'yyyy','es-ES');
+      let check = this.currentdate - yr
+      let quoteid =  this.route.snapshot.paramMap.get('title');
+  console.log("edit",quoteid);  
+    if(quoteid == null){
+      
+      if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+        console.log("vehice yearsss conditionn")
+this.btnDisabledci = false;
+this.isduplicatecs = false;
+      }
+      else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+        console.log("financedddddddd conditionnnnnnn")
+        this.btnDisabledci = false;
+        this.isduplicatecs = false;
+      }
+      else{
+        if(this.userrole != 'cs'){
+          this.btnDisabledci = true;
+          this.isduplicatecs = true;
+        }
+        else{
+          console.log("in cs not falseeeeeeeeeeeeeeeeeee")
+          this.isduplicatecs = false;
+        }
+      }
+  }
+  
+     
       this.tabGroup._tabs['_results'][2].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
         console.log("check1111111111111111111");
@@ -1864,7 +2036,7 @@ addremarkstest() {
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
           driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,
           reviewstatus:reviewstatus,quotestatus:quotestatus,
-          adtype:adtype,street:street,countri:countri,zipc:zip,citi:city},httpOptions ).subscribe((res: any) => { // not callback
+          adtype:adtype,street:street,countri:countri,zipc:zip,citi:city,actionvalue:actionvalue},httpOptions ).subscribe((res: any) => { // not callback
           console.log("========================");
             console.log(res);
             console.log(res.result);
@@ -1904,7 +2076,7 @@ addremarkstest() {
               emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
               losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
               manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-              driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
+              driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated,actionvalue:actionvalue},httpOptions ).subscribe((res: any) => { // not callback
     console.log(res);
               console.log("in on save-Approve or Decline");
               if(res['quotestaus'] == "Active")
@@ -1944,7 +2116,7 @@ addremarkstest() {
             emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
             losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
             manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-            driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
+            driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated,actionvalue:actionvalue},httpOptions ).subscribe((res: any) => { // not callback
   console.log(res);
             console.log("in on save-Approve or Decline");
             if(res['quotestaus'] == "Active")

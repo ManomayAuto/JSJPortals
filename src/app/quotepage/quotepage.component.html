@@ -305,7 +305,7 @@
           <mat-grid-tile style="margin-top: 50px;">
             <label id="example-radio-group-label" *ngIf="isSubmittedradio && contactForm2.get('options1').hasError('required')" style="color: red;">Type of Cover *:</label> 
             <label id="example-radio-group-label" *ngIf="!isSubmittedradio">Type of Cover *:</label>
-           <mat-radio-button class="example-radio-button" *ngIf="!isduplicater" name="COMP" value="COMP" (click)="toggle1()" style="margin-left: 20px;">
+           <mat-radio-button class="example-radio-button" *ngIf="!isduplicater" name="COMP" value="COMP" (click)="toggle1();vehvalmand();" style="margin-left: 20px;">
               Comprehensive
             </mat-radio-button>
             <mat-radio-button class="example-radio-button" *ngIf="isduplicater" name="COMP" value="COMP" style="margin-left: 20px;">
@@ -319,7 +319,7 @@
         </mat-grid-tile>
         <mat-grid-tile style="margin-top: 50px;">
          
-            <mat-radio-button  *ngIf="!isduplicater" name="TPFT" (click)="toggle1()" value="TPFT" [disabled]="selectDisabled">
+            <mat-radio-button  *ngIf="!isduplicater" name="TPFT" (click)="toggle1();vehvalnotmand();" value="TPFT" [disabled]="selectDisabled">
               Third Party,Fire & Theft
             </mat-radio-button> 
             <mat-radio-button  *ngIf="isduplicater" name="TPFT" value="TPFT" [disabled]="selectDisabled">
@@ -489,7 +489,7 @@
       <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [autofocus]="false" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
       <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [autofocus]="false" [disabled] = "!btnDisabledci" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
         <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" [autofocus]="false" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
-        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" [autofocus]="false" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review</button><!--For saved quotes from cs users-->
+        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" [autofocus]="false" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review1</button><!--For saved quotes from cs users-->
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicatereq" [autofocus]="false" style="margin-left:5px">Requote</button>
      
    
