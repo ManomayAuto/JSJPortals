@@ -49,7 +49,7 @@ open(r){
       {this.display="UW/AE"}
       else if(this.per=='QI,QRU,QRM,QRP,DF,DR,ARRP'||this.per=='QI,QRU,QRM,QRP,DF,DR')
       {this.display="UW Manager/AE"}
-      else if(this.per=='QI,DR'){this.display="CS/NonAE"}
+      else if(this.per=='QI,DR'){this.display="CS/Non AE"}
       else if(this.per=='QI,QRU,QRP,DR'){this.display="UW/Non AE"}
       else if(this.per=='DF'||this.per=='DF,ARRP'){this.display="Non AE"}
       else if(this.per=='DF,DR'||this.per=='DF,DR,ARRP'){this.display="AE"}

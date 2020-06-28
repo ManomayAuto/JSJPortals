@@ -45,6 +45,7 @@ export class SearchtableComponent implements OnInit {
   days: string;
   sta: boolean;
   userrole: string;
+  edit: any;
   //nameFilter : string;
  
   constructor(private http:HttpClient,public datepipe: DatePipe,private router : Router,public snackBar: MatSnackBar,) { }
@@ -79,7 +80,7 @@ ngOnInit() {
       //   this.sta = false;
       // }
     });  
-    console.log("searchdone!!!!");
+
   }
   reset(){
     console.log("searchdone!!!!");
