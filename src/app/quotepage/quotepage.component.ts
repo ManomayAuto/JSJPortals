@@ -242,7 +242,7 @@ degreeTitleList = [];
           }
     }
     if(quoteid != null){
-            
+      let quotestatus = this.contactForm3.get('quotestat').value;
             if(check > 10 && covr != "TP" && this.userrole == 'uw'){
               console.log("vehice yearsss conditionn")
       this.btnDisabledci = false;
@@ -259,10 +259,24 @@ degreeTitleList = [];
                 this.isduplicatecs = true;
                 this.btnDisabled = true;
                 this.btnDisableduw = true;
+                if(quotestatus == "Active"){
+                  this.btnDisabledci = false;
+                }
               }
               else{
                 console.log("in cs not falseeeeeeeeeeeeeeeeeee");
                 this.isduplicatecs = false;
+               
+
+                if(quotestatus == "Not Issued"){
+                  this.isduplicatecs = true;
+                  this.isduplicatecsonly = false;
+                }
+                else if(quotestatus == "Active"){
+                  this.isduplicatecs = true;
+                 
+                }
+                
               }
             }
       }
@@ -270,6 +284,7 @@ degreeTitleList = [];
       console.log("view",quoteiv);  
         if(quoteiv != null){
           this.isduplicatecs = true;
+          this.btnDisabledci = false;
       }
 
   }
@@ -872,10 +887,12 @@ this.toggle3();
       this.isduplicatecs = true;
       if(this.userrole != "cs"){
         this.btnDisableduw = true;
+        this.btnDisabledci = false;
       }
       else if(this.userrole == "cs"){
         this.isduplicater = true;
       }
+      
     }
     else if(result['quotestatus'] == "Not Issued"){
       if(this.userrole == "cs"){
@@ -1036,7 +1053,7 @@ this.contactForm4.get('EngineNumber').setValue(result['engineno']);
     // this.contactForm3.markAllAsTouched;
     if(this.userrole == 'cs'){
     if(status=='Not Issued'){
-      this.contactForm1.disable();
+      this.contactForm1.enable();
     }
     else if(status=='Expired'){
       this.contactForm1.disable();
