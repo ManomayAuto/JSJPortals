@@ -235,7 +235,7 @@
 <div class="text-inside" *ngIf="!this.dupnext" style="text-align: right;padding-bottom: 20px;">
 <button mat-raised-button color="primary" [autofocus]="false" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
 
-</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" [autofocus]="false" style="margin-left:50px">uwNext</button></div>   </mat-tab>
+</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" [autofocus]="false" style="margin-left:50px">Next</button></div>   </mat-tab>
 <mat-tab label="Coverage/Driver Details" [disabled]="true">
    
   <form fxLayout="column" (ngSubmit)='moveToSelectedTab1("Premium Summary")' [formGroup]="contactForm2">
@@ -493,7 +493,7 @@
       <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [autofocus]="false" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
       <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [autofocus]="false" [disabled] = "!btnDisabledci" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
         <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" [autofocus]="false" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
-        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" [autofocus]="false" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review1</button><!--For saved quotes from cs users-->
+        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" [autofocus]="false" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review</button><!--For saved quotes from cs users-->
         <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicatereq" [autofocus]="false" style="margin-left:5px">Requote</button>
      
    
