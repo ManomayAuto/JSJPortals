@@ -287,7 +287,7 @@ degreeTitleList = [];
               else{
                 console.log("in cs not falseeeeeeeeeeeeeeeeeee");
                 this.isduplicatecs = false;
-               
+                
 
                 if(quotestatus == "Not Issued"){
                   this.isduplicatecs = true;
@@ -297,6 +297,9 @@ degreeTitleList = [];
                   this.isduplicatecs = true;
                  
                 }
+                if(this.userrole == "cs" && quotestatus == "Expired"){
+                  this.isduplicatecs = !this.isduplicatecs;
+                 }
                 
               }
             }
@@ -1453,11 +1456,16 @@ if(result){
       
       autoFocus: false,
     });
-    this.router.navigate(['/quotepage',{dup:"123"}]);
+    
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
    //hell bent 
   //  this.router.navigate(['/quotepage',{dup:"123"}]);
+  console.log(result);
+  if (result !="yes") {
+
+ 
+  this.router.navigate(['/quotepage',{dup:"123"}]);
    this.dupnext = true;
    this.btnDisabledcs = true;
    this.isduplicater = true;
@@ -1588,7 +1596,11 @@ if(result){
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
         }
       }
-    })
+    }
+    else{
+      this.dupnext = true;
+    }
+  })
   }
 
   // driverdata(arg0: string, driverdata: any) {
