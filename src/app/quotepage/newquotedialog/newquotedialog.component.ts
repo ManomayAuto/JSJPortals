@@ -12,10 +12,14 @@ export class NewquotedialogComponent implements OnInit {
     if (data) {
       this.qid = data['quoteid'] || this.qid;
       this.qs = data['quotestatus'] || this.qs;
+      console.log(data['quotestatus'])
       }
    }
 
   ngOnInit() {
   }
-
+  yes(data){
+    console.log(data);
+    this.dialogRef.close(data);
+    }
 }

@@ -151,4 +151,15 @@
       background-color: #6cc6f0 !important;
   }
 
-    
+  ::ng-deep .mat-form-field-disabled{
+    background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 0,
+    rgba(0, 0, 0, 0.42) 33%,
+    #c2c7cc 0
+  ) !important;
+  }
+  ::ng-deep .mat-button[disabled][disabled]{
+/* color: white; */
+display: none;
+  }

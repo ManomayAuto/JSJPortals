@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {  FormBuilder, FormGroup, Validators, FormControl  } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 import { delay } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +26,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private as : AuthenticationService,
     private authenticationService: AuthenticationService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.loginForm = new FormGroup({
       email: new FormControl(),
@@ -49,4 +52,7 @@ export class LoginComponent implements OnInit {
     //   return this.data;
     //   else return
     // }
+    redi(){
+      this.document.location.href = environment.URL + "/resetpass";
+    }
 }

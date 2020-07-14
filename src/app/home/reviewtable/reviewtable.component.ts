@@ -40,6 +40,7 @@ export class ReviewtableComponent implements OnInit {
   // today: number;
   today: Date = new Date();
   allSource: MatTableDataSource<import("c:/Users/consultants1/git us/JSJPortals/src/app/models/user.model").User>;
+  names: string;
 
   constructor( private userService : QtableService,
     @Inject(DOCUMENT) private _document: Document,
@@ -57,7 +58,7 @@ ngOnInit(){
     const result0 = results.filter(user => {
       return user.reviewstatus != filterred;
     }); 
-   console.log("trial",result0)
+   console.log("trial",result0[1])
     this.allSource = new MatTableDataSource(result0);
     this.allSource.paginator = this.paginator;
     this.allSource.sort = this.sort;
@@ -69,18 +70,28 @@ ngOnInit(){
 
 getRecord(quoteid,reviewerusername){ 
   this.name = localStorage.getItem('name');
+  var userrole = localStorage.getItem('Role');
+
   this.message="Quote is already picked up by " +reviewerusername;
-  console.log(reviewerusername);
-  console.log(this.name);
-  if(reviewerusername == null || reviewerusername ==this.name|| reviewerusername == "Underwriter"||reviewerusername == "UW Manager"){
+  console.log(reviewerusername,userrole);//Underwriter 
+  // UW Manager uw Manager
+if(userrole=='uw'){
+this.names='Underwriter'
+}
+else if(userrole=='uw Manager'){
+  this.names='UW Manager'
+}
+
+  console.log(reviewerusername == this.names,this.names);
+  if(reviewerusername == null || reviewerusername ==this.name|| reviewerusername == this.names){
   console.log("rev quoteid",quoteid);
   var reviewstatus = "In Progress"
   var userrole = localStorage.getItem('Role');
   var name = localStorage.getItem('name');
   // this.datepipe = new DatePipe('en-Us');
   // var lastupdated = this.dp.transform(this.today, 'yy-MM-dd HH:mm','es-ES');
-  var lastupdated = this.datepipe.transform(this.today, 'yyyy-MM-dd','es-ES');
-  console.log("last updatedddddddddddddddddddddddd");
+  var lastupdated = this.datepipe.transform(this.today, 'yyyy-MM-dd HH:mm ','es-ES');
+  console.log("last updatedddddddddddddddddddddddd",lastupdated);
   console.log(lastupdated);
   const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -99,7 +110,10 @@ getRecord(quoteid,reviewerusername){
 
 }
 
-
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.allSource.filter = filterValue.trim().toLowerCase();
+}
 
 }
 

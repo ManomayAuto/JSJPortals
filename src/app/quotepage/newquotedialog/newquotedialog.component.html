@@ -1,7 +1,9 @@
 <h1 mat-dialog-title>Quote reference</h1>
 <div mat-dialog-content>
-   <p>Quote with reference - <a style="color:rgb(19, 152, 204)">{{qid}}</a> <a *ngIf="!this.qs">&nbsp;has been saved</a><a *ngIf="this.qs">&nbsp;is submitted for review</a></p><br>
+   <p>Quote with reference <a style="color:rgb(19, 152, 204)">{{qid}}</a><a *ngIf="this.qs == 'Active'">&nbsp;has been saved</a><a *ngIf="this.qs == 'Active'">!</a><br *ngIf="this.qs == 'Active'"><br *ngIf="this.qs == 'Active'"><a *ngIf="this.qs == 'Active'">If you want to proceed further by adding Additional Details, please click on yes below</a> <a *ngIf="this.qs == 'Not Issued'">&nbsp;has been saved</a><a *ngIf="this.qs == 'For Review'">&nbsp;is submitted for review</a></p><br>
 </div>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close >Close</button>
+  <button mat-raised-button color="primary" [autofocus]="false" mat-dialog-close *ngIf="this.qs == 'Active'" (click)="yes('yes')">Yes</button>
+  <button mat-raised-button color="primary" [autofocus]="false" mat-dialog-close *ngIf="this.qs == 'Active'" (click)="yes('no')">No</button>
+  <button mat-raised-button color="primary" [autofocus]="false" mat-dialog-close *ngIf="this.qs != 'Active'">Close</button>
 </div>

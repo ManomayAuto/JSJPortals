@@ -38,6 +38,9 @@ mat-form-field {
   background-size: 1px 100% !important;
   background-repeat: repeat-x !important;
 }
+::ng-deep.mat-form-field-wrapper{
+    background:white !important;
+}
   #head{
       display: none !important;
   }
@@ -133,7 +136,9 @@ li {
 .mat-raised-button.mat-primary {
     background-color: #6cc6f0;
 }
-
+.mat-button.mat-primary {
+    background-color: #6cc6f0;
+}
 
 
 ::ng-deep .mat-form-field .mat-input-element {
@@ -224,6 +229,10 @@ li {
     font-size: 13px;
  }
  
- .mat-raised-button[disabled][disabled]{
+.mat-raised-button[disabled][disabled]{
      display: none;
  }
+
+ ::ng-deep .mat-form-field-wrapper  {
+    margin-top: -10px !important;
+}

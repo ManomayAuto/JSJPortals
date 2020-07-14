@@ -13,7 +13,7 @@
        
               <div class="example-header" fxLayout="row">
                 <mat-form-field>
-                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                  <input matInput  (keyup)="applyFilter($event)" placeholder="Filter">
                 </mat-form-field>
               </div>
               <div class="example-container mat-elevation-z8">
@@ -52,7 +52,7 @@
                   
                   <ng-container matColumnDef="lastupdatedat">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Last Updated At </mat-header-cell>
-                    <mat-cell data-label="lastupdatedat" *matCellDef="let element"> {{element.lastupdatedat | date :'short'}}  </mat-cell>
+                    <mat-cell data-label="lastupdatedat" *matCellDef="let element"> {{element.lastupdatedat |date:'M/d/yyyy, h:mm a':'UTC'}}  </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="reviewerusername">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Reviewer/Group</mat-header-cell>
@@ -60,7 +60,8 @@
                   </ng-container>
                   <ng-container matColumnDef="Action" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
-                    <mat-cell data-label="Action"  *matCellDef="let element"> <button mat-button *ngIf="this.role != 'cs'"  (click)="getRecord(element.quoteid,element.reviewerusername)"  style="color:rgb(19, 152, 204)">Pickup for Review</button></mat-cell>
+                    <mat-cell data-label="Action"  *matCellDef="let element"> <button mat-button *ngIf="this.role != element.initiateduserrole"  
+                      (click)="getRecord(element.quoteid,element.reviewerusername)"  style="color:rgb(19, 152, 204)">Pickup for Review</button></mat-cell>
                   </ng-container>
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns;">

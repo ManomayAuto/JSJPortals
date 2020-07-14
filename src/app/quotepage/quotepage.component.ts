@@ -10,7 +10,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import {MatSnackBar} from '@angular/material';
 import { DatePipe } from "@angular/common";
 import { Quote } from '@angular/compiler';
-
+import { AbstractControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {SearchclientdialogComponent} from './searchclientdialog/searchclientdialog.component';
 import {DuplicatedialogComponent} from './duplicatedialog/duplicatedialog.component';
@@ -103,13 +103,16 @@ export class QuotepageComponent implements OnInit {
   anp = '';
   selectDisabled = false;
   isReadonly = true;
+  isReadOnlymake: boolean;
   option = [];
   dupnext = false;
   isaddfinal = false;
   btnDisabled = true;
   btnDisableduw = true;
   btnDisabledcs = false;
-  btnDisablednext = true;
+  btnDisablednext = false;
+  finalsubmitDisabled = false;
+  printDisabled = true;
   selectedIndex: any;
   countryoption = [];
   username: string;
@@ -120,7 +123,10 @@ export class QuotepageComponent implements OnInit {
   public lossaddress: any[];
   public isduplicate: boolean = false;
   public isduplicater: boolean = false;
+  public isduplicatereq: boolean = false;
   public isduplicatecs: boolean = false;
+  public isduplicatecsonly: boolean = true;
+  public btnDisabledci: boolean = true;
   // today: Date = new Date();
   today: number;
   options: string[] = ["2030","2029","2028","2027","2026","2025","2024","2023","2022","2021","2020","2019","2018","2017","2016","2015","2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004","2003","2002","2001","2000","1999","1998","1997","1996","1995","1994","1993","1992","1991","1990"];
@@ -165,6 +171,9 @@ degreeTitleList = [];
   Selectedtown: any;
   Selectedloss: any;
   Selectedlosspay: any;
+  view: boolean;
+  searchbutton: boolean;
+  currentdate: any;
  
   
   educationLevelChangeAction(education) {
@@ -196,26 +205,143 @@ degreeTitleList = [];
   searchdata : any;
   selectedvehtype :any;
   actionvalue: string;
+  isSubmittedradio = false;
   test(a) {
+    console.log(a);
+ 
     if(a.index == 2){
+      
       this.onSubmit();
-    }else{
+      let yr= this.contactForm1.get('Year').value;
+      let covr = this.contactForm2.get('options1').value;
+      let fin = this.contactForm2.get('financed').value;
+      this.currentdate = this.dp.transform(this.today, 'yyyy','es-ES');
+      let check = this.currentdate - yr
+      let quoteid =  this.route.snapshot.paramMap.get('title');
+      console.log("edit",quoteid);  
+        if(quoteid == null){
+          
+          if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+            console.log("vehice yearsss conditionn")
+    this.btnDisabledci = false;
+    this.isduplicatecs = false;
+          }
+          else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+            console.log("financedddddddd conditionnnnnnn")
+            this.btnDisabledci = false;
+            this.isduplicatecs = false;
+          }
+          else{
+            if(this.userrole != 'cs'){
+              this.btnDisabledci = true;
+              this.isduplicatecs = true;
+            }
+            else{
+              console.log("in cs not falseeeeeeeeeeeeeeeeeee")
+              this.isduplicatecs = false;
+            }
+          }
+    }
+    if(quoteid != null){
+      let quotestatus = this.contactForm3.get('quotestat').value;
+      let typeofaction = this.contactForm3.get('typeofaction').value;
+            if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+              console.log("vehice yearsss conditionn")
+      this.btnDisabledci = false;
+      this.isduplicatecs = false;
+      this.btnDisabled = true;
+      this.btnDisableduw = true;
+            }
+            else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+              console.log("financedddddddd conditionnnnnnn")
+              this.btnDisabledci = false;
+              this.isduplicatecs = false;
+              this.btnDisabled = true;
+      this.btnDisableduw = true;
+            }
+            else{
+              if(this.userrole != 'cs'){
+                this.btnDisabledci = true;
+                this.isduplicatecs = true;
+                this.btnDisabled = true;
+                this.btnDisableduw = true;
+                if(quotestatus == "Active"){
+                  this.btnDisabledci = false;
+                }
+                
+                else if(quotestatus == "For Review" && this.userrole != 'cs' && typeofaction == "Referral Review"){
+                  this.btnDisabled = false;
+                  this.btnDisableduw = false;
+                  this.isduplicatecs = true;
+                  this.btnDisabledci = false;
+                  console.log("11111111111111111111111111")
+                  }
+                  else if(quotestatus == "For Review" && this.userrole != 'cs' && typeofaction == "Requote Request"){
+                    console.log("11111111111111111111111111")
+                    this.btnDisabled = true;
+                    this.btnDisableduw = true;
+                    this.isduplicatecs = true;
+                    this.btnDisabledci = true;
+                    }
+              }
+              else{
+                console.log("in cs not falseeeeeeeeeeeeeeeeeee");
+                this.isduplicatecs = false;
+                
+
+                if(quotestatus == "Not Issued"){
+                  this.isduplicatecs = true;
+                  this.isduplicatecsonly = false;
+                }
+                else if(quotestatus == "Active"){
+                  this.isduplicatecs = true;
+                 
+                }
+                if(this.userrole == "cs" && quotestatus == "Expired"){
+                  this.isduplicatecs = !this.isduplicatecs;
+                 }
+                
+              }
+            }
+      }
+      let quoteiv=  this.route.snapshot.paramMap.get('view');
+      console.log("view",quoteiv);  
+        if(quoteiv != null){
+          this.isduplicatecs = true;
+          this.btnDisabledci = false;
+      }
+
+  }
+    else{
+      this.isSubmittedradio = false;
+      let quotei =  this.route.snapshot.paramMap.get('view');
+      console.log("view",quotei);  
+        if(quotei != null){
+          console.log("not null");
+          this.contactForm2.disable();
+          this.contactForm1.disable();
+      }
       console.log('Tab2 is not selected!');
     }
+    let dup =  this.route.snapshot.paramMap.get('dup');
+    if(dup != null){
+      console.log("in duppppppppppppppppppppppp")
+      this.isduplicatecs = true;
+    }
   }
-
+  tomorrow = new Date();
   constructor(private  authenticationService : AuthenticationService,private driverservice: driverservice,private dataformservice:dataformservice,private service: Service,private router: Router,public dialog: MatDialog,private dp: DatePipe,
     private route: ActivatedRoute,private as : dataformservice,
 
     private http: HttpClient, private f1 : FormBuilder, 
     private f2 : FormBuilder, private f3 : FormBuilder, private f4 : FormBuilder,private f5 : FormBuilder, public snackBar: MatSnackBar){
-   
+      this.tomorrow.setDate(this.tomorrow.getDate() );
 
       setInterval(() => {
         this.today = Date.now();
       }, 1);
   }
-
+  minDate:Date = new Date();
   ngOnInit() {
     this.breakpoint = window.innerWidth <= 790 ? 1 : 3; //
     this.userrole = localStorage.getItem('Role');
@@ -281,7 +407,7 @@ degreeTitleList = [];
       vehicleType: ['',Validators.required],
       softtop: [false],
       clienttype: [false],
-      Year: ['',Validators.required],
+      Year: ['',[Validators.required, RequireMatch1]],
       Use: ['',Validators.required],
       firstName: ['',Validators.required],
       lastName: ['',Validators.required],
@@ -294,7 +420,7 @@ degreeTitleList = [];
       occupation: [''],
       employement:[''],
       Product: ['',Validators.required],
-      userInput: ['',Validators.required],
+      userInput: ['',[Validators.required, RequireMatch]],
     });
     this.contactForm1.get('clienttype').disable();
       this.contactForm2 = this.f2.group({
@@ -324,6 +450,7 @@ degreeTitleList = [];
     addremarks: [''],
     quoted: [''],
     quotestat: [''],
+    typeofaction: [''],
     deductibles:  [''],
      });
 
@@ -332,7 +459,7 @@ degreeTitleList = [];
       streetName:  ['',Validators.required],
       cityTown:  ['',Validators.required],
       zipCode:  ['',Validators.required],
-      country: [''],
+      country: ['',[Validators.required, RequireMatch3]],
       policystartDate:  ['',Validators.required],
       policyendDate:  ['',Validators.required],
       policyType:  ['',Validators.required],
@@ -400,12 +527,17 @@ degreeTitleList = [];
   }
   }
   getSomethings(){
+    this.isduplicater = true;
     this.dupnext = true;
     this.isduplicate = true;
       this.selectedIndex =  1;
-      this.btnDisabled = false;
-      this.btnDisableduw = false;
-      this.isduplicatecs = !this.isduplicatecs;
+      this.btnDisabled = true;
+      this.btnDisabledci = false;
+      this.btnDisableduw = true;
+      this.printDisabled = true;
+      this.isduplicatecs = true;
+      // this.isduplicatecs = true;
+      // this.isduplicatecs = !this.isduplicatecs;
     console.log("view")
     if(this.userrole == 'cs'){
       // this.contactForm1.markAllAsTouched();
@@ -419,17 +551,36 @@ degreeTitleList = [];
     // this.dupnext = true;
      
     this.btnDisabledcs = true;
+    this.isduplicatecs = true;
     // this.isduplicatecs = !this.isduplicatecs;
     }
     let quoteid =  this.route.snapshot.paramMap.get('view');
     console.log("getSomething not null");
-    this.isaddfinal = true;
+    // this.isaddfinal = true;
+    this.contactForm1.get('userInput').clearValidators();
+    this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('userInput').setValidators([Validators.required]);
+    this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('Year').clearValidators();
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm1.get('Year').setValidators([Validators.required]);
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm2.get('losspay').clearValidators();
+    this.contactForm2.get('losspay').updateValueAndValidity();
+    this.contactForm2.get('losspay').setValidators([Validators.required]);
+    this.contactForm2.get('losspay').updateValueAndValidity();
+    this.contactForm4.get('country').clearValidators();
+    this.contactForm4.get('country').updateValueAndValidity();
+    this.contactForm4.get('country').setValidators([Validators.required]);
+    this.contactForm4.get('country').updateValueAndValidity();
+
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
       console.log(result);
+      console.log(result['use']);
       // this.dupnext = true;
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
@@ -439,6 +590,7 @@ degreeTitleList = [];
     this.contactForm1.get('idNumber').setValue(result['idno']);
     this.contactForm1.get('dob').setValue(result['mob']);
     var makey = result['make'];
+    this.searchbutton= true;
     // console.log(result['make']);
     this.displayFn(makey);
     this.contactForm1.get('userInput').setValue(makey);
@@ -449,6 +601,7 @@ degreeTitleList = [];
     console.log(result['prod']);
     this.contactForm1.get('Year').setValue(result['yr']); 
     this.contactForm1.get('EngineCC').setValue(result['cc']);
+    console.log(result['use']);
     this.contactForm1.get('Use').setValue(result['use']);
     this.contactForm1.controls.vehicleType.setValue(result['vehtype']);
     this.educationLevelChangeAction(result['prod']);
@@ -518,17 +671,56 @@ this.toggle3();
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
     this.contactForm3.get('quotestat').setValue(result['quotestatus']);
+    this.contactForm3.get('typeofaction').setValue(result['typeofaction']);
     console.log(result['remarks']);
     this.contactForm3.get('remarks').setValue(result['remarks']);
     
     this.driverservice.driver(this.driverdata);
-    if(result['quotestatus'] == "Active"){
-      this.btnDisabled = true;
-      this.btnDisablednext = false;
-      if(this.userrole == "uw"){
-        this.btnDisableduw = true;
-      }
+    if(result['quotestatus'] == "Submitted to InBroker"){
+this.isaddfinal = true;
+this.finalsubmitDisabled = true;
     }
+    // if(result['quotestatus'] == "Active"){
+    //   this.printDisabled = false
+    //   this.btnDisabled = true;
+      
+    //   this.isduplicatecs = true;
+    //   this.isaddfinal = false;
+    //   if(this.userrole != "cs"){
+    //     this.btnDisableduw = true;
+    //   }
+    // }
+    // else if(result['quotestatus'] == "Not Issued"){
+    //   if(this.userrole == "cs"){
+    //     this.isduplicatecsonly = false
+    //     this.isduplicatecs =  true
+    //     this.isaddfinal = false
+    //     this.btnDisabledcs = true
+    //   }
+    //   else{
+    //     this.isduplicatecs = false;
+    //     this.btnDisableduw = true; 
+    //   }
+ 
+    // }
+    // else if(result['quotestatus'] == "Declined"){
+    //   this.btnDisabled = true
+    //   this.btnDisableduw = true
+    //   this.isduplicatecs = true
+    //   this.isaddfinal = false
+    // }
+    // else if(result['quotestatus'] == "Saved"){
+    //   this.btnDisableduw = true
+    //   this.isaddfinal = false
+    // }
+
+
+
+
+    
+    // else{
+    //   this.isduplicatecs = false
+    // }
     this.contactForm3.disable();
     // this.contactForm1.markAllAsTouched;
     // this.contactForm2.markAllAsTouched;
@@ -542,7 +734,7 @@ this.toggle3();
   //  this.contactForm4.get('zipCode').setValue(result['zip']);
   //  this.contactForm4.get('cityTown').setValue(result['city']);
 
-if(!countri)
+if(countri !=null || countri != undefined || countri == "")
  {
   this.displayFncountry(countri);
   this.contactForm4.get('country').setValue(result['countri']);
@@ -554,14 +746,22 @@ if(!countri)
 //   this.contactForm4.get('zipCode').setValue(result['zip']);
 //  console.log(typeof(result['zip']));
 // this.summaries = Array.of(result['zip']);
-if(!result['zipc']){
+if(result['zipc'] !=null || result['zipc'] != undefined || result['zipc'] == ""){
   this.summaries = [{Zipcode: result['zipc']}];
   this.Selectedzip = this.summaries[0];
 }
-if(!result['citi']){
+if(result['citi'] !=null || result['citi'] != undefined || result['citi'] == ""){
   this.towns = [{Town: result['citi']}];
   this.Selectedtown = this.towns[0];
 }
+this.contactForm4.get('policystartDate').setValue(result['polstdate']);
+this.contactForm4.get('policyendDate').setValue(result['polendate']);
+this.contactForm4.get('policyType').setValue(result['policytype']);
+this.contactForm4.get('currency').setValue(result['curency']);
+this.contactForm4.get('businessClass').setValue(result['bisclas']);
+this.contactForm4.get('branch').setValue(result['branch']);
+this.contactForm4.get('EngineNumber').setValue(result['engineno']);
+
 
     });  
     
@@ -571,14 +771,16 @@ if(!result['citi']){
     this.isduplicate = true;
     this.selectedIndex =  1;
     this.btnDisabled = false;
+    this.btnDisabledci = false;
       this.btnDisableduw = false;
-      this.isduplicatecs = !this.isduplicatecs;
+      this.isReadOnlymake = true;
+      // this.isduplicatecs = !this.isduplicatecs;
     if(this.userrole == 'cs'){
-      // this.contactForm1.markAllAsTouched();
+    // this.contactForm1.markAllAsTouched();
       this.contactForm2.clearValidators();
       this.contactForm2.clearAsyncValidators();
-      // this.contactForm2.markAllAsTouched();
-      // this.contactForm3.markAllAsTouched();
+    // this.contactForm2.markAllAsTouched();
+    // this.contactForm3.markAllAsTouched();
     //  this.contactForm1.disable();
     //  this.contactForm2.disable();
     //  this.contactForm3.disable();
@@ -586,15 +788,41 @@ if(!result['citi']){
     this.btnDisabledcs = true;
     //  this.isduplicatecs = !this.isduplicatecs;
     }
+    this.contactForm1.get('userInput').clearValidators();
+    this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('userInput').setValidators([Validators.required]);
+    this.contactForm1.get('userInput').updateValueAndValidity();
+    this.contactForm1.get('Year').clearValidators();
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm1.get('Year').setValidators([Validators.required]);
+    this.contactForm1.get('Year').updateValueAndValidity();
+    this.contactForm2.get('losspay').clearValidators();
+    this.contactForm2.get('losspay').updateValueAndValidity();
+    this.contactForm2.get('losspay').setValidators([Validators.required]);
+    this.contactForm2.get('losspay').updateValueAndValidity();
+   
+    // if(this.contactForm1.get('userInput').value == ''){
+    //   this.contactForm1.get('userInput').setValidators([Validators.required,RequireMatch])
+    //   this.contactForm1.get('userInput').updateValueAndValidity();
+    // }
     let quoteid =  this.route.snapshot.paramMap.get('title');
     console.log("getSomething not null");
-    this.isaddfinal = true;
+    // this.isaddfinal = true;
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     this.http.post<any>(environment.URL + `/pickquote`,{quoteid},httpOptions).subscribe((result) => { 
       console.log("searchdone!!!!",result);
+      console.log(result['use']);
     var status= result['quotestatus'];
+    // if(this.userrole == "cs" && status == "Not Issued"){
+    //   console.log("in subbbbbbbbbbbbbbbbbbbbbbbb")
+    //   this.isduplicatecs = false;
+    // }
+    // if(status == "Active"){
+    //   console.log("inactivvvvvvvvvvvvvvvvvvvvvvvvv")
+    //   this.btnDisabled = false;
+    // }
       console.log("stat",status);
     this.contactForm1.get('dob1').setValue(result['email']);
     this.contactForm1.get('firstName').setValue(result['first']);
@@ -681,17 +909,120 @@ this.toggle3();
     this.driverdata = result['driverdata'];
     this.contactForm3.get('quoted').setValue(result['quoteid']);
     this.contactForm3.get('quotestat').setValue(result['quotestatus']);
+    this.contactForm3.get('typeofaction').setValue(result['typeofaction']);
     console.log(result['remarks']);
     this.contactForm3.get('remarks').setValue(result['remarks']);
     this.driverservice.driver(this.driverdata);
     if(result['quotestatus'] == "Active"){
+      console.log("11111111111111111111111111")
       this.btnDisabled = true;
-      this.btnDisablednext = false;
-      if(this.userrole == "uw"){
+      this.isaddfinal = true;
+      this.printDisabled = false;
+      // this.btnDisablednext = true;
+      this.isduplicatecs = true;
+      if(this.userrole != "cs"){
         this.btnDisableduw = true;
+        this.btnDisabledci = false;
       }
+      else if(this.userrole == "cs"){
+        this.isduplicater = true;
+      }
+      
     }
-   
+    else if(result['quotestatus'] == "Not Issued"){
+      if(this.userrole == "cs"){
+        this.isduplicatecsonly = false
+        this.isduplicatecs =  true
+        this.isaddfinal = false
+        this.btnDisabledcs = true;
+      }
+      else{
+        // this.isduplicatecs = false;
+        // this.btnDisableduw = true;
+        let yr= this.contactForm1.get('Year').value;
+        let covr = this.contactForm2.get('options1').value;
+        let fin = this.contactForm2.get('financed').value;
+        this.currentdate = this.dp.transform(this.today, 'yyyy','es-ES');
+        let check = this.currentdate - yr
+        let quoteid =  this.route.snapshot.paramMap.get('title');
+        console.log("edit",quoteid);  
+          if(quoteid != null){
+            
+            if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+              console.log("vehice yearsss conditionn")
+      this.btnDisabledci = false;
+      this.isduplicatecs = false;
+            }
+            else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+              console.log("financedddddddd conditionnnnnnn")
+              this.btnDisabledci = false;
+              this.isduplicatecs = false;
+            }
+            else{
+              if(this.userrole != 'cs'){
+                this.btnDisabledci = true;
+                this.isduplicatecs = true;
+                this.btnDisabled = true;
+                this.btnDisableduw = true;
+              }
+              else{
+                console.log("in cs not falseeeeeeeeeeeeeeeeeee")
+                this.isduplicatecs = false;
+              }
+            }
+      }
+      }
+      
+ 
+    }
+    else if(result['quotestatus'] == "Declined"){
+      this.btnDisabled = true
+      this.btnDisableduw = true
+      this.isduplicatecs = true
+      this.isaddfinal = false
+    }
+    else if(result['quotestatus'] == "Saved"){
+      this.btnDisableduw = true
+      this.isaddfinal = false
+      this.isduplicatecs = true;
+    }
+ else if(result['quotestatus'] == "Expired" && this.userrole == 'cs'){
+this.isduplicatecs = true;
+this.isduplicatereq = true;
+console.log("11111111111111111111111111")
+ }
+//  else if(result['typeofaction'] == "Requote Request" && this.userrole != 'cs'){
+//   console.log("testttttttttttttttttttttttttttsrrrrrrrrrrr")
+//   this.btnDisabledci = true;
+//   this.btnDisabled = true;
+//   this.btnDisableduw = true;
+//   this.isduplicatecs = true;
+// }
+ else if(result['quotestatus'] == "Expired" && this.userrole != 'cs'){
+   this.btnDisabled = true;
+   this.btnDisableduw = true;
+   this.btnDisabledci = true;
+   this.isduplicatecs = true;
+   console.log("11111111111111111111111111")
+ }
+else if(result['quotestatus'] == "For Review" && this.userrole != 'cs' && result['typeofaction'] == "Referral Review"){
+this.btnDisabled = false;
+this.btnDisableduw = false;
+this.isduplicatecs = true;
+this.btnDisabledci = false;
+console.log("11111111111111111111111111")
+}
+else if(result['quotestatus'] == "For Review" && this.userrole != 'cs' && result['typeofaction'] == "Requote Request"){
+  console.log("11111111111111111111111111")
+  this.btnDisabled = true;
+  this.btnDisableduw = true;
+  this.isduplicatecs = true;
+  this.btnDisabledci = true;
+  }
+
+    // else{
+    //   this.isduplicatecs = false
+    // }
     this.contactForm4.get('addressType').setValue(result['adtype']);
       this.contactForm4.get('streetName').setValue(result['street']);
       console.log(result['countri'])
@@ -701,27 +1032,33 @@ this.toggle3();
     //  this.contactForm4.get('zipCode').setValue(result['zip']);
     //  this.contactForm4.get('cityTown').setValue(result['city']);
  
-    if(!countri)
-    {
-     this.displayFncountry(countri);
-     this.contactForm4.get('country').setValue(result['countri']);
-    }
-    else{
-      console.log("not in countri");
-    }
-   
-   //   this.contactForm4.get('zipCode').setValue(result['zip']);
-   //  console.log(typeof(result['zip']));
-   // this.summaries = Array.of(result['zip']);
-   if(!result['zipc']){
-     this.summaries = [{Zipcode: result['zipc']}];
-     this.Selectedzip = this.summaries[0];
-   }
-   if(!result['citi']){
-     this.towns = [{Town: result['citi']}];
-     this.Selectedtown = this.towns[0];
-   }
+    if(countri !=null || countri != undefined || countri == "")
+ {
+  this.displayFncountry(countri);
+  this.contactForm4.get('country').setValue(result['countri']);
+ }
+ else{
+   console.log("not in countri");
+ }
 
+//   this.contactForm4.get('zipCode').setValue(result['zip']);
+//  console.log(typeof(result['zip']));
+// this.summaries = Array.of(result['zip']);
+if(result['zipc'] !=null || result['zipc'] != undefined || result['zipc'] == ""){
+  this.summaries = [{Zipcode: result['zipc']}];
+  this.Selectedzip = this.summaries[0];
+}
+if(result['citi'] !=null || result['citi'] != undefined || result['citi'] == ""){
+  this.towns = [{Town: result['citi']}];
+  this.Selectedtown = this.towns[0];
+}
+this.contactForm4.get('policystartDate').setValue(result['polstdate']);
+this.contactForm4.get('policyendDate').setValue(result['polendate']);
+this.contactForm4.get('policyType').setValue(result['policytype']);
+this.contactForm4.get('currency').setValue(result['curency']);
+this.contactForm4.get('businessClass').setValue(result['bisclas']);
+this.contactForm4.get('branch').setValue(result['branch']);
+this.contactForm4.get('EngineNumber').setValue(result['engineno']);
 
 
   // if(countri != null || countri != undefined)
@@ -750,12 +1087,18 @@ this.toggle3();
     // this.contactForm2.markAllAsTouched;
     // this.contactForm3.markAllAsTouched;
     if(this.userrole == 'cs'){
-    if(status=='Not Issued'||status=='Expired'){
+    if(status=='Not Issued'){
+      this.contactForm1.enable();
+    }
+    else if(status=='Expired'){
       this.contactForm1.disable();
+      this.contactForm2.disable();
+      this.contactForm3.disable();
     }
     else if(status=='Active'){
       this.contactForm1.disable();
       this.contactForm2.disable();
+      this.view=true;
       this.contactForm3.disable();
     }}
     });  
@@ -786,7 +1129,7 @@ this.toggle3();
       )
   }
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value;
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
@@ -834,16 +1177,18 @@ return value;
   }
   toggle() {
     this.hide = this.show
+    this.isSubmittedradio = false;
     }
     toggle1() {
-      this.hide = !this.show
+      this.hide = !this.show;
+      this.isSubmittedradio = false;
       }
       toggle3() {
         this.sho = !this.sho;
         this.contactForm2.get('losspay').clearValidators();
           this.contactForm2.get('losspay').updateValueAndValidity();
         if(this.contactForm2.get('financed').value == false){
-          this.contactForm2.get('losspay').setValidators([Validators.required])
+          this.contactForm2.get('losspay').setValidators([Validators.required,RequireMatch2])
           this.contactForm2.get('losspay').updateValueAndValidity();
         }
         else{
@@ -851,6 +1196,24 @@ return value;
           this.contactForm2.get('losspay').updateValueAndValidity();
         }
         }
+        vehvalmand(){
+        
+            
+            this.contactForm2.get('vehicleValue').setValidators(Validators.required);
+            this.contactForm2.get('vehicleValue').updateValueAndValidity();
+         
+        
+        
+        }
+        vehvalnotmand(){
+        
+            
+          this.contactForm2.get('vehicleValue').clearValidators();
+          this.contactForm2.get('vehicleValue').updateValueAndValidity();
+       
+      
+      
+      }
   public onResize(event: any): void {
     this.breakpoint = event.target.innerWidth <= 590 ? 1 : 3
   }
@@ -904,7 +1267,8 @@ sd(abcd):void{
 
     height: '800px',
     
-    data:{abcd:this.abcd}
+    data:{abcd:this.abcd},
+    autoFocus: false,
   });
   console.log("sa",this.abcd);
 
@@ -1018,12 +1382,14 @@ if(result){
       var con=this.contactForm1;
       this.dataformservice.driver1(con);
       this.as.dataform = con;
+      console.log("line-1101")
       return this.http.post<any>(environment.URL + '/duplicate', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,emp:emp,sale:sale,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,prod:prod},httpOptions ).subscribe((res: any) => { // not callback
         console.log(res)
         if(res.result == "NoQuote")
         {
  this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        console.log("in newwwwwwwwwwwwwwwwwwwwwww")
         if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
          
@@ -1032,8 +1398,7 @@ if(result){
         }
         else{
           this.openduplicateDialog(res);
-          this.isduplicater = !this.isduplicater;
-          this.isduplicatecs = !this.isduplicatecs;
+          
         }
     }, error => {
       console.error("Error", error);
@@ -1049,6 +1414,7 @@ if(result){
 
   }
   onrequote(){
+    console.log("in requoteee")
     let quoteid = this.contactForm3.get('quoted').value;
     console.log(quoteid);
     var username = localStorage.getItem('name');
@@ -1059,6 +1425,14 @@ if(result){
         var status = "For Review"
         var typeofaction = "Requote Request"
       }
+      // var quotetsatus = this.contactForm3.get('quotestat').value;
+      // if(quotetsatus){
+      //   if(quotetsatus == "Expired"){
+      //     // This is for expired quotes and duplicate quotes differentation
+      //     var typeofaction = "Requote Requested"
+      //   }
+      // }
+      
       const httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       };
@@ -1079,9 +1453,30 @@ if(result){
       data:{
         quotedata: quotedata,
       },
+      
+      autoFocus: false,
     });
+    
     dialogRef.afterClosed().subscribe(result => {
    console.log("after closed ", result);
+   //hell bent 
+  //  this.router.navigate(['/quotepage',{dup:"123"}]);
+  console.log(result);
+  if (result !="yes") {
+
+ 
+  this.router.navigate(['/quotepage',{dup:"123"}]);
+   this.dupnext = true;
+   this.btnDisabledcs = true;
+   this.isduplicater = true;
+   this.isduplicatereq = !this.isduplicatereq;
+   this.btnDisabled = true;
+   this.btnDisableduw = true;
+   this.isduplicatecs = true;
+   this.btnDisabledci = true;
+   if(this.userrole == "cs"){
+    this.isduplicatecs = !this.isduplicatecs;
+   }
    
    this.contactForm1.get('dob1').setValue(result['quotedata']['email']);
    this.contactForm1.get('firstName').setValue(result['quotedata']['first']);
@@ -1183,9 +1578,13 @@ if(result){
  
   //  this.contactForm4.get('cityTown').setValue(result['town']);
   //  this.towns = result['town'];
-   this.contactForm1.disable();
+  if(this.userrole == 'cs'){
+    this.contactForm3.disable();
+    this.contactForm1.disable();
    this.contactForm2.disable();
-   this.contactForm3.disable();
+  }
+   
+   
    this.contactForm1.markAllAsTouched;
    this.contactForm2.markAllAsTouched;
    this.contactForm3.markAllAsTouched;
@@ -1197,7 +1596,11 @@ if(result){
           (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
         }
       }
-    })
+    }
+    else{
+      this.dupnext = true;
+    }
+  })
   }
 
   // driverdata(arg0: string, driverdata: any) {
@@ -1211,26 +1614,96 @@ if(result){
   //   this.moveToSelectedTab1('Premium Summary')
   //   console.log("in pre")
   // }
+
   moveToSelectedTab1(tabName: string) {
     this.contactForm2.enable();
+    this.isSubmittedradio = true;
    if(this.child.driverdata.length !=0){
+    console.log("check1111111111111111111");
+    let quotei =  this.route.snapshot.paramMap.get('view');
+  console.log("view",quotei);  
+    if(quotei != null){
+      console.log("not null");
+      this.contactForm2.get('losspay').clearValidators();
+      this.contactForm2.get('losspay').updateValueAndValidity();
+  }
+  let quoteid =  this.route.snapshot.paramMap.get('title');
+  console.log("edit",quoteid);  
+    if(quoteid != null){
+      console.log("not null");
+      this.contactForm2.get('losspay').clearValidators();
+      this.contactForm2.get('losspay').updateValueAndValidity();
+    
+  }
+    
+    if(!this.contactForm2.valid) {
+      this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+      console.log(this.contactForm2.get('options1').value)
+      if(this.contactForm2.get('options1').value){
+console.log("sss")
+this.isSubmittedradio = false
+      }
+      else{
+        this.isSubmittedradio = true
+      }
+      
+      console.log("check1111111111111111111");
+      return false;
+    } 
     if(this.contactForm2.valid){
-      this.tabGroup._tabs['_results'][2].disabled = false;
-      for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
-        if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
-          (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
-          console.log("drivertable values",this.child.driverdata);
+      console.log("check1111111111111111111");
+     let yr= this.contactForm1.get('Year').value;
+      let covr = this.contactForm2.get('options1').value;
+      let fin = this.contactForm2.get('financed').value;
+      this.currentdate = this.dp.transform(this.today, 'yyyy','es-ES');
+      let check = this.currentdate - yr
+      let quoteid =  this.route.snapshot.paramMap.get('title');
+  console.log("edit",quoteid);  
+    if(quoteid == null){
+      
+      if(check > 10 && covr != "TP" && this.userrole == 'uw'){
+        console.log("vehice yearsss conditionn")
+this.btnDisabledci = false;
+this.isduplicatecs = false;
+      }
+      else if(fin == true && covr != "COMP" && this.userrole == 'uw'){
+        console.log("financedddddddd conditionnnnnnn")
+        this.btnDisabledci = false;
+        this.isduplicatecs = false;
+      }
+      else{
+        if(this.userrole != 'cs'){
+          this.btnDisabledci = true;
+          this.isduplicatecs = true;
+        }
+        else{
+          console.log("in cs not falseeeeeeeeeeeeeeeeeee")
+          this.isduplicatecs = false;
         }
       }
+  } 
+ 
+      this.tabGroup._tabs['_results'][2].disabled = false;
+      for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
+        console.log("check1111111111111111111");
+        if ((<HTMLElement>document.querySelectorAll('.mat-tab-label-content')[i]).innerText == tabName) {
+          (<HTMLElement>document.querySelectorAll('.mat-tab-label')[i]).click();
+          console.log("check1111111111111111111");
+        }
+      }
+      
       this.onSubmit();
-      console.log("drivertable values",this.child.driverdata);
+       console.log("drivertable values",this.child.driverdata);
+      console.log("check1111111111111111111");
     }
     else{
-      this.openSnackBar("Please fill the mandatory fields", "Dismiss")
+      this.openSnackBar("Please fill the mandatory fields2", "Dismiss")
+      
     }
  }
  else{
   this.openSnackBar("Atleast one driver should be added", "Dismiss")
+  this.isSubmittedradio = false
 }
 }
   moveToSelectedTab2(tabName: string) {
@@ -1283,9 +1756,16 @@ addremarkstest() {
     console.log("in uw next")
     this.contactForm1.enable();
     if(this.contactForm1.valid){
-      if(this.userrole == 'cs'){
-        this.contactForm1.disable();
+      let quotestat = this.contactForm3.get('quotestat').value;
+      if(quotestat == "Not Issued"){
+        this.contactForm1.enable();
       }
+      else{
+        if(this.userrole == 'cs'){
+          this.contactForm1.disable();
+        }
+      }
+      
       // this.contactForm1.disable();
       this.tabGroup._tabs['_results'][1].disabled = false;
       for (let i =0; i< document.querySelectorAll('.mat-tab-label-content').length; i++) {
@@ -1294,7 +1774,7 @@ addremarkstest() {
           var con=this.contactForm1;
           this.dataformservice.driver1(con);
           this.as.dataform = con;
-
+          console.log("line-1391")
         }
       }
     }
@@ -1480,6 +1960,7 @@ addremarkstest() {
       console.log(losspayee);
       
       let losslocation = this.contactForm2.get('lossloc').value;
+      console.log(losslocation)
       let vehiclevalue = this.contactForm2.get('vehicleValue').value;
       let alam = this.contactForm2.get('alarm').value;
       let coverinfo = this.contactForm3.get('coverageinfo').value;
@@ -1522,9 +2003,21 @@ addremarkstest() {
       }
       else if(actionvalue == "complete"){
         quotestatus = "Active"
-        reviewstatus = ""
+        reviewstatus = "Completed"
+        typeofaction = null
       }
-      var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
+      if(this.userrole != "cs"){
+        console.log("in updated date")
+        if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
+          console.log("in updated date")
+          var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd HH:mm','es-ES');
+        }
+        
+      }
+      else{
+        console.log("not in updated date")
+        lastupdated = null
+      }
       // var lastupdated = this.dp.transform(this.today, 'yyyy-MM-dd','es-ES');
       console.log("last updateddddddd");
       console.log(lastupdated)
@@ -1533,29 +2026,29 @@ addremarkstest() {
       };
       console.log(losspayee);
       console.log(typeof(losspayee));
-      if(losslocation == null || losslocation == undefined || losslocation === ""){
+      if(losslocation == null || losslocation == undefined || losslocation == ""){
         console.log("in loc");
-        losslocation = ''
+        losslocation = null
       }
-      if(losspayee == null || losspayee == undefined || losspayee === ""){
+      if(losspayee == null || losspayee == undefined || losspayee == ""){
         console.log("in pay");
-        losspayee = ''
+        losspayee = null
       }
       let adtype = this.contactForm4.get('addressType').value;
       if(adtype == null || adtype == undefined){
-        adtype = ''
+        adtype = null
       }
       let street = this.contactForm4.get('streetName').value;
       if(street == null || street == undefined){
-        street = ''
+        street = null
       }
       let countri = this.contactForm4.get('country').value;
       if(countri == null || countri == undefined){
-        countri = ''
+        countri = null
       }
       let zip = this.contactForm4.get('zipCode').value;
       if(zip == null || zip == undefined){
-        zip = ''
+        zip = null
       }
       else{
         zip= zip['Zipcode'];
@@ -1577,29 +2070,45 @@ addremarkstest() {
       if(userrole == "uw" && actionvalue == "Save"){
         var reviewstatus = "For Review"
         var quotestatus = "For Review"
+        var typeofaction = "Referral Review"
+      }
+      if(actionvalue == "Submitreview"){
+        var reviewstatus = "For Review"
+        var quotestatus = "For Review"
         var typeofaction = ""
       }
       if(actionvalue == "Save" || actionvalue == "Savedcs" || actionvalue == "complete"){
-        return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,occp:occp,
-          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
+        return this.http.post<any>(environment.URL + '/onsave', {first:first,last:last,dob:dob,idtype:idtype,idnumber:idnumber,mob:mob,email:email,
+          occp:occp,
+          emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,
+          losspayee:losspayee,
           losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
           manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-          driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,
-          adtype:adtype,street:street,countri:countri,zipc:zip,citi:city},httpOptions ).subscribe((res: any) => { // not callback
+          driverd: this.child.driverdata,autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,
+          reviewstatus:reviewstatus,quotestatus:quotestatus,
+          adtype:adtype,street:street,countri:countri,zipc:zip,citi:city,actionvalue:actionvalue},httpOptions ).subscribe((res: any) => { // not callback
           console.log("========================");
             console.log(res);
             console.log(res.result);
             console.log(res.quotestatus);
           let qd = res.result;
           let qs = res.quotestatus;
-          console.log("in on save");
-          this.openquoteDialog(qd,qs);
+          console.log("in on saverrrrr");
+          console.log(qs);
+  if(qs == "Active"){
+    this.openquoteDialogactive(qd,qs);
+  }
+  else{
+    this.openquoteDialog(qd,qs);
+  }
+            
+      
       }, error => {
         console.error("Error", error);
       });
       }
       
-      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved"){
+      else if(actionvalue == "Active" || actionvalue == "Declined" || actionvalue == "Saved" || actionvalue == "Submitreview"){
         console.log(actionvalue);
         let quoteid = this.contactForm3.get('quoted').value;
         if(actionvalue == "Declined" || actionvalue == "Saved"){
@@ -1617,7 +2126,7 @@ addremarkstest() {
               emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
               losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
               manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-              driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
+              driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated,actionvalue:actionvalue},httpOptions ).subscribe((res: any) => { // not callback
     console.log(res);
               console.log("in on save-Approve or Decline");
               if(res['quotestaus'] == "Active")
@@ -1639,6 +2148,12 @@ addremarkstest() {
                   this.router.navigateByUrl('/home');
                   }, 3000);
               }
+              else if(res['quotestaus'] == "For Review"){
+                console.log("in testttttttttttttttttttttt")
+                  let qd = res['quoteid']
+                  let qs = res['quotestaus']
+                this.openquoteDialog(qd,qs);
+              }
           }, error => {
             console.error("Error", error);
           });
@@ -1651,7 +2166,7 @@ addremarkstest() {
             emp:emp,sale:sale,prod:prod,make:make,yr:yr,cc:cc,use:use,vehicletype:vehicletype,soft:soft,ct:ct,finance:finance,claimfre:claimfre,losspayee:losspayee,
             losslocation:losslocation,vehiclevalue:vehiclevalue,alam:alam,coverinfo:coverinfo,manloadp:manload,manloadr:manloadr,
             manualdisc:manualdis,manualdiscr:manualdiscr,fleet:fleet,promotion:promotion,tax:tax,annualgp:annualgp,netpre:netpre,
-            driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated},httpOptions ).subscribe((res: any) => { // not callback
+            driverd: this.child.driverdata.filter(value => Object.keys(value).length !== 0),autod: this.ncdvalue,remarks:remarks,typeofaction:typeofaction,username:username,userrole:userrole,reviewstatus:reviewstatus,quotestatus:quotestatus,lastupdated:lastupdated,actionvalue:actionvalue},httpOptions ).subscribe((res: any) => { // not callback
   console.log(res);
             console.log("in on save-Approve or Decline");
             if(res['quotestaus'] == "Active")
@@ -1673,6 +2188,12 @@ addremarkstest() {
                 this.router.navigateByUrl('/home');
                 }, 3000);
             }
+            else if(res['quotestaus'] == "For Review"){
+                console.log("in testttttttttttttttttttttt")
+                  let qd = res['quoteid']
+                  let qs = res['quotestaus']
+                this.openquoteDialog(qd,qs);
+              }
         }, error => {
           console.error("Error", error);
         });
@@ -1717,6 +2238,7 @@ addremarkstest() {
       }
   }
   openquoteDialog(quoteid, quotestatus) {
+    console.log(quotestatus);
     const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
       width: '450px',
       height: '250px',
@@ -1724,11 +2246,39 @@ addremarkstest() {
         quoteid: quoteid,
         quotestatus:quotestatus,
       },
+      autoFocus: false,
     });
     dialogRef1.afterClosed().subscribe(() => {
       this.router.navigateByUrl('/home');
       // window.location.reload();
        })
+  }
+  openquoteDialogactive(quoteid, quotestatus) {
+    const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
+      disableClose: true,
+      width: '450px',
+      height: '250px',
+      data:{
+        quoteid: quoteid,
+        quotestatus:quotestatus,
+      },
+    });
+    
+    
+    dialogRef1.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result =="yes") {
+        console.log(result);
+        this.btnDisablednext = true;
+        this.isaddfinal = true;
+        this.btnDisabledci = false;
+        this.isduplicatecs = true;
+        this.moveToSelectedTab2("Additional Details");
+      }
+      else{
+        this.router.navigateByUrl('/home');
+      }
+  });
   }
   onquoteletter(){
     console.log("in qlet");
@@ -1736,6 +2286,7 @@ addremarkstest() {
       let last = this.contactForm1.get('lastName').value;
       let prod = this.contactForm1.get('Product').value;
       let make = this.contactForm1.get('userInput').value;
+      let quoteid = this.contactForm3.get('quoted').value;
       console.log(make);
       let financed =  this.contactForm2.get('financed').value;
       console.log(financed);
@@ -1756,7 +2307,7 @@ addremarkstest() {
       let vehval = this.contactForm2.get('vehicleValue').value;
       let discp = this.discp;
       let anp = this.anp;
-      var quotedata ={vehval:vehval,cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar,discp:discp,anp:anp};
+      var quotedata ={vehval:vehval,cover:cover,first:first,last:last,prod:prod,make:make,losspayee:losspayee,netpre:netpre,deduct:deduct,promotion:promotion,username:username,driverwar:driverwar,discp:discp,anp:anp,quoteid:quoteid};
     // this.quoteletterservice.quoteletter(quotedata);
     
     this.openquotelet(quotedata);
@@ -1768,9 +2319,11 @@ addremarkstest() {
       height: '800px',
       
       data:{quotedata:quotedata,},
+      autoFocus: false,
     });
     
   }
+  
   OncountrySelected(Selectedcountry) {
     
     console.log('### Trigger');
@@ -1831,3 +2384,41 @@ console.log(Selectedzip);
 
 }
 
+ 
+export function RequireMatch(control: AbstractControl) {
+    const selection: any = control.value;
+    if (typeof selection === 'string') {
+      console.log(selection)
+        return { incorrect: true };
+    }
+    console.log("yass")
+    return null;
+}
+export function RequireMatch1(control: AbstractControl) {
+  const selection: any = control.value;
+    if (typeof selection === 'number') {
+      console.log(selection)
+        return { incorrect1: true };
+    }
+    console.log("yass")
+    return null;
+}
+export function RequireMatch2(control: AbstractControl) {
+  const selection: any = control.value;
+  if (typeof selection === 'string') {
+    console.log(selection)
+      return { incorrect2: true };
+  }
+  console.log("yass")
+  return null;
+}
+export function RequireMatch3(control2: AbstractControl) {
+  const selection1: any = control2.value;
+  if (typeof selection1 === 'string') {
+    console.log(selection1)
+      return { 
+        incorrecta: true };
+  }
+  console.log("yass")
+  return null;
+}

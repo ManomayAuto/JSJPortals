@@ -48,9 +48,12 @@ export class DrivertableComponent implements OnInit {
   length: any;
   and: any;
   trail: any;
+  date: Date;
   constructor(private driverservice: driverservice,private dataformservice:dataformservice,public dialog: MatDialog,
     private route: ActivatedRoute,
-    public snackBar: MatSnackBar,private asp : dataformservice,) { }
+    public snackBar: MatSnackBar,private asp : dataformservice,) {
+      this.date = new Date();
+     }
 
  
 
@@ -63,6 +66,9 @@ export class DrivertableComponent implements OnInit {
       let quoteid =  this.route.snapshot.paramMap.get('view');
       console.log("view driver",quoteid);
       let act =  this.route.snapshot.paramMap.get('edit');
+      let dupc =  this.route.snapshot.paramMap.get('dup');
+      console.log("button try")
+      console.log("dup driver",dupc);
       if(quoteid != null||quoteid != undefined){
         console.log("vi111",quoteid);
         this.view=true;
@@ -70,6 +76,10 @@ export class DrivertableComponent implements OnInit {
       if(act != null||act != undefined){
        
         this.view=true;
+      }
+      if(dupc != null){
+       
+       this.view=true;
       }
       this.driverdata = data
       console.log("in driver table now ng after view");
@@ -190,9 +200,12 @@ editUser(user) {
 })
 export class DialogOverviewExampleDialog {
   public breakpoint: number;
+  date: Date;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: anl) {}
+    @Inject(MAT_DIALOG_DATA) public data: anl) {
+      this.date = new Date();
+    }
 
   onNoClick(): void {
     this.dialogRef.close();

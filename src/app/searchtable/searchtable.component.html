@@ -41,7 +41,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Quote ID </mat-header-cell>
                     <mat-cell *matCellDef="let element" data-label="QuoteID"> {{element.QuoteID}} </mat-cell>
                   </ng-container>
-              
+               
                   <!-- Name Column -->
                   <ng-container matColumnDef="QuoteIssuanceDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header> Quote Issuance Date </mat-header-cell>
@@ -58,7 +58,7 @@
                     <mat-cell mat-button *matCellDef="let element" data-label="edit">
                       <button mat-button (click)="getRed(element.QuoteID)" style="color:rgb(19, 152, 204)">View</button>
                         <button mat-button *ngIf="this.userrole != 'cs' || element.QuoteStatus == 'Expired' || element.QuoteStatus == 'Not Issued' 
-                        || element.QuoteStatus == 'Active'" (click)="getRecord(element.QuoteID,element.QuoteStatus)"
+                        || element.QuoteStatus == 'Active'" [disabled]="element.QuoteStatus == 'Declined'||element.QuoteStatus =='Submitted to InBroker'" (click)="getRecord(element.QuoteID,element.QuoteStatus)"
                          style="color:rgb(19, 152, 204)">Edit</button>
                     </mat-cell>
                   </ng-container>

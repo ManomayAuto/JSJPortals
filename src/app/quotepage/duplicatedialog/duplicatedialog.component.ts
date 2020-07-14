@@ -21,4 +21,8 @@ if (data) {
   dupquotedata(){
     this.dialogRef.close(this.data);
 }
+yes(data){
+  console.log(data);
+  this.dialogRef.close(data);
+  }
 }

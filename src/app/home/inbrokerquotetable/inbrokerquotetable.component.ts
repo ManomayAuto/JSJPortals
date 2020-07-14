@@ -9,8 +9,7 @@ export interface PeriodicElement {
   INBIssuanceOrderNumber:string,
 }
 const ELEMENT_DATA: PeriodicElement[] = [
-  {Sno: 1, QuoteID: 'QPV1012', INBClientCode: '178505', INBIssuanceOrderNumber: '824561'},
-  {Sno: 2, QuoteID: 'QPV1009', INBClientCode: '178602', INBIssuanceOrderNumber:'824575'},
+
 ];
 @Component({
   selector: 'app-inbrokerquotetable',

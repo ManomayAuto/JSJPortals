@@ -9,7 +9,7 @@
     <mat-tab label="Quote"> <mat-tab-group #tabGroup (selectedTabChange)="test($event)">
 
    <mat-tab label="Basic Details">    
-    <form (ngSubmit)='moveToSelectedTab("Coverage /Driver Details")' [formGroup]="contactForm1">
+    <form (ngSubmit)='moveToSelectedTab("Coverage/Driver Details")' [formGroup]="contactForm1">
     <mat-card>Personal Details</mat-card><mat-grid-list style="margin-top:-20px" cols="2" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
 
   <mat-grid-tile>
@@ -33,9 +33,10 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input matInput   [matDatepicker]="picker" placeholder="Date of Birth" required formControlName="dab">
+        <input matInput  [matDatepicker]="picker" [max]="tomorrow" placeholder="Date of Birth" required formControlName="dab">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>
+
         <!-- <input matInput type="text" placeholder="Date of Birth" formControlName="middleName"> -->
       </mat-form-field>
     </div>
@@ -67,14 +68,14 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input matInput type="number" placeholder="Mobile Number" formControlName="dob" >
+        <input matInput type="number" placeholder="Mobile Number" formControlName="dob" required>
       </mat-form-field>
     </div>
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input matInput type="email" placeholder="Email Id" formControlName="dob1" >
+        <input matInput type="email" placeholder="Email Id" formControlName="dob1" required>
       </mat-form-field>
     </div>
   </mat-grid-tile>
@@ -108,8 +109,8 @@
   </mat-grid-tile>
   <mat-grid-tile>
     <div class="text-inside" style="height: 50px;">
-      <a mat-raised-button color="primary" style="color:white" (click)="existing()">Search For Existing Client</a>
-      <mat-checkbox class="example-margin" formControlName="clienttype" [(ngModel)] = "disabled" [checked]="false"></mat-checkbox>
+      <button mat-button color="primary" style="color:white" [disabled]="this.searchbutton" (click)="existing(); $event.preventDefault();">Search For Existing Client</button>
+      <mat-checkbox class="example-margin" formControlName="clienttype"  [(ngModel)] = "disabled" [checked]="false"></mat-checkbox>
       <!-- <button mat-stroked-button style="margin-top:-40px"></button> -->
     </div>
   </mat-grid-tile>
@@ -152,12 +153,16 @@
         </ng-container>
       </mat-autocomplete> -->
       <mat-form-field class="example-full-width">
-        <input type="text" matInput placeholder="Make-Model-CC" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
+        <input type="text" matInput [readonly]= "isReadOnlymake" placeholder="Make-Model-CC*" aria-label="Number" formControlName="userInput" [matAutocomplete]="auto">
+        <mat-error *ngIf="contactForm1.get('userInput').hasError('incorrect')">
+          Please select a valid Make-Model-CC
+      </mat-error>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let option of filteredOption | async" [value]="option" style="line-height:normal;white-space: normal;">
             {{option.MakeModelCC}}
           </mat-option>
         </mat-autocomplete>
+       
       </mat-form-field>
     </div>
   </mat-grid-tile>
@@ -208,12 +213,15 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
-        <input type="text" placeholder="Manufacturer Year" aria-label="Number" matInput formControlName="Year" [matAutocomplete]="auto1" required>
+        <input type="number" placeholder="Manufacturer Year" aria-label="Number" matInput formControlName="Year" [matAutocomplete]="auto1" required>
+        <mat-error *ngIf="contactForm1.get('Year').hasError('incorrect1')">
+          Please select a valid Year from the list
+      </mat-error>
         <mat-autocomplete #auto1="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{option}}
           </mat-option>
-        </mat-autocomplete>
+        </mat-autocomplete> 
       </mat-form-field>
     </div>
 
@@ -224,11 +232,11 @@
     </div>
   </mat-grid-tile>
 </mat-grid-list>
-<div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
-<button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage /Driver Details')" style="margin-left:50px">Next</button>
-</div></form>   </mat-tab>
-<mat-tab label="Coverage /Driver Details" [disabled]="true">
+<div class="text-inside" *ngIf="!this.dupnext" style="text-align: right;padding-bottom: 20px;">
+<button mat-raised-button color="primary" [autofocus]="false" *ngIf="!this.dupnext" type="submit" style="margin-left:50px">Next</button>
+
+</div></form><div class="text-inside" *ngIf="this.dupnext" style="text-align: right;padding-bottom: 20px;"><button mat-raised-button color="primary" *ngIf="this.dupnext" (click)="uwnext('Coverage/Driver Details')" [autofocus]="false" style="margin-left:50px">Next</button></div>   </mat-tab>
+<mat-tab label="Coverage/Driver Details" [disabled]="true">
    
   <form fxLayout="column" (ngSubmit)='moveToSelectedTab1("Premium Summary")' [formGroup]="contactForm2">
 
@@ -246,11 +254,17 @@
         <div class="text-inside" *ngIf="(sho)">
           <mat-form-field class="example-full-width" *ngIf="(sho)">
             <input type="text" [(ngModel)]="Selectedlosspay" matInput placeholder="Loss Payee Name" aria-label="Number" formControlName="losspay" [matAutocomplete]="lossauto">
+            <mat-error *ngIf="contactForm2.get('losspay').hasError('incorrect2')">
+              Please select a valid Loss Payee Name
+          </mat-error>
             <mat-autocomplete #lossauto="matAutocomplete" [displayWith]="displayFnloss">
               <mat-option (click)="OnlossSelected(Selectedlosspay)" *ngFor="let lossoption of filteredOptionloss | async" [value]="lossoption" style="line-height:normal;white-space: normal;">
                 {{lossoption.Description}}
               </mat-option>
             </mat-autocomplete>
+            <mat-error *ngIf="contactForm2.get('losspay').hasError('incorrect')">
+              Please select a valid Loss Payee Name
+          </mat-error>
           </mat-form-field>
         </div>
       </mat-grid-tile>
@@ -289,13 +303,15 @@
         <mat-grid-list style="margin-top:-60px" cols="3" [cols]="breakpoint" rowHeight="125px" (window:resize)="onResize($event)">
    
           <mat-grid-tile style="margin-top: 50px;">
-            <label id="example-radio-group-label" *ngIf="contactForm2.get('options1').hasError('required')" style="color: red;">Type of cover *:</label> 
-  
-            <label id="example-radio-group-label" *ngIf="!contactForm2.get('options1').hasError('required')">Type of Cover *:</label>
-           <mat-radio-button class="example-radio-button" name="COMP" value="COMP" (click)="toggle1()" style="margin-left: 20px;">
+            <label id="example-radio-group-label" *ngIf="isSubmittedradio && contactForm2.get('options1').hasError('required')" style="color: red;">Type of Cover *:</label> 
+            <label id="example-radio-group-label" *ngIf="!isSubmittedradio">Type of Cover *:</label>
+           <mat-radio-button class="example-radio-button" *ngIf="!isduplicater" name="COMP" value="COMP" (click)="toggle1();vehvalmand();" style="margin-left: 20px;">
               Comprehensive
             </mat-radio-button>
-
+            <mat-radio-button class="example-radio-button" *ngIf="isduplicater" name="COMP" value="COMP" style="margin-left: 20px;">
+              Comprehensive
+            </mat-radio-button>
+           
            
              
        
@@ -303,17 +319,22 @@
         </mat-grid-tile>
         <mat-grid-tile style="margin-top: 50px;">
          
-            <mat-radio-button name="TPFT" (click)="toggle1()" value="TPFT" [disabled]="selectDisabled">
+            <mat-radio-button  *ngIf="!isduplicater" name="TPFT" (click)="toggle1();vehvalnotmand();" value="TPFT" [disabled]="selectDisabled">
               Third Party,Fire & Theft
-            </mat-radio-button>  
+            </mat-radio-button> 
+            <mat-radio-button  *ngIf="isduplicater" name="TPFT" value="TPFT" [disabled]="selectDisabled">
+              Third Party,Fire & Theft
+            </mat-radio-button>   
      
          </mat-grid-tile>
         <mat-grid-tile style="margin-top: 50px;">
          
-            <mat-radio-button name="TP" (click)="toggle()" value="TP" [disabled]="selectDisabled">
+            <mat-radio-button *ngIf="!isduplicater" name="TP" (click)="toggle()" value="TP" [disabled]="selectDisabled">
               Third Party
             </mat-radio-button>
-           
+            <mat-radio-button *ngIf="isduplicater" name="TP" value="TP" [disabled]="selectDisabled">
+              Third Party
+            </mat-radio-button>
          </mat-grid-tile>
 
         </mat-grid-list>
@@ -326,7 +347,7 @@
     <mat-grid-tile style="right: unset !important">
       <div class="text-inside" *ngIf="(hide)">
         <mat-form-field>
-          <input matInput type="text" placeholder="Vehicle Value" formControlName="vehicleValue">
+          <input matInput type="number" min="1" oninput="validity.valid||(value='');" placeholder="Vehicle Value" formControlName="vehicleValue">
         </mat-form-field>
  
       </div>
@@ -341,7 +362,7 @@
   
 <app-drivertable></app-drivertable>
   <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-    <button mat-raised-button color="primary" style="margin-left:50px" type="submit">Next</button>
+    <button mat-raised-button color="primary" [autofocus]="false" style="margin-left:50px" type="submit">Next</button>
     </div>
 </form>
 </mat-tab>
@@ -452,111 +473,40 @@
           <div  *ngIf="isduplicate" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Quote Status</label></div>
           <div  *ngIf="isduplicate" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="quotestat" class="form-control" readonly/></div>
       </div>
-        <button mat-raised-button color="primary" (click)="onSubmit()" style="float: right;margin-bottom: 20px;">Generate Premium</button>
+      <div *ngIf="isduplicate" class="row">
+        <div  *ngIf="isduplicate" class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3"><label for="exampleInput" id="ijjpe">Type of Action</label></div>
+        <div  *ngIf="isduplicate" class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-12 py-3"><input type="text" formControlName="typeofaction" class="form-control" readonly/></div>
+    </div>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [autofocus]="false" style="float: right;margin-bottom: 20px;">Generate Premium</button>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;margin-top:80px">
  
-  <a mat-raised-button color="primary" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</a>
+  <button mat-raised-button color="primary" [autofocus]="false" [disabled] = "printDisabled" (click)="onquoteletter()" style="margin-left:5px">Print or Preview</button>
  
  
-    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" [disabled] = "btnDisabled" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
+    <button mat-raised-button color="primary" #Active (click)="onSave('Active')" [autofocus]="false" [disabled] = "btnDisabled" id="Active" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Approve</button>
    
    
-      <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
+      <button mat-raised-button color="primary" #Declined (click)="onSave('Declined')" [autofocus]="false" [disabled] = "btnDisabled" id="Declined" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Decline</button>
      
-      <button mat-raised-button color="primary" #Saved (click)="onSave('Saved')" [disabled] = "btnDisableduw" id="Saved" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
-      <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
-      <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [disabled] = "!btnDisabled" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
-        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
-        <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicater" style="margin-left:5px">Requote</button>
+      <button mat-raised-button color="primary" #Saved (click)="onSave('Saved')" [autofocus]="false" [disabled] = "btnDisableduw" id="Saved" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Save</button>
+      <button mat-raised-button color="primary" #Savedcs (click)="onSave('Savedcs')" [autofocus]="false" [disabled] = "btnDisabledcs" id="Savedcs" *ngIf="this.userrole == 'cs'" style="margin-left:5px">Save</button>
+      <button mat-raised-button color="primary" #complete (click)="onSave('complete')" [autofocus]="false" [disabled] = "!btnDisabledci" id="complete" *ngIf="this.userrole != 'cs'" style="margin-left:5px">Complete Issuance</button>
+        <button mat-raised-button color="primary" #Save (click)="onSave('Save')" id="Save" [autofocus]="false" *ngIf="this.userrole != 'uw Manager' && !isduplicatecs" style="margin-left:5px">Submit For Review</button>
+        <button mat-raised-button color="primary" #Submitreview (click)="onSave('Submitreview')" [autofocus]="false" id="Submitreview" *ngIf="this.userrole != 'uw Manager' && !isduplicatecsonly" style="margin-left:5px">Submit For Review</button><!--For saved quotes from cs users-->
+        <button mat-raised-button color="primary" (click)="onrequote()" *ngIf="this.userrole == 'cs' && isduplicatereq" [autofocus]="false" style="margin-left:5px">Requote</button>
      
    
-        <button mat-raised-button color="primary" style="margin-left:5px" [disabled] = "btnDisablednext" *ngIf="isaddfinal" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
+        <button mat-raised-button color="primary" style="margin-left:5px" [disabled] = "btnDisablednext" *ngIf="isaddfinal" [autofocus]="false" (click)='moveToSelectedTab2("Additional Details")' >Next</button>
         </div>
     </div>
-
-    <!-- <div class="form-group row"><label for="inputEmail3" class="col-sm-2 col-form-label" style="margin-top: 13px;">Coverage Information</label>
-        <div class="col-sm-10"><input type="text" placeholder="" formControlName="coverageinfo" class="form-control" style="margin-top: 13px;" readonly /></div>
-    </div>
-    <div class="form-group row" style="height: 55px;">
-      <div class="col-form-label col-sm-2">Automatic Discount % </div>
-      <div class="col-sm-10"> <div class="basic-container">
-        <mat-accordion style="height:38px !important">
-        <mat-expansion-panel hideToggle="true" #xyz>
-          <mat-expansion-panel-header>
-            {{ncdvalue}} <span class="example-spacer"></span><div class="ad" style="text-align: center;" ><mat-icon *ngIf="!xyz.expanded" style="text-align: right;">info</mat-icon>
-              <mat-icon *ngIf="xyz.expanded" style="text-align: right;">arrow_drop_down</mat-icon></div>
-             
-       
-          </mat-expansion-panel-header>
-          NCD {{ncdvalue}}
-        </mat-expansion-panel>
-     
-      </mat-accordion>
-      </div></div>
-  </div>
-    <div class="form-group row"><label for="inputPassword3" class="col-sm-2 col-form-label" style="margin-top: 15px;">Manual Load %</label>
-        <div class="col-sm-10">
-            <div class="row">
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="number" placeholder="" onKeyPress="if(this.value.length==3) return false;" min="0" max="100" formControlName="manualloadp" class="form-control"/></div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" placeholder="Reason for Load" formControlName="manualloadr" class="form-control"/></div>
-            </div>
-        </div>
-    </div>
-    <div class="form-group row"><label for="inputPassword3" class="col-sm-2 col-form-label" style="margin-top: 15px;" >Manual Discount %</label>
-        <div class="col-sm-10">
-            <div class="row">
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="number" placeholder="" onKeyPress="if(this.value.length==3) return false;" min="0" max="100" formControlName="manualdisc" class="form-control"/></div>
-                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><input type="text" placeholder="Reason for discount" formControlName="manualdiscr" class="form-control"/></div>
-            </div>
-        </div>
-    </div>
-    <div class="form-group row"><label for="inputPassword3" class="col-sm-2 col-form-label" style="margin-top: 15px;">Additional Discounts</label>
-      <div class="col-sm-10">
-          <div class="row">
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3">   <fieldset class="form-group">
-                <div class="row">
-                    <legend class="col-form-label col-sm-12 pt-0">Fleet Discount% <mat-checkbox class="example-margin" formControlName="fleet"></mat-checkbox></legend>
-                   
-                </div>
-            </fieldset></div>
-              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 py-3"><fieldset class="form-group">
-                <div class="row">
-                    <legend class="col-form-label col-sm-12 pt-0">12 for 11 Promotion Discount%<mat-checkbox class="example-margin" formControlName="promotion"></mat-checkbox></legend>
-                    
-                </div>
-            </fieldset></div>
-          </div>
-      </div>
-  </div>
- 
-   
-   
-    <div class="form-group row"><label for="inputPassword3" class="col-sm-2 col-form-label">Annual Gross Premium (in $)</label>
-      <div class="col-sm-10"><input type="email" placeholder="" formControlName="annualgrosspremium" class="form-control" readonly /></div>
-  </div>
-    <div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Taxes (in $)</label>
-      <div class="col-sm-10"><input type="text"  formControlName="tax" placeholder="" class="form-control" readonly/></div>
-  </div>
-  <div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Annual Net Premium (in $)</label>
-    <div class="col-sm-10"><input type="text" placeholder="" formControlName="netprem" class="form-control" readonly/></div>
-</div>
-<div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Annual Net Premium (in $USD)</label>
-  <div class="col-sm-10"><input type="text" placeholder="" formControlName="netpremusd" class="form-control" readonly/></div>
-</div>
-<div class="form-group row" style="height: 55px;"><label for="inputEmail3" class="col-sm-2 col-form-label">Remarks</label>
-  <div class="col-sm-10"><input type="text" placeholder="" formControlName="remarks" class="form-control"></div>
-</div>
-<div *ngIf="isduplicate" class="form-group row" style="height: 55px;display:none"><label for="inputEmail3" class="col-sm-2 col-form-label">QuoteID</label>
-  <div class="col-sm-10" *ngIf="isduplicate"><input *ngIf="isduplicate" type="text" placeholder="" formControlName="quoted" class="form-control"></div>
-</div> -->
 
 </form>
 </mat-tab>
 <mat-tab label="Additional Details" [disabled]="true">
 <!-- <mat-tab label="Additional Details"> -->
   <form fxLayout="column" (ngSubmit)='addsubmit()' [formGroup]="contactForm4">
-  <mat-card>Personal Details</mat-card> <mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
+  <mat-card>Personal Details</mat-card> <mat-grid-list style="margin-top:-20px" cols="3" [cols]="breakpoint" rowHeight="133px" (window:resize)="onResize($event)">
 
  
 
@@ -585,7 +535,10 @@
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field class="example-full-width">
-        <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
+        <input type="text" [(ngModel)]="Selectedcountry" matInput placeholder="Country*" aria-label="Number" formControlName="country" [matAutocomplete]="countryauto">
+        <mat-error *ngIf="contactForm4.get('country').hasError('incorrecta')">
+          Please select a valid Country from the list
+      </mat-error>
         <mat-autocomplete #countryauto="matAutocomplete" [displayWith]="displayFncountry">
           <mat-option (click)="OncountrySelected(Selectedcountry)" *ngFor="let countryoption of countryfilteredOption | async" [value]="countryoption" style="line-height:normal;white-space: normal;">
             {{countryoption.Country}}
@@ -594,6 +547,8 @@
       </mat-form-field>
     </div>
   </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="3" [cols]="breakpoint" rowHeight="105px" (window:resize)="onResize($event)">
   <mat-grid-tile>
     <div class="text-inside">
       <mat-form-field>
@@ -722,7 +677,7 @@
 </mat-grid-list>
 
 <div class="text-inside" style="text-align: right;padding-bottom: 20px;">
-<button mat-raised-button color="primary" style="margin-left:50px">Submit</button>
+<button mat-raised-button color="primary" [disabled] = "finalsubmitDisabled" [autofocus]="false" style="margin-left:50px">Submit</button>
 </div> </form> </mat-tab>
 </mat-tab-group></mat-tab></mat-tab-group>
 
