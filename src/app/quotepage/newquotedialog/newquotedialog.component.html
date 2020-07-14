@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Quote reference</h1>
 <div mat-dialog-content>
-   <p>Quote with reference - <a style="color:rgb(19, 152, 204)">{{qid}}</a> <a *ngIf="this.qs"> is saved</a><a *ngIf="!this.qs">is submitted for review</a></p><br>
+   <p>Quote with reference - <a style="color:rgb(19, 152, 204)">{{qid}}</a> <a *ngIf="!this.qs">&nbsp;has been saved</a><a *ngIf="this.qs">&nbsp;is submitted for review</a></p><br>
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close >Close</button>

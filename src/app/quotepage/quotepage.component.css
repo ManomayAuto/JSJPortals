@@ -224,3 +224,6 @@ li {
     font-size: 13px;
  }
  
+ .mat-raised-button[disabled][disabled]{
+     display: none;
+ }
