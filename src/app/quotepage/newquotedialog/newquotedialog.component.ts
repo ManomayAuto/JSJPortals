@@ -22,4 +22,5 @@ export class NewquotedialogComponent implements OnInit {
     console.log(data);
     this.dialogRef.close(data);
     }
+    
 }

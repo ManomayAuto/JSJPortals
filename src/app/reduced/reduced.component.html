@@ -1,103 +1,45 @@
 <mat-tab-group class="tabs1">
-    <mat-tab label="Reductions">
-    <mat-tab-group class="tabs2">
-        <mat-tab label="All"><br>
-            <div class="example-container mat-elevation-z8">
-            <table mat-table #MatSort1="matSort" [dataSource]="allSource" class="mat-elevation-z8" matSort>
-              <!-- Name Column --> 
-              <ng-container matColumnDef="ClientName">
-                <mat-header-cell *matHeaderCellDef><h3><b> Client Name </b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">Client Name:</span>
-                  {{user.ClientName}} 
-                </mat-cell>
-              </ng-container>
-    
-              <!-- Symbol Column -->
-              <ng-container matColumnDef="PolicyNum">
-                <mat-header-cell *matHeaderCellDef > <h3><b>Policy Number</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">policy Number:</span>
-                  {{user.PolicyNum}} 
-                </mat-cell>
-              </ng-container>
-    
-              <ng-container matColumnDef="PremDue">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Premium Due</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">Premium Due:</span>
-                  {{user.PremDue| currency: ''}} 
-                </mat-cell>
-              </ng-container>
-              
-              <ng-container matColumnDef="EquityDate">
-                <mat-header-cell *matHeaderCellDef><h3><b> Equity Date</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">Equity Date:</span>
-                  {{user.EquityDate | date:'M/d/yyyy'}} 
-                </mat-cell>
-              </ng-container>
-          
-              <ng-container matColumnDef="DTE">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b> DTE</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label"> DTE:</span>
-                  {{user.DTE}} 
-                </mat-cell>
-              </ng-container>
-    
-              <ng-container matColumnDef="popup">
-                <mat-header-cell  *matHeaderCellDef><h3><b>Record Activity</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user" style="cursor: pointer;">
-                  <mat-icon (click)="openDialog(user.ClientName,user.PolicyNum,user.correspondence,user.Followups,user.PhnNum,user.EmailId)">edit</mat-icon>
-                </mat-cell>
-              </ng-container>
-              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
-              <ng-container matColumnDef="DateCompleted">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let user">             
-                </td>
-              </ng-container>
-
-            </table >
-          </div>
-          </mat-tab>
-      <!--
-        Pending calls
-      -->
-        <mat-tab label="Expired"><br> 
+  <mat-tab label="Reductions">
+  <mat-tab-group class="tabs2">
+      <mat-tab label="All"><br>
           <div class="example-container mat-elevation-z8">
-          <table mat-table #MatSort2="matSort"   [dataSource]="Expired" class="mat-elevation-z8" matSort>
-            <!-- Name Column -->
+          <table mat-table #MatSort1="matSort" [dataSource]="allSource" class="mat-elevation-z8" matSort>
+            <!-- Name Column --> 
             <ng-container matColumnDef="ClientName">
-              <mat-header-cell *matHeaderCellDef><h3><b> Client Name </b></h3></mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header><h3><b> Client Name </b></h3></mat-header-cell>
               <mat-cell *matCellDef="let user"> 
                 <span class="mobile-label">Client Name:</span>
                 {{user.ClientName}} 
               </mat-cell>
             </ng-container>
-    
+  
+            <ng-container matColumnDef="ClientId">
+              <mat-header-cell *matHeaderCellDef><h3><b> Client Id</b></h3> </mat-header-cell>
+              <mat-cell *matCellDef="let user"> 
+                <span class="mobile-label">Client Id:</span>
+                {{user.ClientId}} 
+              </mat-cell>
+            </ng-container>
+
             <!-- Symbol Column -->
             <ng-container matColumnDef="PolicyNum">
-              <mat-header-cell *matHeaderCellDef> <h3><b>Policy Number</b></h3></mat-header-cell>
+              <mat-header-cell *matHeaderCellDef > <h3><b>Policy Number</b></h3></mat-header-cell>
               <mat-cell *matCellDef="let user"> 
                 <span class="mobile-label">policy Number:</span>
                 {{user.PolicyNum}} 
               </mat-cell>
             </ng-container>
-    
+  
             <ng-container matColumnDef="PremDue">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Premium Due</b></h3></mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Total Due</b></h3></mat-header-cell>
               <mat-cell *matCellDef="let user"> 
-                <span class="mobile-label">Premium Due:</span>
+                <span class="mobile-label">Total Due:</span>
                 {{user.PremDue| currency: ''}} 
               </mat-cell>
             </ng-container>
             
             <ng-container matColumnDef="EquityDate">
-              <mat-header-cell *matHeaderCellDef><h3><b> Equity Date</b></h3></mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header><h3><b> Equity Date</b></h3></mat-header-cell>
               <mat-cell *matCellDef="let user"> 
                 <span class="mobile-label">Equity Date:</span>
                 {{user.EquityDate | date:'M/d/yyyy'}} 
@@ -111,11 +53,159 @@
                 {{user.DTE}} 
               </mat-cell>
             </ng-container>
-    
+  
             <ng-container matColumnDef="popup">
-              <mat-header-cell  *matHeaderCellDef><h3><b>Record Activity</b></h3> </mat-header-cell>
+              <mat-header-cell  *matHeaderCellDef><h3><b>Record Activity</b></h3></mat-header-cell>
               <mat-cell *matCellDef="let user" style="cursor: pointer;">
-                <mat-icon (click)="openDialog(user.ClientName,user.PolicyNum,user.correspondence,user.Followups,user.PhnNum,user.EmailId)">edit</mat-icon>
+                <mat-icon (click)="openDialog(user.ClientName,user.PolicyNum,user.correspondence,user.Followups,user.PhnNum1,user.PhnNum2,user.PhnNum3,user.EmailId)">edit</mat-icon>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+            <ng-container matColumnDef="DateCompleted">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let user">             
+              </td>
+            </ng-container>
+
+          </table >
+        </div>
+        </mat-tab>
+    <!--
+      Pending calls
+    -->
+      <mat-tab label="Expired"><br> 
+        <div class="example-container mat-elevation-z8">
+        <table mat-table #MatSort2="matSort"   [dataSource]="Expired" class="mat-elevation-z8" matSort>
+          <!-- Name Column -->
+          <ng-container matColumnDef="ClientName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header><h3><b> Client Name </b></h3></mat-header-cell>
+            <mat-cell *matCellDef="let user"> 
+              <span class="mobile-label">Client Name:</span>
+              {{user.ClientName}} 
+            </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="ClientId">
+            <mat-header-cell *matHeaderCellDef><h3><b> Client Id</b></h3> </mat-header-cell>
+            <mat-cell *matCellDef="let user"> 
+              <span class="mobile-label">Client Id:</span>
+              {{user.ClientId}} 
+            </mat-cell>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="PolicyNum">
+            <mat-header-cell *matHeaderCellDef> <h3><b>Policy Number</b></h3></mat-header-cell>
+            <mat-cell *matCellDef="let user"> 
+              <span class="mobile-label">policy Number:</span>
+              {{user.PolicyNum}} 
+            </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="PremDue">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Total Due</b></h3></mat-header-cell>
+            <mat-cell *matCellDef="let user"> 
+              <span class="mobile-label">Total Due:</span>
+              {{user.PremDue| currency: ''}} 
+            </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="EquityDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header><h3><b> Equity Date</b></h3></mat-header-cell>
+            <mat-cell *matCellDef="let user"> 
+              <span class="mobile-label">Equity Date:</span>
+              {{user.EquityDate | date:'M/d/yyyy'}} 
+            </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="DTE">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b> DTE</b></h3></mat-header-cell>
+            <mat-cell *matCellDef="let user"> 
+              <span class="mobile-label"> DTE:</span>
+              {{user.DTE}} 
+            </mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="popup">
+            <mat-header-cell  *matHeaderCellDef><h3><b>Record Activity</b></h3> </mat-header-cell>
+            <mat-cell *matCellDef="let user" style="cursor: pointer;">
+              <mat-icon (click)="openDialog(user.ClientName,user.PolicyNum,user.correspondence,user.Followups,user.PhnNum1,user.PhnNum2,user.PhnNum3,user.EmailId)">edit</mat-icon>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+          <ng-container matColumnDef="DateCompleted">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let user">             
+            </td>
+          </ng-container>
+
+        </table >
+      </div> 
+    </mat-tab>
+     <!-- 
+      Today's calls
+      -->
+      <mat-tab label="Today's Reductions"><br>
+        <div class="example-container mat-elevation-z8">
+          <table mat-table  #MatSort3="matSort"  [dataSource]="Today" matSort>
+            <!-- Name Column -->
+            <ng-container matColumnDef="ClientName">
+              <mat-header-cell *matHeaderCellDef  mat-sort-header><h3><b> Client Name</b></h3> </mat-header-cell>
+              <mat-cell *matCellDef="let user"> 
+                <span class="mobile-label">Client Name:</span>
+                {{user.ClientName}} 
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ClientId">
+              <mat-header-cell *matHeaderCellDef><h3><b> Client Id</b></h3> </mat-header-cell>
+              <mat-cell *matCellDef="let user"> 
+                <span class="mobile-label">Client Id:</span>
+                {{user.ClientId}} 
+              </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="PolicyNum">
+              <mat-header-cell *matHeaderCellDef><h3><b> Policy Number</b></h3></mat-header-cell>
+              <mat-cell *matCellDef="let user"> 
+                <span class="mobile-label">policy Number:</span>
+                {{user.PolicyNum}} 
+              </mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="PremDue">
+              <mat-header-cell *matHeaderCellDef  mat-sort-header> <h3><b>Total Due</b></h3></mat-header-cell>
+              <mat-cell *matCellDef="let user"> 
+                <span class="mobile-label">Total Due:</span>
+                {{user.PremDue| currency: ''}} 
+              </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="EquityDate">
+              <mat-header-cell *matHeaderCellDef  mat-sort-header><h3><b> Equity Date</b></h3></mat-header-cell>
+              <mat-cell *matCellDef="let user"> 
+                <span class="mobile-label">Equity Date:</span>
+                {{user.EquityDate | date:'M/d/yyyy'}} 
+              </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="DTE">
+              <mat-header-cell *matHeaderCellDef mat-sort-header><h3><b> DTE</b></h3></mat-header-cell>
+              <mat-cell *matCellDef="let user"> 
+                <span class="mobile-label"> DTE:</span>
+                {{user.DTE}} 
+              </mat-cell>
+            </ng-container>
+   
+            <ng-container matColumnDef="popup">
+              <mat-header-cell  *matHeaderCellDef><h3><b>Record Activity</b></h3></mat-header-cell>
+              <mat-cell *matCellDef="let user" style="cursor: pointer;">
+                <mat-icon (click)="openDialog(user.ClientName,user.PolicyNum,user.correspondence,user.Followups,user.PhnNum1,user.PhnNum2,user.PhnNum3,user.EmailId)">edit</mat-icon>
               </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -129,149 +219,90 @@
 
           </table >
         </div> 
-      </mat-tab>
-       <!-- 
-        Today's calls
-        -->
-        <mat-tab label="Today's Reductions"><br>
-          <div class="example-container mat-elevation-z8">
-            <table mat-table #table1 [dataSource]="Today" matSort>
-              <!-- Name Column -->
-              <ng-container matColumnDef="ClientName">
-                <mat-header-cell *matHeaderCellDef><h3><b> Client Name</b></h3> </mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">Client Name:</span>
-                  {{user.ClientName}} 
-                </mat-cell>
-              </ng-container>
-          
-              <!-- Symbol Column -->
-              <ng-container matColumnDef="PolicyNum">
-                <mat-header-cell *matHeaderCellDef><h3><b> Policy Number</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">policy Number:</span>
-                  {{user.PolicyNum}} 
-                </mat-cell>
-              </ng-container>
-      
-              <ng-container matColumnDef="PremDue">
-                <mat-header-cell *matHeaderCellDef> <h3><b>Premium Due</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">Premium Due:</span>
-                  {{user.PremDue| currency: ''}} 
-                </mat-cell>
-              </ng-container>
-              
-              <ng-container matColumnDef="EquityDate">
-                <mat-header-cell *matHeaderCellDef><h3><b> Equity Date</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label">Equity Date:</span>
-                  {{user.EquityDate | date:'M/d/yyyy'}} 
-                </mat-cell>
-              </ng-container>
-          
-              <ng-container matColumnDef="DTE">
-                <mat-header-cell *matHeaderCellDef> <h3><b> DTE</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user"> 
-                  <span class="mobile-label"> DTE:</span>
-                  {{user.DTE}} 
-                </mat-cell>
-              </ng-container>
-     
-              <ng-container matColumnDef="popup">
-                <mat-header-cell  *matHeaderCellDef><h3><b>Record Activity</b></h3></mat-header-cell>
-                <mat-cell *matCellDef="let user" style="cursor: pointer;">
-                  <mat-icon (click)="openDialog(user.ClientName,user.PolicyNum,user.correspondence,user.Followups,user.PhnNum,user.EmailId)">edit</mat-icon>
-                </mat-cell>
-              </ng-container>
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+         </mat-tab> 
+  </mat-tab-group> 
+  </mat-tab>
 
-              <ng-container matColumnDef="DateCompleted">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let user">             
-                </td>
-              </ng-container>
-
-            </table >
-          </div> 
-           </mat-tab> 
-    </mat-tab-group> 
-    </mat-tab>
-
-    <!--Completed-->
-    <mat-tab label="Completed"><br>
-      <div class="example-container mat-elevation-z8">
-        <div class="tabs2">
-        <table mat-table #table1 [dataSource]="Completed" matSort class="mat-elevation-z8">
-          <!-- Name Column -->
-          <ng-container matColumnDef="ClientName">
-            <mat-header-cell *matHeaderCellDef> <h3><b>Client Name </b></h3></mat-header-cell>
-            <mat-cell *matCellDef="let user"> 
-              <span class="mobile-label">Client Name:</span>
-              {{user.ClientName}} 
-            </mat-cell>
-          </ng-container>
-      
-          <!-- Weight Column -->
-          <ng-container matColumnDef="PhnNum">
-            <mat-header-cell *matHeaderCellDef> <h3><b>Phone</b></h3> </mat-header-cell>
-            <mat-cell *matCellDef="let user"> 
-              <span class="mobile-label">phone:</span>
-              {{user.PhnNum}} 
-            </mat-cell>
-          </ng-container>
-      
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="PolicyNum">
-            <mat-header-cell *matHeaderCellDef> <h3><b>Policy Number</b></h3></mat-header-cell>
-            <mat-cell *matCellDef="let user"> 
-              <span class="mobile-label">policy Number:</span>
-              {{user.PolicyNum}} 
-            </mat-cell>
-          </ng-container>
+  <!--Completed-->
+  <mat-tab label="Completed"><br>
+    <div class="example-container mat-elevation-z8">
+      <div class="tabs2">
+      <table mat-table #MatSort0="matSort" [dataSource]="Completed" matSort class="mat-elevation-z8">
+        <!-- Name Column -->
+        <ng-container matColumnDef="ClientName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Client Name </b></h3></mat-header-cell>
+          <mat-cell *matCellDef="let user"> 
+            <span class="mobile-label">Client Name:</span>
+            {{user.ClientName}} 
+          </mat-cell>
+        </ng-container>
     
-          <ng-container matColumnDef="PremDue">
-            <mat-header-cell *matHeaderCellDef> <h3><b>Premium Due</b></h3></mat-header-cell>
-            <mat-cell *matCellDef="let user"> 
-              <span class="mobile-label">Premium Due:</span>
-              {{user.PremDue| currency: ''}} 
-            </mat-cell>
-          </ng-container>
-          
-          <ng-container matColumnDef="EquityDate">
-            <mat-header-cell *matHeaderCellDef><h3><b> Equity Date</b></h3></mat-header-cell>
-            <mat-cell *matCellDef="let user"> 
-              <span class="mobile-label">Equity Date:</span>
-              {{user.EquityDate | date:'M/d/yyyy'}} 
-            </mat-cell>
-          </ng-container>
+        <ng-container matColumnDef="ClientId">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Client Id </b></h3></mat-header-cell>
+          <mat-cell *matCellDef="let user"> 
+            <span class="mobile-label">Client Id:</span>
+            {{user.ClientId}} 
+          </mat-cell>
+        </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="PhnNum">
+          <mat-header-cell *matHeaderCellDef> <h3><b>Phone</b></h3> </mat-header-cell>
+          <mat-cell *matCellDef="let user"> 
+            <span class="mobile-label">phone:</span>
+            {{user.PhnNum}} 
+          </mat-cell>
+        </ng-container>
+    
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="PolicyNum">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Policy Number</b></h3></mat-header-cell>
+          <mat-cell *matCellDef="let user"> 
+            <span class="mobile-label">policy Number:</span>
+            {{user.PolicyNum}} 
+          </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="PremDue">
+          <mat-header-cell *matHeaderCellDef> <h3><b>Total Due</b></h3></mat-header-cell>
+          <mat-cell *matCellDef="let user"> 
+            <span class="mobile-label">Total Due:</span>
+            {{user.PremDue| currency: ''}} 
+          </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="EquityDate">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><h3><b> Equity Date</b></h3></mat-header-cell>
+          <mat-cell *matCellDef="let user"> 
+            <span class="mobile-label">Equity Date:</span>
+            {{user.EquityDate | date:'M/d/yyyy'}} 
+          </mat-cell>
+        </ng-container>
 
-          <ng-container matColumnDef="DateCompleted">
-            <mat-header-cell *matHeaderCellDef> <h3><b> Completed Date</b></h3></mat-header-cell>
-            <mat-cell *matCellDef="let user"> 
-              <span class="mobile-label"> Completed Date:</span>
-              {{user.DateCompleted | date:'M/d/yyyy'}} 
-            </mat-cell>
-          </ng-container>
-      
-          <ng-container matColumnDef="DTE">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let user"> 
-              <span class="mobile-label"></span>
-              
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="DateCompleted">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> <h3><b>Date Completed </b></h3></mat-header-cell>
+          <mat-cell *matCellDef="let user"> 
+            <span class="mobile-label"> Completed Date:</span>
+            {{user.DateCompleted | date:'M/d/yyyy'}} 
+          </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="DTE">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let user"> 
+            <span class="mobile-label"></span>
+            
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="popup">
-            <th mat-header-cell  *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let user">
-              
-            </td>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </table>
-      </div> </div>
-    </mat-tab>
-    </mat-tab-group>
+        <ng-container matColumnDef="popup">
+          <th mat-header-cell  *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let user">
+            
+          </td>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </table>
+    </div> </div> 
+  </mat-tab>
+  </mat-tab-group>

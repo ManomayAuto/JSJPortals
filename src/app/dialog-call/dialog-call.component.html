@@ -3,14 +3,20 @@
 <div class="info"> 
     <mat-form-field  style="margin-left: 10px;">
       <input matInput [(ngModel)]="data.ClientName" placeholder="Client Name" readonly style="width: 150px;height:25px;">
-    </mat-form-field> &nbsp;&nbsp;  &nbsp;&nbsp; 
-    <mat-form-field  style="margin-left: 10px;">
+    </mat-form-field> 
+    <mat-form-field  style="margin-left: 45px;">
       <input matInput [(ngModel)]="data.policy" placeholder="Policy Number:" readonly style="width: 150px;height:25px;">
-    </mat-form-field> &nbsp;&nbsp;  &nbsp;&nbsp; 
-    <mat-form-field style="margin-left: 50px;">
-      <input matInput [(ngModel)]="data.PhnNum" placeholder="Phone Number:" readonly style="width: 150px;height:25px;">
-    </mat-form-field> &nbsp;&nbsp; &nbsp;&nbsp; 
-    <mat-form-field style="margin-left: 50px;">   
+    </mat-form-field> 
+    <mat-form-field style="margin-left: 45px;">
+      <input matInput [(ngModel)]="data.PhnNum1" placeholder="Phone Number 1:" readonly style="width: 150px;height:25px;">
+    </mat-form-field> 
+    <mat-form-field style="margin-left: 45px;">
+      <input matInput [(ngModel)]="data.PhnNum2" placeholder="Phone Number 2:" readonly style="width: 150px;height:25px;">
+    </mat-form-field> 
+    <mat-form-field style="margin-left: 45px;">
+      <input matInput [(ngModel)]="data.PhnNum3" placeholder="Phone Number 3:" readonly style="width: 150px;height:25px;">
+    </mat-form-field> 
+    <mat-form-field style="margin-left: 10px;">   
       <input matInput [(ngModel)]="data.EmailId" placeholder="Email Id:" readonly style="white-space: normal;
        width: 250px;height:25px;">
     </mat-form-field>  
@@ -31,13 +37,25 @@
 
       </mat-radio-group><br></div><br>
 
-      <mat-form-field class="example-full-width">
-        <textarea matInput maxlength="250" name="note" formControlName="note" placeholder="Note" style="height: 50px;width: 200px;" required>
-        </textarea>
-        <mat-error *ngIf=" ClientForm.get('note').hasError('required')">
-          Please enter the details of the correspondence.
+      <mat-form-field color="accent">
+        <mat-label>Expected Pay Date </mat-label>
+        <input matInput [min]="minDate" autocomplete="off" [matDatepicker]="picker"  name="picker" formControlName="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker   #picker color="primary"></mat-datepicker>
+        <mat-error *ngIf=" ClientForm.get('picker').hasError('matDatepickerMin')">
+          Please enter a valid date!
         </mat-error>
+      </mat-form-field><br>
+
+      <mat-form-field class="example-full-width">
+        <textarea matInput maxlength="250" name="note" formControlName="note" placeholder="Note" style="height: 50px;width: 200px;" required></textarea>
+        <!-- <a style="font-size: 10px;"> (minium 2 characters)</a> -->
+        <mat-error *ngIf=" ClientForm.get('note').hasError('required')">
+          Please enter the details of the correspondence.<br>
+        </mat-error>
+      
       </mat-form-field><br><br>
+      <a style="font-size: 14px; color:red;font-style: italic;font-family: 'Open Sans', sans-serif;"> (Please also record the payment amount specified by the customer)</a><br><br>
     <button mat-button class="btn btn-default" [disabled]="!ClientForm.valid" type="submit">Followed up</button>
     
     </form>

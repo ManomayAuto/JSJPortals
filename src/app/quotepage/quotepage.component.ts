@@ -122,6 +122,7 @@ export class QuotepageComponent implements OnInit {
   public towns: any[];
   public lossaddress: any[];
   public isduplicate: boolean = false;
+  public isduplicateqid: boolean = false;
   public isduplicater: boolean = false;
   public isduplicatereq: boolean = false;
   public isduplicatecs: boolean = false;
@@ -205,6 +206,8 @@ degreeTitleList = [];
   searchdata : any;
   selectedvehtype :any;
   actionvalue: string;
+  selectedload: string;
+  selectedisc: string;
   isSubmittedradio = false;
   test(a) {
     console.log(a);
@@ -326,7 +329,23 @@ degreeTitleList = [];
     let dup =  this.route.snapshot.paramMap.get('dup');
     if(dup != null){
       console.log("in duppppppppppppppppppppppp")
-      this.isduplicatecs = true;
+      let yr= this.contactForm1.get('Year').value;
+      let covr = this.contactForm2.get('options1').value;
+      let fin = this.contactForm2.get('financed').value;
+      this.currentdate = this.dp.transform(this.today, 'yyyy','es-ES');
+      let check = this.currentdate - yr
+      if(this.userrole == "uw"){
+        if(check > 10 && covr != "TP"){
+          this.isduplicatecs = false;
+        }
+        else if(fin == true && covr != "COMP"){
+          this.isduplicatecs = false;
+        }
+        
+      }
+      else{
+        this.isduplicatecs = true;
+      }
     }
   }
   tomorrow = new Date();
@@ -363,6 +382,7 @@ degreeTitleList = [];
         { id : 60, manpercentage: '60%'},
         { id : 65, manpercentage: '65%'},
         { id : 70, manpercentage: '70%'},
+        { id : 75, manpercentage: '75%'},
       ];
     this.manualdisclist =[
       { id : 0, manpercentage: '0%'},
@@ -428,7 +448,7 @@ degreeTitleList = [];
     vehicleValue : [''],
     alarm: [false],
     financed: [false],
-    claimfree: [''],
+    claimfree: ['',Validators.required],
     options1: ['',Validators.required],
     losspay: [''],
     lossloc: [''],
@@ -530,6 +550,7 @@ degreeTitleList = [];
     this.isduplicater = true;
     this.dupnext = true;
     this.isduplicate = true;
+    this.isduplicateqid = true;
       this.selectedIndex =  1;
       this.btnDisabled = true;
       this.btnDisabledci = false;
@@ -754,6 +775,8 @@ if(result['citi'] !=null || result['citi'] != undefined || result['citi'] == "")
   this.towns = [{Town: result['citi']}];
   this.Selectedtown = this.towns[0];
 }
+console.log(result['polstdate']);
+console.log("----------------------------------------------------");
 this.contactForm4.get('policystartDate').setValue(result['polstdate']);
 this.contactForm4.get('policyendDate').setValue(result['polendate']);
 this.contactForm4.get('policyType').setValue(result['policytype']);
@@ -769,6 +792,7 @@ this.contactForm4.get('EngineNumber').setValue(result['engineno']);
   getSomething(){
     this.dupnext = true;
     this.isduplicate = true;
+    this.isduplicateqid = true;
     this.selectedIndex =  1;
     this.btnDisabled = false;
     this.btnDisabledci = false;
@@ -1052,6 +1076,9 @@ if(result['citi'] !=null || result['citi'] != undefined || result['citi'] == "")
   this.towns = [{Town: result['citi']}];
   this.Selectedtown = this.towns[0];
 }
+
+console.log("****************************************************************************************************")
+console.log(result['polstdate'])
 this.contactForm4.get('policystartDate').setValue(result['polstdate']);
 this.contactForm4.get('policyendDate').setValue(result['polendate']);
 this.contactForm4.get('policyType').setValue(result['policytype']);
@@ -1922,6 +1949,7 @@ addremarkstest() {
     });
   }
   onSave(action){
+    if(this.contactForm3.valid){
     var actionvalue = action;
     console.log(actionvalue);
     this.onSubmit();
@@ -2236,7 +2264,12 @@ addremarkstest() {
         console.error("Error", error);
       });
       }
+  
+  } 
+  else{
+    this.openSnackBar("Please fill reason for loads/discounts if any", "Dismiss");
   }
+ }
   openquoteDialog(quoteid, quotestatus) {
     console.log(quotestatus);
     const dialogRef1 = this.dialog.open(NewquotedialogComponent,{
@@ -2267,16 +2300,18 @@ addremarkstest() {
     
     dialogRef1.afterClosed().subscribe(result => {
       console.log(result)
-      if (result =="yes") {
+      if (result == "no") {
+        this.router.navigateByUrl('/home');
         console.log(result);
+      }
+      else{
         this.btnDisablednext = true;
         this.isaddfinal = true;
         this.btnDisabledci = false;
         this.isduplicatecs = true;
         this.moveToSelectedTab2("Additional Details");
-      }
-      else{
-        this.router.navigateByUrl('/home');
+       this.isduplicateqid = true;
+this.contactForm3.get('quoted').setValue(result);
       }
   });
   }
@@ -2381,6 +2416,34 @@ console.log(Selectedzip);
       
     
   }
+  onselectedload(){
+console.log(this.selectedload) 
+if(+this.selectedload > 0){
+  console.log("selectedz")
+  this.contactForm3.get('manualloadr').setValidators([Validators.required]);
+  this.contactForm3.get('manualloadr').updateValueAndValidity();
+  
+}
+else{
+  console.log("selectede")
+  this.contactForm3.get('manualloadr').clearValidators();
+      this.contactForm3.get('manualloadr').updateValueAndValidity();
+}
+ }
+ onselectedisc(){
+  console.log(this.selectedisc)
+  if(+this.selectedisc > 0){
+    console.log("selectedz")
+    this.contactForm3.get('manualdiscr').setValidators([Validators.required]);
+    this.contactForm3.get('manualdiscr').updateValueAndValidity();
+    
+  }
+  else{
+    console.log("selectede")
+    this.contactForm3.get('manualdiscr').clearValidators();
+    this.contactForm3.get('manualdiscr').updateValueAndValidity();
+  }
+ }
 
 }
 

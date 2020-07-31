@@ -15,9 +15,11 @@ import { DialogRedComponent } from '../dialog-red/dialog-red.component';
 export class ReducedComponent implements OnInit {
   @ViewChild("MatSort1",{static:true}) MatSort1: MatSort;
   @ViewChild("MatSort2",{static:true}) MatSort2: MatSort;
+  @ViewChild("MatSort0",{static:true}) MatSort0: MatSort;
+  @ViewChild("MatSort3",{static:true}) MatSort3: MatSort;
   filter:any;
 
-  displayedColumns: string[] = ['ClientName', 'PolicyNum','PremDue','EquityDate','DTE','popup','DateCompleted'];
+  displayedColumns: string[] = ['ClientId','ClientName', 'PolicyNum','PremDue','EquityDate','DTE','popup','DateCompleted'];
   allSource;
   dataSource;
   Completed;
@@ -31,7 +33,7 @@ export class ReducedComponent implements OnInit {
         return;
       }
       this.dataSource = new MatTableDataSource(results);
-      
+      console.log("dta",results);
 
   
       /* all function */
@@ -49,6 +51,7 @@ export class ReducedComponent implements OnInit {
         return user.Status == Alll;
       }); 
       this.Completed = new MatTableDataSource(result1);
+      this.Completed.sort = this.MatSort0; 
       console.log(this.Completed);
       /*Expired*/
 
@@ -57,25 +60,38 @@ export class ReducedComponent implements OnInit {
         return user.DTE < Expireded;
       }); 
       this.Expired = new MatTableDataSource(result2);
-      this.Expired.sort = this.MatSort2;        
-      /*Today*/
-      const Todays = "7";
-      const result3 = result0.filter(user => {
-        return user.DTE == Todays;
+      this.Expired.sort = this.MatSort2; 
+      //  trail
+    
+      const result7 = result0.filter(user => {
+        return user.DTE > Expireded;
       }); 
+      console.log("more than 0",result7)
+
+      /*Today*/
+      //console.log("tday",result0)
+
+      const Todays=7;
+      const result3 = result7.filter(user => {
+        return +user.DTE <= Todays;
+      }); 
+      
+      console.log("tdaya",result3)
+      
       this.Today = new MatTableDataSource(result3);
+      this.Today.sort = this.MatSort3;
       }, error =>{
       console.log(error);
     })   
 
     
   }
-  openDialog(ClientName,PolicyNum,correspondence,Followups,PhnNum,EmailId):void {
+  openDialog(ClientName,PolicyNum,correspondence,Followups,PhnNum1,PhnNum2,PhnNum3,EmailId):void {
     const DialogRef = this.dialog.open(DialogRedComponent,{
       width: '85%',
-      height:'370px',
+      height:'450px',
 
-      data:{ClientName:ClientName,policy:PolicyNum,comment:correspondence,Followups:Followups,PhnNum:PhnNum,EmailId:EmailId}
+      data:{ClientName:ClientName,policy:PolicyNum,comment:correspondence,Followups:Followups,PhnNum1:PhnNum1,PhnNum2:PhnNum2,PhnNum3:PhnNum3,EmailId:EmailId}
     
     });
     DialogRef.afterClosed().subscribe(result => {
@@ -85,4 +101,3 @@ export class ReducedComponent implements OnInit {
   }
 
 }
-

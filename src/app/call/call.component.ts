@@ -16,10 +16,11 @@ export class CallComponent implements OnInit {
  
   @ViewChild("MatSort1",{static:true}) MatSort1: MatSort;
   @ViewChild("MatSort2",{static:true}) MatSort2: MatSort;
+  @ViewChild("MatSort0",{static:true}) MatSort0: MatSort;
   @ViewChild('pen', { read: MatSort, static: true }) sort1: MatSort;
   filter:any;
 
-  displayedColumns: string[] = ['ClientName', 'PolicyNum','PremDue','EquityDate','DTE','popup','DateCompleted'];
+  displayedColumns: string[] = ['ClientId','ClientName', 'PolicyNum','PremDue','EquityDate','DTE','popup','DateCompleted'];
   allSource;
   // dataSource;
   FollowDone;
@@ -38,7 +39,7 @@ export class CallComponent implements OnInit {
 
   
       /* all function */
-
+      console.log("alll",results);
       const filterred = "Completed";
       const result0 = results.filter(user => {
         return user.Status != filterred;
@@ -54,7 +55,8 @@ export class CallComponent implements OnInit {
       }); 
       this.FollowDone = new MatTableDataSource(result1);
       // this.FollowDone.sort = this.sort;
-      //console.log("expiredSource",this.expiredSource);
+      this.FollowDone.sort = this.MatSort0; 
+      console.log("Check",this.FollowDone);
 
     /* All function */
        const filterValu = "Followed up";
@@ -87,12 +89,12 @@ export class CallComponent implements OnInit {
 
     
   }
-  openDialog(ClientName,PolicyNum,correspondence,Followups,PhnNum,EmailId):void {
+  openDialog(ClientName,PolicyNum,correspondence,Followups,PhnNum1,PhnNum2,PhnNum3,EmailId):void {
     const DialogRef = this.dialog.open(DialogCallComponent,{
       width: '82%',
-      height:'480px',
+      height:'530px',
 
-      data:{ClientName:ClientName,policy:PolicyNum,comment:correspondence,Followups:Followups,PhnNum:PhnNum,EmailId:EmailId}
+      data:{ClientName:ClientName,policy:PolicyNum,comment:correspondence,Followups:Followups,PhnNum1:PhnNum1,PhnNum2:PhnNum2,PhnNum3:PhnNum3,EmailId:EmailId}
     
     });
     DialogRef.afterClosed().subscribe(result => {
@@ -102,4 +104,3 @@ export class CallComponent implements OnInit {
   }
 
 }
-

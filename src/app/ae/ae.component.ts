@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DOCUMENT } from '@angular/common';
 import { LoginComponent } from '../login/login.component';
 import { AuthenticationService } from '../_services/authentication.service';
+import { MatTabGroup } from '@angular/material';
 
 
 @Component({ 
@@ -18,11 +19,14 @@ import { AuthenticationService } from '../_services/authentication.service';
 export class AEComponent implements OnInit {
   @ViewChild("MatSort1",{static:true}) MatSort1: MatSort;
   @ViewChild("MatSort2",{static:true}) MatSort2: MatSort;
+  @ViewChild("MatSort0",{static:true}) MatSort0: MatSort;
+  @ViewChild("MatSort3",{static:true}) MatSort3: MatSort;
   @ViewChild(LoginComponent ,{static:true}) child : LoginComponent;
+  @ViewChild('tabGroup',{static:false}) tabGroup: MatTabGroup;
 
   filter:any;
 
-  displayedColumns: string[] = ['ClientName', 'PolicyNum','PremDue','EquityDate','DTE','Followups','LastFollowUp','ExpectedDate','DateCompleted','popup'];
+  displayedColumns: string[] = ['ClientId','ClientName', 'PolicyNum','PremDue','EquityDate','DTE','Followups','LastFollowUp','ExpectedDate','DateCompleted','popup'];
   allSource;
   CompleteSource;
   dataSource;
@@ -49,7 +53,7 @@ export class AEComponent implements OnInit {
         return;
       } 
       this.dataSource = new MatTableDataSource(results);
-      
+      // console.log("try",result.PhnNum1);
         /* Reduced function */
 
         const filtered = "Completed";
@@ -57,6 +61,7 @@ export class AEComponent implements OnInit {
           return user.Status == filtered;
         }); 
         this.CompleteSource = new MatTableDataSource(resultss);
+        this.CompleteSource.sort = this.MatSort0;
         //console.log("expiredSource",this.CompleteSource);
   
       /* all function */
@@ -67,7 +72,7 @@ export class AEComponent implements OnInit {
       }); 
       this.allSource = new MatTableDataSource(result0);
       this.allSource.sort = this.MatSort1;
-      // console.log("All",this.allSource);
+      console.log("All",this.allSource);
 
       /* expired function */
       const filterValue = "0";
@@ -78,14 +83,24 @@ export class AEComponent implements OnInit {
       this.expiredSource.sort = this.MatSort2; 
       //console.log("expiredSource",this.expiredSource);
 
+      // trial
+      const result122 = result0.filter(user =>{
+        return user.DTE > filterValue;
+      })
+      console.log(result122);
       /* reduction function */
-      const filterReductions= "1";
-      const result2 = result0.filter(user => {
-        return user.DTE == filterReductions;
+      const filterReductions= 1;
+      const result2 = result122.filter(user => {
+        return +user.DTE == filterReductions;
+        //user.DTE > filterValue && user.DTE <=filterReductions;
+        
+        
+        
+        //  user.DTE < filterReductions;
       }); 
       this.reductionSource = new MatTableDataSource(result2);
-      //console.log("reductionSource;",this.reductionSource);
-
+      this.reductionSource.sort = this.MatSort3;
+     
       /* reduction15 function */
       const filter15= "15";
       const result3 = result0.filter(user => {
@@ -123,12 +138,12 @@ export class AEComponent implements OnInit {
 
     
   }
-  openDialog(ClientName,PolicyNum,correspondence,Followups,PhnNum,EmailId):void {
+  openDialog(ClientName,PolicyNum,correspondence,Followups,PhnNum1,PhnNum2,PhnNum3,EmailId):void {
     const DialogRef = this.dialog.open(DialogContentExampleComponent,{
       width: '75%',
       height:'590px',
 
-      data:{ClientName:ClientName,policy:PolicyNum,comment:correspondence,Followups:Followups,PhnNum:PhnNum,EmailId:EmailId}
+      data:{ClientName:ClientName,policy:PolicyNum,comment:correspondence,Followups:Followups,PhnNum1:PhnNum1,PhnNum2:PhnNum2,PhnNum3:PhnNum3,EmailId:EmailId}
     
     });
     DialogRef.afterClosed().subscribe(result => {
